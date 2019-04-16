@@ -107,6 +107,18 @@ export const constantRoutes = [
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
+  },
+  {
+    path: '/users',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/users/users'),
+        name: 'Users',
+        meta: { title: 'Users', icon: 'user', affix: true, noCache: true }
+      }
+    ]
   }
 ]
 

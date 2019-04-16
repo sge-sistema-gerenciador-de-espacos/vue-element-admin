@@ -520,6 +520,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: 'users',
+    component: 'layout/Layout',
+    children: [
+      {
+        path: 'index',
+        component: 'views/users/users',
+        name: 'Users',
+        meta: { title: 'Users', icon: 'user' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
