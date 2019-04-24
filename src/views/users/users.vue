@@ -25,19 +25,26 @@
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Cidade">
+
+      <el-table-column align="header-center" label="Estado">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.state }}
         </template>
       </el-table-column>
+      <el-table-column align="header-center" label="Cidade">
+        <template slot-scope="scope">
+          {{ scope.row.city }}
+        </template>
+      </el-table-column>
+
       <el-table-column align="header-center" label="Rua">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.street }}
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="Numero">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.number }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Operations">
@@ -53,28 +60,54 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit User':'New User'">
-      <el-form :model="role" label-width="80px" label-position="left">
+      <el-form :model="user" label-width="80px" label-position="left">
         <el-form-item label="Name">
-          <el-input v-model="role.name" placeholder="User Name" />
+          <el-input v-model="user.name" placeholder="User Name" />
         </el-form-item>
-        <el-form-item label="Desc">
-          <el-input
-            v-model="role.description"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Role Description"
-          />
+        <el-form-item label="Email">
+          <el-input v-model="user.email" placeholder="User Email" />
         </el-form-item>
-        <el-form-item label="Menus">
-          <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
+        <el-form-item label="Status">
+          <el-select v-model="user.status">
+            <el-option value="1" label="Ativo" selected>Ativo</el-option>
+            <el-option value="0" label="Inativo">Inativo</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Type">
+          <el-select v-model="user.type">
+            <el-option value="1" label="Admin" selected>Admin</el-option>
+            <el-option value="2" label="Professor">Professor</el-option>
+            <el-option value="3" label="TI">TI</el-option>
+            <el-option value="4" label="Auxiliar">Auxiliar</el-option>
+            <el-option value="5" label="Aluno">Aluno</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="State">
+          <el-select v-model="user.state">
+            <el-option
+              v-for="item in stateList"
+              :key="item.ID"
+              :label="item.Name"
+              :value="item.ID"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="City">
+          <el-input v-model="user.city" placeholder="City" />
+        </el-form-item>
+        <el-form-item label="Street">
+          <el-input v-model="user.street" placeholder="Street" />
+        </el-form-item>
+        <el-form-item label="Number">
+          <el-input v-model="user.number" placeholder="Number" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
-          {{ $t('permission.cancel') }}
+          {{ $t('users.cancel') }}
         </el-button>
         <el-button type="primary" @click="confirmRole">
-          {{ $t('permission.confirm') }}
+          {{ $t('users.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -83,29 +116,29 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getRoutes, getUsers, addUser, deleteUser, updateUser } from '@/api/user'
-import i18n from '@/lang'
+import { getUsers, addUser, deleteUser, updateUser } from '@/api/user'
+import { getStates } from '@/api/state'
 
-const defaultRole = {
-  key: '',
+const defaultUser = {
+  type: '',
   name: '',
-  description: '',
-  routes: []
+  status: '',
+  email: '',
+  city: '',
+  state: [],
+  street: '',
+  number: ''
 }
 
 export default {
   data() {
     return {
-      role: Object.assign({}, defaultRole),
-      routes: [],
-      usersList: [],
+      user: Object.assign({}, defaultUser),
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
-      defaultProps: {
-        children: 'children',
-        label: 'title'
-      }
+      usersList: [],
+      stateList: []
     }
   },
   computed: {
@@ -115,73 +148,20 @@ export default {
   },
   created() {
     // Mock: get all routes and roles list from server
-    this.getRoutes()
     this.getUsers()
+    this.getStates()
   },
   methods: {
-    async getRoutes() {
-      const res = await getRoutes()
-      this.serviceRoutes = res.data
-      const routes = this.generateRoutes(res.data)
-      this.routes = this.i18n(routes)
-    },
     async getUsers() {
       const res = await getUsers()
       this.usersList = res.data
     },
-    i18n(routes) {
-      const app = routes.map(route => {
-        route.title = i18n.t(`route.${route.title}`)
-        if (route.children) {
-          route.children = this.i18n(route.children)
-        }
-        return route
-      })
-      return app
-    },
-    // Reshape the routes structure so that it looks the same as the sidebar
-    generateRoutes(routes, basePath = '/') {
-      const res = []
-
-      for (let route of routes) {
-        // skip some route
-        if (route.hidden) { continue }
-
-        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
-
-        if (route.children && onlyOneShowingChild && !route.alwaysShow) {
-          route = onlyOneShowingChild
-        }
-
-        const data = {
-          path: path.resolve(basePath, route.path),
-          title: route.meta && route.meta.title
-
-        }
-
-        // recursive child routes
-        if (route.children) {
-          data.children = this.generateRoutes(route.children, data.path)
-        }
-        res.push(data)
-      }
-      return res
-    },
-    generateArr(routes) {
-      let data = []
-      routes.forEach(route => {
-        data.push(route)
-        if (route.children) {
-          const temp = this.generateArr(route.children)
-          if (temp.length > 0) {
-            data = [...data, ...temp]
-          }
-        }
-      })
-      return data
+    async getStates() {
+      const sta = await getStates()
+      this.stateList = sta.data
     },
     handleaddUser() {
-      this.role = Object.assign({}, defaultRole)
+      this.user = Object.assign({}, defaultUser)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
@@ -192,22 +172,16 @@ export default {
       this.dialogType = 'edit'
       this.dialogVisible = true
       this.checkStrictly = true
-      this.role = deepClone(scope.row)
-      this.$nextTick(() => {
-        const routes = this.generateRoutes(this.role.routes)
-        this.$refs.tree.setCheckedNodes(this.generateArr(routes))
-        // set checked state of a node not affects its father and child nodes
-        this.checkStrictly = false
-      })
+      this.user = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the role?', 'Warning', {
+      this.$confirm('Confirm to remove the user?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
       })
         .then(async() => {
-          await deleteUser(row.key)
+          await deleteUser(row.id)
           this.usersList.splice($index, 1)
           this.$message({
             type: 'success',
@@ -216,75 +190,33 @@ export default {
         })
         .catch(err => { console.error(err) })
     },
-    generateTree(routes, basePath = '/', checkedKeys) {
-      const res = []
-
-      for (const route of routes) {
-        const routePath = path.resolve(basePath, route.path)
-
-        // recursive child routes
-        if (route.children) {
-          route.children = this.generateTree(route.children, routePath, checkedKeys)
-        }
-
-        if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
-          res.push(route)
-        }
-      }
-      return res
-    },
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
-      const checkedKeys = this.$refs.tree.getCheckedKeys()
-      this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
-
       if (isEdit) {
-        await updateUser(this.role.key, this.role)
+        await updateUser(this.user.id, this.user)
         for (let index = 0; index < this.usersList.length; index++) {
-          if (this.usersList[index].key === this.role.key) {
-            this.usersList.splice(index, 1, Object.assign({}, this.role))
+          if (this.usersList[index].id === this.user.id) {
+            this.usersList.splice(index, 1, Object.assign({}, this.user))
             break
           }
         }
       } else {
-        const { data } = await addUser(this.role)
-        this.role.key = data.key
-        this.usersList.push(this.role)
+        const { data } = await addUser(this.user)
+        this.user.id = data.id
+        this.usersList.push(this.user)
       }
 
-      const { description, key, name } = this.role
+      const { name } = this.user
       this.dialogVisible = false
       this.$notify({
         title: 'Success',
         dangerouslyUseHTMLString: true,
         message: `
-            <div>Role Key: ${key}</div>
-            <div>Role Nmae: ${name}</div>
-            <div>Description: ${description}</div>
+            <div>User: ${name}</div>
           `,
         type: 'success'
       })
-    },
-    // reference: src/view/layout/components/Sidebar/SidebarItem.vue
-    onlyOneShowingChild(children = [], parent) {
-      let onlyOneChild = null
-      const showingChildren = children.filter(item => !item.hidden)
-
-      // When there is only one child route, the child route is displayed by default
-      if (showingChildren.length === 1) {
-        onlyOneChild = showingChildren[0]
-        onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path)
-        return onlyOneChild
-      }
-
-      // Show parent if there are no child route to display
-      if (showingChildren.length === 0) {
-        onlyOneChild = { ... parent, path: '', noShowingChildren: true }
-        return onlyOneChild
-      }
-
-      return false
     }
   }
 }
