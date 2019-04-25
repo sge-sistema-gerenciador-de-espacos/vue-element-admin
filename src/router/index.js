@@ -119,6 +119,18 @@ export const constantRoutes = [
         meta: { title: 'Users', icon: 'user', affix: true, noCache: true }
       }
     ]
+  },
+  {
+    path: '/software',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/softwares/software'),
+        name: 'Softwares',
+        meta: { title: 'Software', icon: 'component', affix: true, noCache: true }
+      }
+    ]
   }
 ]
 

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleaddUser">
+    <el-button type="primary" @click="handleaddSoftware">
       {{ $t('software.addSoftware') }}
     </el-button>
 
@@ -53,7 +53,7 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getUsers, addUser, deleteUser, updateUser } from '@/api/user'
+import { getSoftware, addSoftware, deleteSoftware, updateSoftware } from '@/api/software'
 
 const defaultSoftware = {
   name: '',
@@ -77,14 +77,14 @@ export default {
   },
   created() {
     // Mock: get all routes and roles list from server
-    this.getUsers()
+    this.getSoftware()
   },
   methods: {
-    async getUsers() {
-      const res = await getUsers()
+    async getSoftware() {
+      const res = await getSoftware()
       this.softwareList = res.data
     },
-    handleaddUser() {
+    handleaddSoftware() {
       this.user = Object.assign({}, defaultSoftware)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
@@ -105,7 +105,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await deleteUser(row.id)
+          await deleteSoftware(row.id)
           this.usersList.splice($index, 1)
           this.$message({
             type: 'success',
@@ -120,7 +120,7 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
-        await updateUser(this.user.id, this.user)
+        await updateSoftware(this.user.id, this.user)
         for (let index = 0; index < this.usersList.length; index++) {
           if (this.usersList[index].id === this.user.id) {
             this.usersList.splice(index, 1, Object.assign({}, this.user))
@@ -128,7 +128,7 @@ export default {
           }
         }
       } else {
-        const { data } = await addUser(this.user)
+        const { data } = await addSoftware(this.user)
         this.user.id = data.id
         this.usersList.push(this.user)
       }
@@ -139,7 +139,7 @@ export default {
         title: 'Success',
         dangerouslyUseHTMLString: true,
         message: `
-            <div>User: ${name}</div>
+            <div>Software: ${name}</div>
           `,
         type: 'success'
       })

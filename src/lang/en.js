@@ -105,6 +105,14 @@ export default {
     confirm: 'Confirm',
     cancel: 'Cancel'
   },
+  software: {
+    addSoftware: 'New Software',
+    edit: 'Edit Software',
+    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel'
+  },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
     button: 'Show Guide'
