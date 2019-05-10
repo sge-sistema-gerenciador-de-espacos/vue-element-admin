@@ -11,21 +11,12 @@
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="Status">
-        <template v-if="scope.row.status == 0" slot-scope="scope">
-          <p>Inativo</p>
-        </template>
-        <template v-else slot-scope="scope">
-          <p>Ativo</p>
+        <template slot-scope="scope">
+          {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column :data="softwareList" align="center" label="Operations">
+      <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
-            {{ $t('software.disable') }}
-          </el-button>
-          <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
-            {{ $t('software.enable') }}
-          </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('software.edit') }}
           </el-button>
@@ -107,12 +98,6 @@ export default {
       this.dialogVisible = true
       this.checkStrictly = true
       this.software = deepClone(scope.row)
-    },
-    enableDisable(scope, status) {
-      this.dialogType = 'edit'
-      this.software = deepClone(scope.row)
-      this.software.status = status
-      this.confirmRole()
     },
     handleDelete({ $index, row }) {
       this.$confirm('Confirm to remove the software?', 'Warning', {

@@ -282,6 +282,16 @@ export default [
         data: states
       }
     }
+  },
+  {
+    url: '/user/[A-Za-z0-9]',
+    type: 'delete',
+    response: {
+      code: 20000,
+      data: {
+        status: 'success'
+      }
+    }
   }
 
 ]

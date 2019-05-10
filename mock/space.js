@@ -1,33 +1,47 @@
 import Mock from 'mockjs'
 
-const accessSoftware = [
+const accessSpaces = [
   {
     id: 1,
-    status: 'ativo',
-    name: 'word'
+    name: 'Sala 1',
+    status: 'Ativo',
+    type: 'sala',
+    smartBoard: '0',
+    labId: '',
+    board: '0',
+    numberPc: '0',
+    numberChair: 15,
+    project: '0'
   },
   {
     id: 2,
-    status: 'ativo',
-    name: 'chrome'
+    name: 'Sala 2',
+    status: 'Inativo',
+    type: 'sala',
+    smartBoard: '0',
+    labId: '',
+    board: '0',
+    numberPc: '0',
+    numberChair: 15,
+    project: '0'
   }
 ]
 
 export default [
 
-  // get software info
+  // get space info
   // {
-  //   url: '/software/info\.*',
+  //   url: '/space/info\.*',
   //   type: 'get',
   //   response: config => {
   //     const { token } = config.query
-  //     const info = softwares[token]
+  //     const info = spaces[token]
   //
   //     // mock error
   //     if (!info) {
   //       return {
   //         code: 50008,
-  //         message: 'Login failed, unable to get software details.'
+  //         message: 'Login failed, unable to get space details.'
   //       }
   //     }
   //
@@ -38,17 +52,17 @@ export default [
   //   }
   // },
   {
-    url: '/software',
+    url: '/space',
     type: 'get',
     response: _ => {
       return {
         code: 20000,
-        data: accessSoftware
+        data: accessSpaces
       }
     }
   },
   {
-    url: '/software',
+    url: '/space',
     type: 'post',
     response: {
       code: 20000,
@@ -58,7 +72,7 @@ export default [
     }
   },
   {
-    url: '/software/[A-Za-z0-9]',
+    url: '/space/[A-Za-z0-9]',
     type: 'put',
     response: {
       code: 20000,
@@ -68,7 +82,7 @@ export default [
     }
   },
   {
-    url: '/software/[A-Za-z0-9]',
+    url: '/space/[A-Za-z0-9]',
     type: 'delete',
     response: {
       code: 20000,

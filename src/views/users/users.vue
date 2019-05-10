@@ -5,50 +5,26 @@
     </el-button>
 
     <el-table :data="usersList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Role Key" width="220">
-        <template slot-scope="scope">
-          {{ scope.row.type }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="User Name" width="220">
+      <el-table-column align="center" label="User Name" width="150">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="E-mail">
+      <el-table-column align="center" label="E-mail">
         <template slot-scope="scope">
           {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-
-      <el-table-column align="header-center" label="Estado">
+      <el-table-column align="center" label="Operations" width="250">
         <template slot-scope="scope">
-          {{ scope.row.state }}
-        </template>
-      </el-table-column>
-      <el-table-column align="header-center" label="Cidade">
-        <template slot-scope="scope">
-          {{ scope.row.city }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="header-center" label="Rua">
-        <template slot-scope="scope">
-          {{ scope.row.street }}
-        </template>
-      </el-table-column>
-      <el-table-column align="header-center" label="Numero">
-        <template slot-scope="scope">
-          {{ scope.row.number }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Operations">
-        <template slot-scope="scope">
+          <el-button type="primary" size="small" @click="handleEdit(scope)">
+            {{ $t('users.telephones') }}
+          </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('users.editUser') }}
           </el-button>
