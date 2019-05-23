@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleaddSoftware">
-      {{ $t('software.addSoftware') }}
+    <el-button type="primary" @click="handleaddProgram">
+      {{ $t('software.addProgram') }}
     </el-button>
 
     <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Software Name" width="220">
+      <el-table-column align="center" label="Program Name" width="220">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="Status">
         <template slot-scope="scope">
-          {{ scope.row.status }}
+          {{ scope.row.code }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Operations">
@@ -27,10 +27,10 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Software':'New Software'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Program':'New Program'">
       <el-form :model="software" label-width="80px" label-position="left">
         <el-form-item label="Name">
-          <el-input v-model="software.name" placeholder="Software Name" />
+          <el-input v-model="software.name" placeholder="Program Name" />
         </el-form-item>
         <el-form-item label="Status">
           <el-select v-model="software.status">
@@ -53,18 +53,18 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getSoftware, addSoftware, deleteSoftware, updateSoftware } from '@/api/software'
+import { getProgram, addProgram, deleteProgram, updateProgram } from '@/api/program'
 
-const defaultSoftware = {
+const defaultProgram = {
   id: '',
   name: '',
-  status: ''
+  code: ''
 }
 
 export default {
   data() {
     return {
-      software: Object.assign({}, defaultSoftware),
+      software: Object.assign({}, defaultProgram),
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
@@ -78,15 +78,15 @@ export default {
   },
   created() {
     // Mock: get all routes and roles list from server
-    this.getSoftware()
+    this.getProgram()
   },
   methods: {
-    async getSoftware() {
-      const res = await getSoftware()
+    async getProgram() {
+      const res = await getProgram()
       this.softwareList = res.data
     },
-    handleaddSoftware() {
-      this.software = Object.assign({}, defaultSoftware)
+    handleaddProgram() {
+      this.software = Object.assign({}, defaultProgram)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
@@ -106,7 +106,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await deleteSoftware(row.id)
+          await deleteProgram(row.id)
           this.softwareList.splice($index, 1)
           this.$message({
             type: 'success',
@@ -121,7 +121,7 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
-        await updateSoftware(this.software.id, this.software)
+        await updateProgram(this.software.id, this.software)
         for (let index = 0; index < this.softwareList.length; index++) {
           if (this.softwareList[index].id === this.software.id) {
             this.softwareList.splice(index, 1, Object.assign({}, this.software))
@@ -129,7 +129,7 @@ export default {
           }
         }
       } else {
-        const { data } = await addSoftware(this.software)
+        const { data } = await addProgram(this.software)
         this.software.id = data.id
         this.softwareList.push(this.software)
       }
@@ -140,7 +140,7 @@ export default {
         title: 'Success',
         dangerouslyUseHTMLString: true,
         message: `
-            <div>Software: ${name}</div>
+            <div>Program: ${name}</div>
           `,
         type: 'success'
       })
