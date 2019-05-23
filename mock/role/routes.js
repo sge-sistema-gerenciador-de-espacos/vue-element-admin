@@ -544,6 +544,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: 'program',
+    component: 'layout/Layout',
+    children: [
+      {
+        path: 'index',
+        component: 'views/program/program',
+        name: 'Program',
+        meta: { title: 'Program', icon: 'component' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

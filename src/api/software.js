@@ -37,3 +37,10 @@ export function deleteSoftware(id) {
     method: 'delete'
   })
 }
+
+export function getSoftwareSpace(id) {
+  return request({
+    url: `/software/space/${id}`,
+    method: 'get'
+  })
+}

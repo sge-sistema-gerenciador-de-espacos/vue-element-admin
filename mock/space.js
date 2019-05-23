@@ -17,7 +17,7 @@ const accessSpaces = [
     id: 2,
     name: 'Sala 2',
     status: 'Inativo',
-    type: 'sala',
+    type: 'lab',
     smartBoard: '0',
     labId: '',
     board: '0',
@@ -28,29 +28,6 @@ const accessSpaces = [
 ]
 
 export default [
-
-  // get space info
-  // {
-  //   url: '/space/info\.*',
-  //   type: 'get',
-  //   response: config => {
-  //     const { token } = config.query
-  //     const info = spaces[token]
-  //
-  //     // mock error
-  //     if (!info) {
-  //       return {
-  //         code: 50008,
-  //         message: 'Login failed, unable to get space details.'
-  //       }
-  //     }
-  //
-  //     return {
-  //       code: 20000,
-  //       data: info
-  //     }
-  //   }
-  // },
   {
     url: '/space',
     type: 'get',

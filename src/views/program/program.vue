@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="handleaddProgram">
-      {{ $t('software.addProgram') }}
+      {{ $t('program.addProgram') }}
     </el-button>
 
-    <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="programList" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="Program Name" width="220">
         <template slot-scope="scope">
           {{ scope.row.name }}
@@ -18,22 +18,22 @@
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
-            {{ $t('software.edit') }}
+            {{ $t('program.edit') }}
           </el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">
-            {{ $t('software.delete') }}
+            {{ $t('program.delete') }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Program':'New Program'">
-      <el-form :model="software" label-width="80px" label-position="left">
+      <el-form :model="program" label-width="80px" label-position="left">
         <el-form-item label="Name">
-          <el-input v-model="software.name" placeholder="Program Name" />
+          <el-input v-model="program.name" placeholder="Program Name" />
         </el-form-item>
         <el-form-item label="Status">
-          <el-select v-model="software.status">
+          <el-select v-model="program.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
@@ -41,10 +41,10 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
-          {{ $t('software.cancel') }}
+          {{ $t('program.cancel') }}
         </el-button>
         <el-button type="primary" @click="confirmRole">
-          {{ $t('software.confirm') }}
+          {{ $t('program.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -64,11 +64,11 @@ const defaultProgram = {
 export default {
   data() {
     return {
-      software: Object.assign({}, defaultProgram),
+      program: Object.assign({}, defaultProgram),
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
-      softwareList: []
+      programList: []
     }
   },
   computed: {
@@ -83,10 +83,10 @@ export default {
   methods: {
     async getProgram() {
       const res = await getProgram()
-      this.softwareList = res.data
+      this.programList = res.data
     },
     handleaddProgram() {
-      this.software = Object.assign({}, defaultProgram)
+      this.program = Object.assign({}, defaultProgram)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
@@ -97,17 +97,17 @@ export default {
       this.dialogType = 'edit'
       this.dialogVisible = true
       this.checkStrictly = true
-      this.software = deepClone(scope.row)
+      this.program = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the software?', 'Warning', {
+      this.$confirm('Confirm to remove the program?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
       })
         .then(async() => {
           await deleteProgram(row.id)
-          this.softwareList.splice($index, 1)
+          this.programList.splice($index, 1)
           this.$message({
             type: 'success',
             message: 'Delete succed!'
@@ -121,20 +121,20 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
-        await updateProgram(this.software.id, this.software)
-        for (let index = 0; index < this.softwareList.length; index++) {
-          if (this.softwareList[index].id === this.software.id) {
-            this.softwareList.splice(index, 1, Object.assign({}, this.software))
+        await updateProgram(this.program.id, this.program)
+        for (let index = 0; index < this.programList.length; index++) {
+          if (this.programList[index].id === this.program.id) {
+            this.programList.splice(index, 1, Object.assign({}, this.program))
             break
           }
         }
       } else {
-        const { data } = await addProgram(this.software)
-        this.software.id = data.id
-        this.softwareList.push(this.software)
+        const { data } = await addProgram(this.program)
+        this.program.id = data.id
+        this.programList.push(this.program)
       }
 
-      const { name } = this.software
+      const { name } = this.program
       this.dialogVisible = false
       this.$notify({
         title: 'Success',

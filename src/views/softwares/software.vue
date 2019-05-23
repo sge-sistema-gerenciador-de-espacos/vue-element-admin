@@ -11,11 +11,8 @@
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="Status">
-        <template v-if="scope.row.status == 0" slot-scope="scope">
-          <p>Inativo</p>
-        </template>
-        <template v-else slot-scope="scope">
-          <p>Ativo</p>
+        <template slot-scope="scope">
+          {{ scope.row.status }}
         </template>
       </el-table-column>
       <el-table-column :data="softwareList" align="center" label="Operations">

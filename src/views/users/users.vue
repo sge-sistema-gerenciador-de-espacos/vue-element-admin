@@ -5,25 +5,36 @@
     </el-button>
 
     <el-table :data="usersList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="User Name" width="150">
+      <el-table-column align="center" label="User Name" width="250">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="E-mail">
+      <el-table-column align="center" label="E-mail" width="250">
         <template slot-scope="scope">
           {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" width="150">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations" width="250">
+      <el-table-column align="center" label="Type" width="150">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">
-            {{ $t('users.telephones') }}
+          {{ scope.row.type }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Operations" width="400">
+        <template slot-scope="scope">
+          <!--<el-button type="primary" size="small" @click="handleTelephone(scope)">-->
+          <!--{{ $t('users.telephones') }}-->
+          <!--</el-button>-->
+          <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
+            {{ $t('software.disable') }}
+          </el-button>
+          <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
+            {{ $t('software.enable') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('users.editUser') }}
@@ -77,6 +88,9 @@
         <el-form-item label="Number">
           <el-input v-model="user.number" placeholder="Number" />
         </el-form-item>
+        <el-form-item label="Telephone Number">
+          <el-input v-model="user.telephones" placeholder="Telephone Number" />
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -87,6 +101,7 @@
         </el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -101,9 +116,10 @@ const defaultUser = {
   status: '',
   email: '',
   city: '',
-  state: [],
+  state: '',
   street: '',
-  number: ''
+  number: '',
+  telephones: []
 }
 
 export default {
@@ -111,6 +127,7 @@ export default {
     return {
       user: Object.assign({}, defaultUser),
       dialogVisible: false,
+      dialogTelephone: false,
       dialogType: 'new',
       checkStrictly: false,
       usersList: [],
@@ -150,6 +167,12 @@ export default {
       this.checkStrictly = true
       this.user = deepClone(scope.row)
     },
+    handleTelephone(scope) {
+      this.dialogType = 'edit'
+      this.dialogTelephone = true
+      this.checkStrictly = true
+      this.user = deepClone(scope.row)
+    },
     handleDelete({ $index, row }) {
       this.$confirm('Confirm to remove the user?', 'Warning', {
         confirmButtonText: 'Confirm',
@@ -165,6 +188,12 @@ export default {
           })
         })
         .catch(err => { console.error(err) })
+    },
+    enableDisable(scope, status) {
+      this.dialogType = 'edit'
+      this.user = deepClone(scope.row)
+      this.user.status = status
+      this.confirmRole()
     },
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'

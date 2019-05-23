@@ -52,7 +52,13 @@
       </el-table-column>
       <el-table-column align="center" :data="spaceList" label="Operations">
         <template slot-scope="scope">
+          <el-button v-if="scope.row.type == 'lab'" type="primary" size="small" @click="handleSoftwares(scope)">
+            {{ $t('space.softwares') }}
+          </el-button>
           <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
+            <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
+              {{ $t('space.disable') }}
+            </el-button>
             {{ $t('space.disable') }}
           </el-button>
           <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
@@ -69,7 +75,7 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Space':'New Space'">
-      <el-form :model="space" label-width="80px" label-position="left">
+      <el-form :model="space" label-width="80px" label-position="left" :data="softwareList">
         <el-form-item label="Name">
           <el-input v-model="space.name" placeholder="Space Name" />
         </el-form-item>
@@ -119,12 +125,40 @@
         </el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :visible.sync="dialogSoftware" :title="'Softwares'">
+      <el-form :model="software" label-width="80px" label-position="left">
+        <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
+          <el-table-column align="center" label="Space Name" width="220">
+            <template slot-scope="scope">
+              {{ scope.row.name }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" :data="softwareList" label="Operations">
+            <template slot-scope="scope">
+              <el-button type="danger" size="small" @click="handleDelete(scope)">
+                {{ $t('space.delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form>
+      <div style="text-align:right; margin-top: 10px">
+        <el-button type="danger" @click="dialogVisible=false">
+          {{ $t('space.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="confirmRole">
+          {{ $t('space.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { deepClone } from '@/utils'
 import { getSpace, addSpace, deleteSpace, updateSpace } from '@/api/space'
+import { getSoftwareSpace } from '@/api/software'
 
 const defaultSpace = {
   id: '',
@@ -139,14 +173,23 @@ const defaultSpace = {
   project: ''
 }
 
+const defaultSoftware = {
+  id: '',
+  name: '',
+  status: ''
+}
+
 export default {
   data() {
     return {
       space: Object.assign({}, defaultSpace),
+      software: Object.assign({}, defaultSoftware),
       dialogVisible: false,
+      dialogSoftware: false,
       dialogType: 'new',
       checkStrictly: false,
-      spaceList: []
+      spaceList: [],
+      softwareList: []
     }
   },
   computed: {
@@ -162,6 +205,12 @@ export default {
     async getSpace() {
       const res = await getSpace()
       this.spaceList = res.data
+    },
+    async handleSoftwares(scope) {
+      this.space = deepClone(scope.row)
+      const res = await getSoftwareSpace(this.space.id)
+      this.softwareList = res.data
+      this.dialogSoftware = true
     },
     handleaddSpace() {
       this.space = Object.assign({}, defaultSpace)

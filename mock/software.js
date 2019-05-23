@@ -14,29 +14,6 @@ const accessSoftware = [
 ]
 
 export default [
-
-  // get software info
-  // {
-  //   url: '/software/info\.*',
-  //   type: 'get',
-  //   response: config => {
-  //     const { token } = config.query
-  //     const info = softwares[token]
-  //
-  //     // mock error
-  //     if (!info) {
-  //       return {
-  //         code: 50008,
-  //         message: 'Login failed, unable to get software details.'
-  //       }
-  //     }
-  //
-  //     return {
-  //       code: 20000,
-  //       data: info
-  //     }
-  //   }
-  // },
   {
     url: '/software',
     type: 'get',
@@ -74,6 +51,16 @@ export default [
       code: 20000,
       data: {
         status: 'success'
+      }
+    }
+  },
+  {
+    url: '/software/space/[A-Za-z0-9]',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: accessSoftware
       }
     }
   }
