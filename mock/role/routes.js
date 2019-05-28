@@ -556,6 +556,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: 'course',
+    component: 'layout/Layout',
+    children: [
+      {
+        path: 'index',
+        component: 'views/course/course',
+        name: 'Program',
+        meta: { title: 'Course', icon: 'component' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

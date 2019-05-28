@@ -10,7 +10,7 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="header-center" label="Code">
         <template slot-scope="scope">
           {{ scope.row.code }}
         </template>

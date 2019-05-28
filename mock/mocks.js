@@ -5,6 +5,7 @@ import search from './remoteSearch'
 import software from './software'
 import space from './space'
 import program from './program'
+import course from './course'
 
 export default [
   ...user,
@@ -13,6 +14,7 @@ export default [
   ...search,
   ...software,
   ...space,
-  ...program
+  ...program,
+  ...course
 ]
 

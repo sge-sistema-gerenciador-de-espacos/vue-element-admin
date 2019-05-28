@@ -127,6 +127,28 @@ export default {
     enable: 'Enable',
     softwares: 'Softwares'
   },
+  program: {
+    addProgram: 'New Program',
+    edit: 'Edit Program',
+    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    disable: 'Disable',
+    enable: 'Enable',
+    softwares: 'Softwares'
+  },
+  course: {
+    addCourse: 'New Course',
+    edit: 'Edit Course',
+    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    disable: 'Disable',
+    enable: 'Enable',
+    softwares: 'Softwares'
+  },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
     button: 'Show Guide'

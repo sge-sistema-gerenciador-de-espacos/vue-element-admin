@@ -6,9 +6,9 @@ const tableRouter = {
   path: '/table',
   component: Layout,
   redirect: '/table/complex-table',
-  name: 'Table',
+  name: 'Report',
   meta: {
-    title: 'Table',
+    title: 'Report',
     icon: 'table'
   },
   children: [
