@@ -44,3 +44,10 @@ export function getSoftwareSpace(id) {
     method: 'get'
   })
 }
+
+export function getActiveSoftware() {
+  return request({
+    url: `/active/software`,
+    method: 'get'
+  })
+}

@@ -568,6 +568,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: 'class',
+    component: 'layout/Layout',
+    children: [
+      {
+        path: 'index',
+        component: 'views/class/class',
+        name: 'Class',
+        meta: { title: 'Class', icon: 'component' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

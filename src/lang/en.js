@@ -149,6 +149,19 @@ export default {
     enable: 'Enable',
     softwares: 'Softwares'
   },
+  classes: {
+    addClass: 'New Class',
+    edit: 'Edit Class',
+    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    disable: 'Disable',
+    enable: 'Enable',
+    softwares: 'Softwares',
+    addLack: 'Add Lack',
+    addStudent: 'Add Student'
+  },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
     button: 'Show Guide'

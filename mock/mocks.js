@@ -6,6 +6,7 @@ import software from './software'
 import space from './space'
 import program from './program'
 import course from './course'
+import classes from './classes'
 
 export default [
   ...user,
@@ -15,6 +16,7 @@ export default [
   ...software,
   ...space,
   ...program,
-  ...course
+  ...course,
+  ...classes
 ]
 

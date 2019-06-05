@@ -47,6 +47,17 @@ const accessUsers = [
   }
 ]
 
+const masterUsers = [
+  {
+    id: 1,
+    name: 'Master 1'
+  },
+  {
+    id: 2,
+    name: 'Master 2'
+  }
+]
+
 const states = [
   {
     ID: 1,
@@ -290,6 +301,16 @@ export default [
       code: 20000,
       data: {
         status: 'success'
+      }
+    }
+  },
+  {
+    url: '/users',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: masterUsers
       }
     }
   }

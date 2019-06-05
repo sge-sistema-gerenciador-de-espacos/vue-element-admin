@@ -13,6 +13,19 @@ const accessSoftware = [
   }
 ]
 
+const software = [
+  {
+    id: 1,
+    status: 'ativo',
+    name: 'teste Ativo'
+  },
+  {
+    id: 2,
+    status: 'ativo',
+    name: 'Ativo teste'
+  }
+]
+
 export default [
   {
     url: '/software',
@@ -55,12 +68,22 @@ export default [
     }
   },
   {
-    url: '/software/space/[A-Za-z0-9]',
+    url: '/software/space/[0-9]',
     type: 'get',
     response: _ => {
       return {
         code: 20000,
         data: accessSoftware
+      }
+    }
+  },
+  {
+    url: '/active/software',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: software
       }
     }
   }

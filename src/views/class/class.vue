@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleaddSoftware">
-      {{ $t('software.addSoftware') }}
+    <el-button type="primary" @click="handleaddClass">
+      {{ $t('classes.addClass') }}
     </el-button>
 
-    <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Software Name" width="220">
+    <el-table :data="classesList" style="width: 100%;margin-top:30px;" border>
+      <el-table-column align="center" label="Class Name" width="220">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -15,60 +15,165 @@
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations">
+      <el-table-column align="header-center" label="Course Name">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">
-            {{ $t('software.edit') }}
+            {{ scope.row.course.name}}
+        </template>
+      </el-table-column>
+      <el-table-column align="header-center" label="Professor">
+        <template slot-scope="scope">
+          {{ scope.row.master.name }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Operations" width="400">
+        <template slot-scope="scope">
+          <el-button type="primary" size="small" @click="handleAddLack(scope)">
+            {{ $t('classes.addLack') }}
           </el-button>
+            <el-button type="primary" size="small" @click="handleEdit(scope)">
+                {{ $t('classes.addStudent') }}
+            </el-button>
+            <el-button type="primary" size="small" @click="handleEdit(scope)">
+                {{ $t('classes.edit') }}
+            </el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">
-            {{ $t('software.delete') }}
+            {{ $t('classes.delete') }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Software':'New Software'">
-      <el-form :model="software" label-width="80px" label-position="left">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Class':'New Class'">
+      <el-form :model="classes" label-width="120px" label-position="left">
         <el-form-item label="Name">
-          <el-input v-model="software.name" placeholder="Software Name" />
+          <el-input v-model="classes.name" placeholder="Class Name" />
         </el-form-item>
         <el-form-item label="Status">
-          <el-select v-model="software.status">
+          <el-select v-model="classes.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="Course Name">
+              <el-select v-model="classes.course.name">
+                  <el-option v-for="courseToShow in this.courseList" :value="courseToShow.id" :label="courseToShow.name">
+                      {{courseToShow.name}}
+                  </el-option>
+              </el-select>
+          </el-form-item>
+          <el-form-item label="Master Name">
+              <el-select v-model="classes.master.name">
+                  <el-option v-for="masterToShow in this.masterList" :value="masterToShow.id" :label="masterToShow.name">
+                      {{masterToShow.name}}
+                  </el-option>
+              </el-select>
+          </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
-          {{ $t('software.cancel') }}
+          {{ $t('classes.cancel') }}
         </el-button>
         <el-button type="primary" @click="confirmRole">
-          {{ $t('software.confirm') }}
+          {{ $t('classes.confirm') }}
         </el-button>
       </div>
     </el-dialog>
+
+
+
+
+      <el-dialog :visible.sync="dialogAddLack" :title="'Add Lack'">
+          <el-form :model="classes" label-width="120px" label-position="left">
+              <el-form-item label="Name">
+                  <el-input v-model="classes.name" placeholder="Class Name" />
+              </el-form-item>
+              <el-form-item label="Status">
+                  <el-select v-model="classes.status">
+                      <el-option value="1" label="Ativo">Ativo</el-option>
+                      <el-option value="0" label="Inativo">Inativo</el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="Course Name">
+                  <el-select v-model="classes.course.name">
+                      <el-option v-for="courseToShow in this.courseList" :value="courseToShow.id" :label="courseToShow.name">
+                          {{courseToShow.name}}
+                      </el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="Master Name">
+                  <el-select v-model="lackes.master.id">
+                      <el-option v-for="masterToShow in this.masterList" :value="masterToShow.id" :label="masterToShow.name">
+                          {{masterToShow.name}}
+                      </el-option>
+                  </el-select>
+              </el-form-item>
+              <el-date-picker v-model="lackes.date" type="date">
+              </el-date-picker>
+          </el-form>
+          <div style="text-align:right;">
+              <el-button type="danger" @click="dialogVisible=false">
+                  {{ $t('classes.cancel') }}
+              </el-button>
+              <el-button type="primary" @click="confirmRole">
+                  {{ $t('classes.confirm') }}
+              </el-button>
+          </div>
+      </el-dialog>
   </div>
 </template>
 
 <script>
 import { deepClone } from '@/utils'
-import { getSoftware, addSoftware, deleteSoftware, updateSoftware } from '@/api/software'
+import { getClass, addClass, deleteClass, updateClass } from '@/api/classes'
+import { getCourse } from '@/api/course'
+import { getMasterUsers } from '@/api/user'
 
-const defaultSoftware = {
-  id: '',
-  name: '',
-  status: ''
+const defaultClass = {
+    id: '',
+    status: '',
+    name: '',
+    course: {
+        name: ''
+    },
+    master:
+        {
+            id: '',
+            name: '',
+        }
 }
+
+const defaultCourse = {
+    id: '',
+    name: ''
+}
+
+const defaultMaster = {
+    id: '',
+    name: ''
+}
+
+const defaultLack = {
+    master: {
+        id: ''
+    },
+    date: ''
+}
+
 
 export default {
   data() {
     return {
-      software: Object.assign({}, defaultSoftware),
+      classes: Object.assign({}, defaultClass),
+      courses: Object.assign({}, defaultCourse),
+      masters: Object.assign({}, defaultMaster),
+      lackes: Object.assign({}, defaultLack),
       dialogVisible: false,
+      dialogAddLack: false,
       dialogType: 'new',
       checkStrictly: false,
-      softwareList: []
+      classesList: [],
+      courseList: [],
+      masterList: []
     }
   },
   computed: {
@@ -78,15 +183,19 @@ export default {
   },
   created() {
     // Mock: get all routes and roles list from server
-    this.getSoftware()
+    this.getClass()
   },
   methods: {
-    async getSoftware() {
-      const res = await getSoftware()
-      this.softwareList = res.data
+    async getClass() {
+      const res = await getClass()
+      this.classesList = res.data
     },
-    handleaddSoftware() {
-      this.software = Object.assign({}, defaultSoftware)
+    async handleaddClass() {
+      this.classes = Object.assign({}, defaultClass)
+      const courses = await getCourse()
+      this.courseList = courses.data
+      const master = await getMasterUsers()
+      this.masterList = master.data
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
@@ -97,17 +206,22 @@ export default {
       this.dialogType = 'edit'
       this.dialogVisible = true
       this.checkStrictly = true
-      this.software = deepClone(scope.row)
+      this.classes = deepClone(scope.row)
     },
+      handleAddLack(scope) {
+          this.dialogAddLack = true
+          this.checkStrictly = true
+          this.classes = deepClone(scope.row)
+      },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the software?', 'Warning', {
+      this.$confirm('Confirm to remove the classes?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
       })
         .then(async() => {
-          await deleteSoftware(row.id)
-          this.softwareList.splice($index, 1)
+          await deleteClass(row.id)
+          this.classesList.splice($index, 1)
           this.$message({
             type: 'success',
             message: 'Delete succed!'
@@ -121,26 +235,26 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
-        await updateSoftware(this.software.id, this.software)
-        for (let index = 0; index < this.softwareList.length; index++) {
-          if (this.softwareList[index].id === this.software.id) {
-            this.softwareList.splice(index, 1, Object.assign({}, this.software))
+        await updateClass(this.classes.id, this.classes)
+        for (let index = 0; index < this.classesList.length; index++) {
+          if (this.classesList[index].id === this.classes.id) {
+            this.classesList.splice(index, 1, Object.assign({}, this.classes))
             break
           }
         }
       } else {
-        const { data } = await addSoftware(this.software)
-        this.software.id = data.id
-        this.softwareList.push(this.software)
+        const { data } = await addClass(this.classes)
+        this.classes.id = data.id
+        this.classesList.push(this.classes)
       }
 
-      const { name } = this.software
+      const { name } = this.classes
       this.dialogVisible = false
       this.$notify({
         title: 'Success',
         dangerouslyUseHTMLString: true,
         message: `
-            <div>Software: ${name}</div>
+            <div>Class: ${name}</div>
           `,
         type: 'success'
       })

@@ -52,3 +52,10 @@ export function deleteUser(id) {
     method: 'delete'
   })
 }
+
+export function getMasterUsers() {
+  return request({
+    url: '/users',
+    method: 'get'
+  })
+}
