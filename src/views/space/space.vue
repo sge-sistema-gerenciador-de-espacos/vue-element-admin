@@ -312,8 +312,6 @@ export default {
       })
     },
       async handleAddSoftwareSpace({ $index, row }) {
-        console.log(row.id)
-          console.log(this.space)
           const { data } = await addSoftwareSpace(row.id, this.space.id)
           this.softwareList.splice($index, 1)
           this.softwareSpaceList.push(row)

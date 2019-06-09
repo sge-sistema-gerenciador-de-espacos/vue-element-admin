@@ -6,6 +6,7 @@ const accessClass = [
     status: 'ativo',
     name: 'Teste 1',
     course: {
+      id: 1,
       name: 'Turismo'
     },
     master:
@@ -19,13 +20,13 @@ const accessClass = [
     status: 'ativo',
     name: 'teste 2',
     course: {
+      id: 2,
       name: 'SI'
     },
-    master:
-            {
-              id: 1,
-              name: 'Super Admin'
-            }
+    master: {
+      id: 1,
+      name: 'Super Admin'
+    }
   }
 ]
 

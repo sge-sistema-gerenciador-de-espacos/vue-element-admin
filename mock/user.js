@@ -39,11 +39,19 @@ const accessUsers = [
     id: 2,
     type: 'editor',
     email: 'editor@editor.com',
-    status: 'ativo',
+    status: 1,
     name: 'Normal Editor',
-    city: 'Rio de Janeiro',
-    state: 'Rio de Janeiro',
-    number: '20'
+    address: {
+      city: 'Rio de Janeiro',
+      state: 1,
+      number: '20'
+    },
+    telephones: [
+      {
+        code: '21',
+        number: '99999-9999'
+      }
+    ]
   }
 ]
 

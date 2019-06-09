@@ -37,3 +37,12 @@ export function deleteClass(id) {
     method: 'delete'
   })
 }
+
+export function addLack(lack) {
+  console.log(lack.master)
+  return request({
+    url: `/classes/${lack.master.id}/${lack.classes.id}`,
+    method: 'post',
+    lack
+  })
+}
