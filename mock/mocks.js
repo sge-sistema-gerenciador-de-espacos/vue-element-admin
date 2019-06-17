@@ -7,6 +7,7 @@ import space from './space'
 import program from './program'
 import course from './course'
 import classes from './classes'
+import scheduler from './scheduling'
 
 export default [
   ...user,
@@ -17,6 +18,7 @@ export default [
   ...space,
   ...program,
   ...course,
-  ...classes
+  ...classes,
+  ...scheduler
 ]
 

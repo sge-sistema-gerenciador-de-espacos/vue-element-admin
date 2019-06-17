@@ -28,3 +28,10 @@ export function deleteProgram(id) {
     method: 'delete'
   })
 }
+
+export function enableProgram() {
+  return request({
+    url: `/program/enable`,
+    method: 'get'
+  })
+}

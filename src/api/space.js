@@ -52,3 +52,10 @@ export function addSoftwareSpace(softwareId, spaceId) {
     softwareId
   })
 }
+
+export function getSpaceEnable() {
+  return request({
+    url: '/space',
+    method: 'get'
+  })
+}

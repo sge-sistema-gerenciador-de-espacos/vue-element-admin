@@ -46,3 +46,10 @@ export function addLack(lack) {
     lack
   })
 }
+
+export function getClassEnable() {
+  return request({
+    url: '/classes/enable',
+    method: 'get'
+  })
+}

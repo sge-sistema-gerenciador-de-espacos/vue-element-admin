@@ -15,6 +15,11 @@
                     {{ scope.row.code }}
                 </template>
             </el-table-column>
+            <el-table-column align="header-center" label="Course">
+                <template slot-scope="scope">
+                    {{ scope.row.program.name }}
+                </template>
+            </el-table-column>
             <el-table-column align="header-center" label="Credit">
                 <template slot-scope="scope">
                     {{ scope.row.credit }}
@@ -36,6 +41,16 @@
             <el-form :model="course" label-width="80px" label-position="left">
                 <el-form-item label="Name">
                     <el-input v-model="course.name" placeholder="Course Name" />
+                </el-form-item>
+                <el-form-item label="Program">
+                    <el-select v-model="course.program">
+                        <el-option
+                                v-for="item in programList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
+                        />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="Status">
                     <el-select v-model="course.status">
@@ -59,12 +74,17 @@
 <script>
     import { deepClone } from '@/utils'
     import { getCourse, addCourse, deleteCourse, updateCourse } from '@/api/course'
+    import { enableProgram } from '@/api/program'
 
     const defaultCourse = {
         id: '',
         name: '',
         code: '',
-        credit: 0
+        credit: 0,
+        program: {
+            id: '',
+            name: ''
+        }
     }
 
     export default {
@@ -74,7 +94,8 @@
                 dialogVisible: false,
                 dialogType: 'new',
                 checkStrictly: false,
-                courseList: []
+                courseList: [],
+                programList: []
             }
         },
         computed: {
@@ -90,6 +111,10 @@
             async getCourse() {
                 const res = await getCourse()
                 this.courseList = res.data
+            },
+            async getProgram() {
+                const res = await enableProgram()
+                this.programList = res.data
             },
             handleaddCourse() {
                 this.course = Object.assign({}, defaultCourse)

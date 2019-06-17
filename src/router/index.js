@@ -154,7 +154,20 @@ export const constantRoutes = [
         meta: { title: 'Class', icon: 'component', affix: true, noCache: true }
       }
     ]
+  },
+  {
+    path: '/scheduling',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/scheduling/scheduling'),
+        name: 'Scheduler',
+        meta: { title: 'Scheduler', icon: 'component', affix: true, noCache: true }
+      }
+    ]
   }
+
 ]
 
 /**

@@ -70,6 +70,16 @@ export default [
         status: 'success'
       }
     }
+  },
+  {
+    url: '/classes/enable',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: accessClass
+      }
+    }
   }
 
 ]

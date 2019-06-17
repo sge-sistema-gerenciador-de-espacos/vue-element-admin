@@ -65,6 +65,16 @@ export default [
         data: accessProgram
       }
     }
+  },
+  {
+    url: '/program/enable',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: accessProgram
+      }
+    }
   }
 
 ]
