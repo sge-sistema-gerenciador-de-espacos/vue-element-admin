@@ -31,9 +31,16 @@ const accessUsers = [
     email: 'admin@admin.com',
     status: 'ativo',
     name: 'Super Admin',
-    city: 'Rio de Janeiro',
-    state: 'Rio de Janeiro',
-    number: '20'
+    address: {
+      city: 'Rio de Janeiro',
+      state: 1,
+      number: '20'
+    },
+    telephones: [
+      {
+        number: '2199999-9999'
+      }
+    ]
   },
   {
     id: 2,
@@ -44,14 +51,12 @@ const accessUsers = [
     address: {
       city: 'Rio de Janeiro',
       state: 1,
-      number: '20'
+      number: '20',
+      street: 'bcdhcgdvcdg'
     },
-    telephones: [
-      {
-        code: '21',
-        number: '99999-9999'
-      }
-    ]
+    telephones: {
+      number: '2199999-9999'
+    }
   }
 ]
 

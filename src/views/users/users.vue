@@ -4,7 +4,12 @@
       {{ $t('users.addUser') }}
     </el-button>
 
-    <el-table :data="usersList" style="width: 100%;margin-top:30px;" border>
+    <el-table
+      :data="usersList"
+      style="
+        width: 100%;margin-top:30px;"
+      border
+    >
       <el-table-column align="center" label="User Name" width="250">
         <template slot-scope="scope">
           {{ scope.row.name }}
@@ -30,10 +35,20 @@
           <!--<el-button type="primary" size="small" @click="handleTelephone(scope)">-->
           <!--{{ $t('users.telephones') }}-->
           <!--</el-button>-->
-          <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
+          <el-button
+            v-if="scope.row.status == 'ativo'"
+            type="primary"
+            size="small"
+            @click="enableDisable(scope, 0)"
+          >
             {{ $t('software.disable') }}
           </el-button>
-          <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
+          <el-button
+            v-if="scope.row.status == 'inativo'"
+            type="primary"
+            size="small"
+            @click="enableDisable(scope, 1)"
+          >
             {{ $t('software.enable') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
@@ -70,7 +85,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="State">
-          <el-select v-model="user.state">
+          <el-select v-model="user.address.state">
             <el-option
               v-for="item in stateList"
               :key="item.ID"
@@ -80,16 +95,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="City">
-          <el-input v-model="user.city" placeholder="City" />
+          <el-input v-model="user.address.city" placeholder="City" />
         </el-form-item>
         <el-form-item label="Street">
-          <el-input v-model="user.street" placeholder="Street" />
+          <el-input v-model="user.address.street" placeholder="Street" />
         </el-form-item>
         <el-form-item label="Number">
-          <el-input v-model="user.number" placeholder="Number" />
+          <el-input v-model="user.address.number" placeholder="Number" />
         </el-form-item>
         <el-form-item label="Telephone Number">
-          <el-input v-model="user.telephones" placeholder="Telephone Number" />
+          <el-input v-model="user.telephones.number" placeholder="Telephone Number" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -111,15 +126,21 @@ import { getUsers, addUser, deleteUser, updateUser } from '@/api/user'
 import { getStates } from '@/api/state'
 
 const defaultUser = {
+  id: '',
   type: '',
-  name: '',
-  status: '',
   email: '',
-  city: '',
-  state: '',
-  street: '',
-  number: '',
-  telephones: []
+  status: '',
+  name: '',
+  address: {
+    city: '',
+    state: '',
+    number: ''
+  },
+  telephones: [
+    {
+      number: ''
+    }
+  ]
 }
 
 export default {
@@ -167,6 +188,7 @@ export default {
       this.checkStrictly = true
       this.user = deepClone(scope.row)
     },
+
     handleTelephone(scope) {
       this.dialogType = 'edit'
       this.dialogTelephone = true
@@ -174,7 +196,7 @@ export default {
       this.user = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the user?', 'Warning', {
+      this.$confirm('Confirm to remove the user?', 'Aviso', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -187,7 +209,9 @@ export default {
             message: 'Delete succed!'
           })
         })
-        .catch(err => { console.error(err) })
+        .catch(err => {
+          console.error(err)
+        })
     },
     enableDisable(scope, status) {
       this.dialogType = 'edit'
