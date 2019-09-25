@@ -34,7 +34,9 @@ const accessUsers = [
     address: {
       city: 'Rio de Janeiro',
       state: 1,
-      number: '20'
+      number: '20',
+      street: 'bcdhcgdvcdg'
+
     },
     telephones: [
       {
@@ -46,7 +48,7 @@ const accessUsers = [
     id: 2,
     type: 'editor',
     email: 'editor@editor.com',
-    status: 1,
+    status: 'ativo',
     name: 'Normal Editor',
     address: {
       city: 'Rio de Janeiro',

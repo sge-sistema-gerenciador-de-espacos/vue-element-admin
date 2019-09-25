@@ -5,49 +5,20 @@
     </el-button>
 
     <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Space Name" width="220">
+
+      <el-table-column align="center" label="Space Name" width="350">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status" width="100">
-        <template slot-scope="scope" align="center">
+      <el-table-column align="center" label="Status" style="width: 100%;margin-top:30px;">
+        <template slot-scope="scope" align="center" width="150">
           {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Number of Chair" width="80">
-        <template slot-scope="scope">
-          {{ scope.row.numberChair }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Projector" width="90">
-        <template slot-scope="scope">
-          {{ scope.row.projector }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Type" width="100">
         <template slot-scope="scope">
           {{ scope.row.type }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Smart Board" width="120">
-        <template slot-scope="scope">
-          {{ scope.row.smartBoard }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Lab ID" width="80">
-        <template slot-scope="scope">
-          {{ scope.row.labId }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Board" width="80">
-        <template slot-scope="scope">
-          {{ scope.row.board }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Number of PCs" width="80">
-        <template slot-scope="scope">
-          {{ scope.row.numberPc }}
         </template>
       </el-table-column>
       <el-table-column align="center" :data="spaceList" label="Operations">
@@ -82,6 +53,12 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="Type">
+              <el-select v-model="space.type">
+                  <el-option value="1" label="Sala">Sala</el-option>
+                  <el-option value="2" label="Lab">Lab</el-option>
+              </el-select>
+          </el-form-item>
         <el-form-item label="Number of Chairs">
           <el-input v-model="space.numberChair" placeholder="Quantity of chairs" />
         </el-form-item>
@@ -98,12 +75,6 @@
           <el-select v-model="space.smartBoard">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Type">
-          <el-select v-model="space.type">
-            <el-option value="1" label="Sala">Sala</el-option>
-            <el-option value="2" label="Lab">Lab</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Board">

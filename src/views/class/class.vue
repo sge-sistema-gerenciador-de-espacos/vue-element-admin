@@ -56,16 +56,22 @@
         </el-form-item>
           <el-form-item label="Course Name">
               <el-select v-model="classes.course.id">
-                  <el-option v-for="courseToShow in this.courseList" :value="courseToShow.id" :label="courseToShow.name">
-                      {{courseToShow.name}}
-                  </el-option>
+                  <el-option
+                          v-for="courseToShow in this.courseList"
+                          :key="courseToShow.id"
+                          :label="courseToShow.name"
+                          :value="courseToShow.id"
+                  />
               </el-select>
           </el-form-item>
           <el-form-item label="Master Name">
-              <el-select v-model="classes.master.name">
-                  <el-option v-for="masterToShow in this.masterList" :value="masterToShow.id" :label="masterToShow.name">
-                      {{masterToShow.name}}
-                  </el-option>
+              <el-select v-model="classes.master.id">
+                  <el-option
+                          v-for="masterToShow in this.masterList"
+                          :key="masterToShow.id"
+                          :label="masterToShow.name"
+                          :value="masterToShow.id"
+                  />
               </el-select>
           </el-form-item>
       </el-form>
@@ -84,18 +90,6 @@
 
       <el-dialog :visible.sync="dialogAddLack" :title="'Add Lack'">
           <el-form :model="lack" label-width="120px" label-position="left">
-              <el-form-item label="Name">
-                  <el-input v-model="classes.name" disabled="true"/>
-              </el-form-item>
-              <el-form-item label="Status">
-                  <el-select v-model="classes.status" disabled="true">
-                      <el-option value="1" label="Ativo">Ativo</el-option>
-                      <el-option value="0" label="Inativo">Inativo</el-option>
-                  </el-select>
-              </el-form-item>
-              <el-form-item label="Course Name">
-                  <el-input v-model="classes.course.name" disabled="true"/>
-              </el-form-item>
               <el-form-item label="Master Name">
                   <el-input v-model="classes.master.name" disabled="true"/>
               </el-form-item>
@@ -231,6 +225,7 @@ export default {
     // Mock: get all routes and roles list from server
     this.getClass()
     this.getMaster()
+    this.getCourses()
   },
   methods: {
     async getClass() {
@@ -240,6 +235,10 @@ export default {
     async getMaster() {
        const res = await getMasterUsers()
        this.masterList = res.data
+    },
+    async getCourses() {
+        const res = await getCourse()
+        this.courseList = res.data
     },
     async handleaddClass() {
       this.classes = Object.assign({}, defaultClass)

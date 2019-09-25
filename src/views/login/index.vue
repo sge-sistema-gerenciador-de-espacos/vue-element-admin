@@ -57,10 +57,6 @@
           </span>
           <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
         </div>
-
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          {{ $t('login.thirdparty') }}
-        </el-button>
       </div>
     </el-form>
 

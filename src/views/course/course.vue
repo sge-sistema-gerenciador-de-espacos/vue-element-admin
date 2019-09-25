@@ -53,10 +53,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Status">
-          <el-select v-model="course.status">
+          <el-select v-model="course.status" required>
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="Status">
+          <el-input v-model="course.credit" placeholder="Course Credit" required />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">

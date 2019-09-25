@@ -117,8 +117,8 @@ export default {
     enable: 'Enable'
   },
   space: {
-    addSpace: 'New Software',
-    edit: 'Edit Software',
+    addSpace: 'New Space',
+    edit: 'Edit Space',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
     delete: 'Delete',
     confirm: 'Confirm',

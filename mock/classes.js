@@ -7,7 +7,7 @@ const accessClass = [
     name: 'Teste 1',
     course: {
       id: 1,
-      name: 'Turismo'
+      name: 'Projeto Final'
     },
     master:
     {
@@ -21,7 +21,7 @@ const accessClass = [
     name: 'teste 2',
     course: {
       id: 2,
-      name: 'SI'
+      name: 'Projeto Final 2'
     },
     master: {
       id: 1,
