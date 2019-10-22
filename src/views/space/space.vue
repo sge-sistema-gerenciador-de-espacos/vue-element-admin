@@ -59,10 +59,10 @@
                   <el-option value="2" label="Lab">Lab</el-option>
               </el-select>
           </el-form-item>
-        <el-form-item label="Number of Chairs">
+        <el-form-item label="Number of Chairs" v-if="space.type == '1'">
           <el-input v-model="space.numberChair" placeholder="Quantity of chairs" />
         </el-form-item>
-        <el-form-item label="Number of PCs">
+        <el-form-item label="Number of PCs" v-if="space.type == '2'">
           <el-input v-model="space.numberPc" placeholder="Quantity of PCs" />
         </el-form-item>
         <el-form-item label="Projector">

@@ -30,9 +30,9 @@
           <el-button type="primary" size="small" @click="handleAddLack(scope)">
             {{ $t('classes.addLack') }}
           </el-button>
-            <el-button type="primary" size="small" @click="handleAddStudent(scope)">
-                {{ $t('classes.addStudent') }}
-            </el-button>
+            <!--<el-button type="primary" size="small" @click="handleAddStudent(scope)">-->
+                <!--{{ --$t('classes.addStudent') }}-->
+            <!--</el-button>-->
             <el-button type="primary" size="small" @click="handleEdit(scope)">
                 {{ $t('classes.edit') }}
             </el-button>

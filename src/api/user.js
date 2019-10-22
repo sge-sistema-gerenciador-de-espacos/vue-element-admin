@@ -55,14 +55,14 @@ export function deleteUser(id) {
 
 export function getMasterUsers() {
   return request({
-    url: '/users/masters',
+    url: '/user/masters',
     method: 'get'
   })
 }
 
 export function getStudentUsers() {
   return request({
-    url: '/users/student',
+    url: '/user/student',
     method: 'get'
   })
 }

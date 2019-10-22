@@ -300,7 +300,7 @@ export default [
     }
   },
   {
-    url: '/states',
+    url: '/state',
     type: 'get',
     response: _ => {
       return {

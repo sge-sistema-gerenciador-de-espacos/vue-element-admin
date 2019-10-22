@@ -43,7 +43,7 @@
           <el-input v-model="course.name" placeholder="Course Name" required />
         </el-form-item>
         <el-form-item label="Program">
-          <el-select v-model="course.program" required>
+          <el-select v-model="course.program.id" required>
             <el-option
               v-for="item in programList"
               :key="item.id"
