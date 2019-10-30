@@ -85,7 +85,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="State">
-          <el-select v-model="user.address.state">
+          <el-select v-model="user.state">
             <el-option
               v-for="item in stateList"
               :key="item.ID"
@@ -95,16 +95,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="City">
-          <el-input v-model="user.address.city" placeholder="City" />
+          <el-input v-model="user.city" placeholder="City" />
         </el-form-item>
         <el-form-item label="Street">
-          <el-input v-model="user.address.street" placeholder="Street" />
+          <el-input v-model="user.street" placeholder="Street" />
         </el-form-item>
         <el-form-item label="Number">
-          <el-input v-model="user.address.number" placeholder="Number" />
+          <el-input v-model="user.number" placeholder="Number" />
         </el-form-item>
         <el-form-item label="Telephone Number">
-          <el-input v-model="user.telephones.number" placeholder="Telephone Number" />
+          <el-input v-model="user.telephones" placeholder="Telephone Number" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -131,16 +131,10 @@ const defaultUser = {
   email: '',
   status: '',
   name: '',
-  address: {
-    city: '',
-    state: '',
-    number: ''
-  },
-  telephones: [
-    {
-      number: ''
-    }
-  ]
+  city: '',
+  state: '',
+  number: '',
+  telephones: ''
 }
 
 export default {

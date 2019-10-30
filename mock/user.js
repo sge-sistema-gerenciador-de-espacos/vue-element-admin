@@ -31,18 +31,11 @@ const accessUsers = [
     email: 'admin@admin.com',
     status: 'ativo',
     name: 'Super Admin',
-    address: {
-      city: 'Rio de Janeiro',
-      state: 1,
-      number: '20',
-      street: 'bcdhcgdvcdg'
-
-    },
-    telephones: [
-      {
-        number: '2199999-9999'
-      }
-    ]
+    city: 'Rio de Janeiro',
+    state: 'RJ',
+    number: '20',
+    street: 'bcdhcgdvcdg',
+    telephones: '2199999-9999'
   },
   {
     id: 2,
@@ -50,15 +43,11 @@ const accessUsers = [
     email: 'editor@editor.com',
     status: 'ativo',
     name: 'Normal Editor',
-    address: {
-      city: 'Rio de Janeiro',
-      state: 1,
-      number: '20',
-      street: 'bcdhcgdvcdg'
-    },
-    telephones: {
-      number: '2199999-9999'
-    }
+    city: 'Rio de Janeiro',
+    state: 'RJ',
+    number: '20',
+    street: 'bcdhcgdvcdg',
+    telephones: '2199999-9999'
   }
 ]
 
