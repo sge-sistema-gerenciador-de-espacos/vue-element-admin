@@ -171,7 +171,7 @@ export default {
         }
       } else {
         const { data } = await addCourse(this.course)
-        this.course.id = data.id
+        this.course.id = data.key
         this.courseList.push(this.course)
       }
 

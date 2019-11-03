@@ -53,16 +53,16 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-          <el-form-item label="Type">
-              <el-select v-model="space.type">
-                  <el-option value="1" label="Sala">Sala</el-option>
-                  <el-option value="2" label="Lab">Lab</el-option>
-              </el-select>
-          </el-form-item>
-        <el-form-item label="Number of Chairs" v-if="space.type == '1'">
+        <el-form-item label="Type">
+          <el-select v-model="space.type">
+            <el-option value="1" label="Sala">Sala</el-option>
+            <el-option value="2" label="Lab">Lab</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="space.type == '1'" label="Number of Chairs">
           <el-input v-model="space.numberChair" placeholder="Quantity of chairs" />
         </el-form-item>
-        <el-form-item label="Number of PCs" v-if="space.type == '2'">
+        <el-form-item v-if="space.type == '2'" label="Number of PCs">
           <el-input v-model="space.numberPc" placeholder="Quantity of PCs" />
         </el-form-item>
         <el-form-item label="Projector">
@@ -97,7 +97,7 @@
     <el-dialog :visible.sync="dialogSoftware" :title="'Softwares'">
       <el-form :model="software" label-width="80px" label-position="left">
         <el-table :data="softwareSpaceList" style="width: 100%;margin-top:30px;" border>
-            <h1>Teste</h1>
+          <h1>Teste</h1>
           <el-table-column align="center" label="Space Name" width="220">
             <template slot-scope="softwareSpaceScopeList">
               {{ softwareSpaceScopeList.row.name }}
@@ -112,20 +112,20 @@
           </el-table-column>
         </el-table>
 
-          <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-              <el-table-column align="center" label="Space Name" width="220">
-                  <template slot-scope="softwareScope">
-                      {{ softwareScope.row.name }}
-                  </template>
-              </el-table-column>
-              <el-table-column align="center" :data="softwareList" label="Operations">
-                  <template slot-scope="softwareScope">
-                      <el-button type="submit" size="small" @click="handleAddSoftwareSpace(softwareScope)">
-                          {{ $t('software.addSoftware') }}
-                      </el-button>
-                  </template>
-              </el-table-column>
-          </el-table>
+        <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
+          <el-table-column align="center" label="Space Name" width="220">
+            <template slot-scope="softwareScope">
+              {{ softwareScope.row.name }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" :data="softwareList" label="Operations">
+            <template slot-scope="softwareScope">
+              <el-button type="submit" size="small" @click="handleAddSoftwareSpace(softwareScope)">
+                {{ $t('software.addSoftware') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
       </el-form>
       <div style="text-align:right; margin-top: 10px">
@@ -235,25 +235,25 @@ export default {
           console.error(err)
         })
     },
-  handleDeleteSoftware({ $index, row }) {
+    handleDeleteSoftware({ $index, row }) {
       this.$confirm('Confirm to remove the software of the space?', 'Warning', {
-          confirmButtonText: 'Confirm',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
       })
-          .then(async() => {
-              await deleteSoftwareSpace(row.id, this.space.id)
-              this.softwareList.push(row)
-              this.softwareSpaceList.splice($index, 1)
-              this.$message({
-                  type: 'success',
-                  message: 'Delete succed!'
-              })
+        .then(async() => {
+          await deleteSoftwareSpace(row.id, this.space.id)
+          this.softwareList.push(row)
+          this.softwareSpaceList.splice($index, 1)
+          this.$message({
+            type: 'success',
+            message: 'Delete succed!'
           })
-          .catch(err => {
-              console.error(err)
-          })
-  },
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
@@ -267,7 +267,7 @@ export default {
         }
       } else {
         const { data } = await addSpace(this.space)
-        this.space.id = data.id
+        this.space.id = data.key
         this.spaceList.push(this.space)
       }
 
@@ -282,20 +282,20 @@ export default {
         type: 'success'
       })
     },
-      async handleAddSoftwareSpace({ $index, row }) {
-          const { data } = await addSoftwareSpace(row.id, this.space.id)
-          this.softwareList.splice($index, 1)
-          this.softwareSpaceList.push(row)
-          const { name } = row
-          this.$notify({
-              title: 'Success',
-              dangerouslyUseHTMLString: true,
-              message: `
+    async handleAddSoftwareSpace({ $index, row }) {
+      const { data } = await addSoftwareSpace(row.id, this.space.id)
+      this.softwareList.splice($index, 1)
+      this.softwareSpaceList.push(row)
+      const { name } = row
+      this.$notify({
+        title: 'Success',
+        dangerouslyUseHTMLString: true,
+        message: `
             <div>Software Adicionado: ${name}</div>
           `,
-              type: 'success'
-          })
-      }
+        type: 'success'
+      })
+    }
   }
 }
 </script>

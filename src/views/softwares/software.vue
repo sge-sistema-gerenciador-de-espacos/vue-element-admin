@@ -142,7 +142,7 @@ export default {
         }
       } else {
         const { data } = await addSoftware(this.software)
-        this.software.id = data.id
+        this.software.id = data.key
         this.softwareList.push(this.software)
       }
 

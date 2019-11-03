@@ -77,11 +77,12 @@
         </el-form-item>
         <el-form-item label="Type">
           <el-select v-model="user.type">
-            <el-option value="1" label="Admin" selected>Admin</el-option>
-            <el-option value="2" label="Professor">Professor</el-option>
-            <el-option value="3" label="TI">TI</el-option>
-            <el-option value="4" label="Auxiliar">Auxiliar</el-option>
-            <el-option value="5" label="Aluno">Aluno</el-option>
+            <el-option value="ADMINISTRATOR" label="Admin" selected>Admin</el-option>
+            <el-option value="PROFESSOR" label="Professor">Professor</el-option>
+            <el-option value="TI_SUPPORT" label="TI">TI</el-option>
+            <el-option value="ASSISTANT" label="Auxiliar">Auxiliar</el-option>
+            <el-option value="STUDENT" label="Aluno">Aluno</el-option>
+            <el-option value="MANAGER" label="Gerenciador">Gerenciador</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="State">
@@ -226,7 +227,7 @@ export default {
         }
       } else {
         const { data } = await addUser(this.user)
-        this.user.id = data.id
+        this.user.id = data.key
         this.usersList.push(this.user)
       }
 
