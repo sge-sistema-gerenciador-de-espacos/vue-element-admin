@@ -32,7 +32,7 @@ const accessClass = [
 
 export default [
   {
-    url: '/classes',
+    url: '/clazz',
     type: 'get',
     response: _ => {
       return {
@@ -42,7 +42,7 @@ export default [
     }
   },
   {
-    url: '/classes',
+    url: '/clazz',
     type: 'post',
     response: {
       code: 20000,
@@ -52,7 +52,7 @@ export default [
     }
   },
   {
-    url: '/classes/[A-Za-z0-9]',
+    url: '/clazz/[A-Za-z0-9]',
     type: 'put',
     response: {
       code: 20000,
@@ -62,7 +62,7 @@ export default [
     }
   },
   {
-    url: '/classes/[A-Za-z0-9]',
+    url: '/clazz/[A-Za-z0-9]',
     type: 'delete',
     response: {
       code: 20000,
@@ -72,7 +72,7 @@ export default [
     }
   },
   {
-    url: '/classes/enable',
+    url: '/clazz/enable',
     type: 'get',
     response: _ => {
       return {

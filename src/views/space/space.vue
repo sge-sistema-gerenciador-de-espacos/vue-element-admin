@@ -6,7 +6,7 @@
 
     <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border>
 
-      <el-table-column align="center" label="Space Name" width="350">
+      <el-table-column align="center" lab el="Space Name" width="350">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
