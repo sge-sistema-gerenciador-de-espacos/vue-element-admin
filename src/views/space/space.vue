@@ -148,7 +148,6 @@ const defaultSpace = {
   status: '',
   type: '',
   smartBoard: '',
-  labId: '',
   board: '',
   numberPc: '',
   numberChair: '',
