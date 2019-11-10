@@ -55,8 +55,8 @@
         </el-form-item>
         <el-form-item label="Type">
           <el-select v-model="space.type">
-            <el-option value="1" label="Sala">Sala</el-option>
-            <el-option value="2" label="Lab">Lab</el-option>
+            <el-option value="ROOM" label="Sala" selected>Sala</el-option>
+            <el-option value="LAB" label="Lab">Lab</el-option>
           </el-select>
         </el-form-item>
         <el-form-item v-if="space.type == '1'" label="Number of Chairs">
@@ -160,18 +160,30 @@ const defaultSoftware = {
   status: ''
 }
 
+const types = {
+    ROOM: 'sala',
+    LAB: 'laboratorio'
+}
+
+const status = {
+    1: 'Ativo',
+    0: 'Inativo'
+}
+
 export default {
   data() {
     return {
-      space: Object.assign({}, defaultSpace),
-      software: Object.assign({}, defaultSoftware),
-      dialogVisible: false,
-      dialogSoftware: false,
-      dialogType: 'new',
-      checkStrictly: false,
-      spaceList: [],
-      softwareSpaceList: [],
-      softwareList: []
+        space: Object.assign({}, defaultSpace),
+        software: Object.assign({}, defaultSoftware),
+        dialogVisible: false,
+        dialogSoftware: false,
+        dialogType: 'new',
+        checkStrictly: false,
+        spaceList: [],
+        softwareSpaceList: [],
+        softwareList: [],
+        typesList: Object.assign({}, types),
+        statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -186,7 +198,7 @@ export default {
   methods: {
     async getSpace() {
       const res = await getSpace()
-      this.spaceList = res.data
+      this.spaceList = this.changeType(res.data)
     },
     async handleSoftwares(scope) {
       this.space = deepClone(scope.row)
@@ -260,14 +272,14 @@ export default {
         await updateSpace(this.space.id, this.space)
         for (let index = 0; index < this.spaceList.length; index++) {
           if (this.spaceList[index].id === this.space.id) {
-            this.spaceList.splice(index, 1, Object.assign({}, this.space))
+            this.spaceList.splice(index, 1, Object.assign({}, this.changeType(this.space)))
             break
           }
         }
       } else {
         const { data } = await addSpace(this.space)
         this.space.id = data.key
-        this.spaceList.push(this.space)
+        this.spaceList.push(this.changeType(this.space))
       }
 
       const { name } = this.space
@@ -294,7 +306,19 @@ export default {
           `,
         type: 'success'
       })
-    }
+    },
+      changeType(spaces) {
+          if (Array.isArray(spaces)) {
+              for (let index = 0; index < spaces.length; index++) {
+                  spaces[index].type = this.typesList[spaces[index].type];
+                  spaces[index].status = this.statusList[spaces[index].status]
+              }
+              return spaces
+          }
+          spaces.type = this.typesList[spaces.type];
+          spaces.status = this.statusList[spaces.status]
+          return spaces
+      }
   }
 }
 </script>

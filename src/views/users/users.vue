@@ -234,8 +234,7 @@ export default {
         await updateUser(this.user.id, this.user)
         for (let index = 0; index < this.usersList.length; index++) {
           if (this.usersList[index].id === this.user.id) {
-              this.user = this.changeType(this.user)
-              this.usersList.splice(index, 1, Object.assign({}, this.user))
+              this.usersList.splice(index, 1, Object.assign({}, this.changeType(this.user)))
             break
           }
         }

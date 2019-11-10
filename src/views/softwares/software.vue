@@ -67,6 +67,11 @@ const defaultSoftware = {
   status: ''
 }
 
+const status = {
+    1: 'Ativo',
+    0: 'Inativo'
+}
+
 export default {
   data() {
     return {
@@ -74,7 +79,8 @@ export default {
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
-      softwareList: []
+      softwareList: [],
+      statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -89,7 +95,7 @@ export default {
   methods: {
     async getSoftware() {
       const res = await getSoftware()
-      this.softwareList = res.data
+      this.softwareList = this.changeType(res.data)
     },
     handleaddSoftware() {
       this.software = Object.assign({}, defaultSoftware)
@@ -136,14 +142,14 @@ export default {
         await updateSoftware(this.software.id, this.software)
         for (let index = 0; index < this.softwareList.length; index++) {
           if (this.softwareList[index].id === this.software.id) {
-            this.softwareList.splice(index, 1, Object.assign({}, this.software))
+            this.softwareList.splice(index, 1, Object.assign({}, this.changeType(this.software)))
             break
           }
         }
       } else {
         const { data } = await addSoftware(this.software)
         this.software.id = data.key
-        this.softwareList.push(this.software)
+        this.softwareList.push(this.changeType(this.software))
       }
 
       const { name } = this.software
@@ -156,6 +162,18 @@ export default {
           `,
         type: 'success'
       })
+    },
+    changeType(software) {
+        console.log(Array.isArray(software))
+        console.log(software)
+        if (Array.isArray(software)) {
+            for (let index = 0; index < software.length; index++) {
+                software[index].status = this.statusList[software[index].status]
+            }
+            return software
+        }
+        software.status = this.statusList[software.status]
+        return software
     }
   }
 }

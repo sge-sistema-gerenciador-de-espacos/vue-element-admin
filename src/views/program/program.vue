@@ -15,6 +15,11 @@
           {{ scope.row.code }}
         </template>
       </el-table-column>
+      <el-table-column align="header-center" label="Status">
+          <template slot-scope="scope">
+              {{ scope.row.status }}
+          </template>
+      </el-table-column>
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
@@ -58,17 +63,24 @@ import { getProgram, addProgram, deleteProgram, updateProgram } from '@/api/prog
 const defaultProgram = {
   id: '',
   name: '',
-  code: ''
+  code: '',
+  status: ''
+}
+
+const status = {
+    1: 'Ativo',
+    0: 'Inativo'
 }
 
 export default {
   data() {
     return {
-      program: Object.assign({}, defaultProgram),
-      dialogVisible: false,
-      dialogType: 'new',
-      checkStrictly: false,
-      programList: []
+        program: Object.assign({}, defaultProgram),
+        dialogVisible: false,
+        dialogType: 'new',
+        checkStrictly: false,
+        programList: [],
+        statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -83,7 +95,7 @@ export default {
   methods: {
     async getProgram() {
       const res = await getProgram()
-      this.programList = res.data
+      this.programList = this.changeType(res.data)
     },
     handleaddProgram() {
       this.program = Object.assign({}, defaultProgram)
@@ -124,14 +136,14 @@ export default {
         await updateProgram(this.program.id, this.program)
         for (let index = 0; index < this.programList.length; index++) {
           if (this.programList[index].id === this.program.id) {
-            this.programList.splice(index, 1, Object.assign({}, this.program))
+            this.programList.splice(index, 1, Object.assign({}, this.changeType(this.program)))
             break
           }
         }
       } else {
         const { data } = await addProgram(this.program)
         this.program.id = data.id
-        this.programList.push(this.program)
+        this.programList.push(this.changeType(this.program))
       }
 
       const { name } = this.program
@@ -144,7 +156,17 @@ export default {
           `,
         type: 'success'
       })
-    }
+    },
+      changeType(programs) {
+          if (Array.isArray(programs)) {
+              for (let index = 0; index < programs.length; index++) {
+                  programs[index].status = this.statusList[programs[index].status]
+              }
+              return programs
+          }
+          programs.status = this.statusList[programs.status]
+          return programs
+      }
   }
 }
 </script>
