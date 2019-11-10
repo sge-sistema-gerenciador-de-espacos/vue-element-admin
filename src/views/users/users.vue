@@ -32,9 +32,6 @@
       </el-table-column>
       <el-table-column align="center" label="Operations" width="400">
         <template slot-scope="scope">
-          <!--<el-button type="primary" size="small" @click="handleTelephone(scope)">-->
-          <!--{{ $t('users.telephones') }}-->
-          <!--</el-button>-->
           <el-button
             v-if="scope.row.status == 'ativo'"
             type="primary"
@@ -138,6 +135,20 @@ const defaultUser = {
   telephones: ''
 }
 
+const types = {
+    ADMINISTRATOR: "Admin",
+    PROFESSOR: "Professor",
+    TI_SUPPORT: "TI",
+    ASSISTANT: "Auxiliar",
+    STUDENT: "Aluno",
+    MANAGER: "Gerenciador"
+}
+
+const status = {
+    1: 'Ativo',
+    0: 'Inativo'
+}
+
 export default {
   data() {
     return {
@@ -147,7 +158,9 @@ export default {
       dialogType: 'new',
       checkStrictly: false,
       usersList: [],
-      stateList: []
+      stateList: [],
+      typesList: Object.assign({}, types),
+      statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -163,7 +176,7 @@ export default {
   methods: {
     async getUsers() {
       const res = await getUsers()
-      this.usersList = res.data
+      this.usersList = this.changeType(res.data)
     },
     async getStates() {
       const sta = await getStates()
@@ -221,14 +234,15 @@ export default {
         await updateUser(this.user.id, this.user)
         for (let index = 0; index < this.usersList.length; index++) {
           if (this.usersList[index].id === this.user.id) {
-            this.usersList.splice(index, 1, Object.assign({}, this.user))
+              this.user = this.changeType(this.user)
+              this.usersList.splice(index, 1, Object.assign({}, this.user))
             break
           }
         }
       } else {
         const { data } = await addUser(this.user)
         this.user.id = data.key
-        this.usersList.push(this.user)
+        this.usersList.push(this.changeType(this.user))
       }
 
       const { name } = this.user
@@ -241,6 +255,18 @@ export default {
           `,
         type: 'success'
       })
+    },
+    changeType(users) {
+        if (Array.isArray(users)) {
+            for (let index = 0; index < users.length; index++) {
+                users[index].type = this.typesList[users[index].type];
+                users[index].status = this.statusList[users[index].status]
+            }
+            return users
+        }
+        users.type = this.typesList[users.type];
+        users.status = this.statusList[users.status]
+        return users
     }
   }
 }
