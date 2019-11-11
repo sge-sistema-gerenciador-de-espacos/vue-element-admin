@@ -156,8 +156,10 @@ const defaultClass = {
   id: '',
   status: '',
   name: '',
+  status: '',
   course: {
-    id: ''
+    id: '',
+      name: ''
   },
   master:
         {
@@ -191,6 +193,11 @@ const defaultLack = {
   }
 }
 
+const status = {
+    1: 'Ativo',
+    0: 'Inativo'
+}
+
 export default {
   data() {
     return {
@@ -199,6 +206,7 @@ export default {
       masters: Object.assign({}, defaultMaster),
       lack: Object.assign({}, defaultLack),
       students: Object.assign({}, defaultStudent),
+      statusList: Object.assign({}, status),
       dialogVisible: false,
       dialogAddLack: false,
       dialogStudent: false,
@@ -225,7 +233,7 @@ export default {
   methods: {
     async getClass() {
       const res = await getClass()
-      this.classesList = res.data
+      this.classesList = this.changeType(res.data)
     },
     async getMaster() {
       const res = await getMasterUsers()
@@ -307,18 +315,32 @@ export default {
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
+        for (let index = 0; index < this.masterList.length; index++) {
+          if (this.classes.master.id == this.masterList[index].id) {
+              this.classes.master.name = this.masterList[index].name
+              break
+          }
+        }
+
+        for (let index = 0; index < this.courseList.length; index++) {
+            if (this.classes.course.id == this.courseList[index].id) {
+                this.classes.course.name = this.courseList[index].name
+                break
+            }
+        }
+
       if (isEdit) {
         await updateClass(this.classes.id, this.classes)
         for (let index = 0; index < this.classesList.length; index++) {
           if (this.classesList[index].id === this.classes.id) {
-            this.classesList.splice(index, 1, Object.assign({}, this.classes))
+            this.classesList.splice(index, 1, Object.assign({}, this.changeType(this.classes)))
             break
           }
         }
       } else {
         const { data } = await addClass(this.classes)
         this.classes.id = data.key
-        this.classesList.push(this.classes)
+        this.classesList.push(this.changeType(this.classes))
       }
 
       const { name } = this.classes
@@ -346,7 +368,17 @@ export default {
           `,
         type: 'success'
       })
-    }
+    },
+      changeType(clazz) {
+          if (Array.isArray(clazz)) {
+              for (let index = 0; index < clazz.length; index++) {
+                  clazz[index].status = this.statusList[clazz[index].status]
+              }
+              return clazz
+          }
+          clazz.status = this.statusList[clazz.status]
+          return clazz
+      }
   }
 }
 </script>

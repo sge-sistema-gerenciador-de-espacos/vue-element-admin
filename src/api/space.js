@@ -38,21 +38,6 @@ export function deleteSpace(id) {
   })
 }
 
-export function deleteSoftwareSpace(SoftwareId, SpaceId) {
-  return request({
-    url: `/space/${SpaceId}/software/${SoftwareId}`,
-    method: 'delete'
-  })
-}
-
-export function addSoftwareSpace(softwareId, spaceId) {
-  return request({
-    url: `/space/${spaceId}/software`,
-    method: 'post',
-    softwareId
-  })
-}
-
 export function getSpaceEnable() {
   return request({
     url: '/space',

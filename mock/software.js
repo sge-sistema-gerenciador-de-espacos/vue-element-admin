@@ -3,12 +3,12 @@ import Mock from 'mockjs'
 const accessSoftware = [
   {
     id: 1,
-    status: 'ativo',
+    status: 1,
     name: 'word'
   },
   {
     id: 2,
-    status: 'ativo',
+    status: 1,
     name: 'chrome'
   }
 ]
@@ -16,12 +16,12 @@ const accessSoftware = [
 const software = [
   {
     id: 1,
-    status: 'ativo',
+    status: 1,
     name: 'teste Ativo'
   },
   {
-    id: 2,
-    status: 'ativo',
+    id: 3,
+    status: 1,
     name: 'Ativo teste'
   }
 ]
@@ -78,7 +78,7 @@ export default [
     }
   },
   {
-    url: '/active/software',
+    url: '/software/active',
     type: 'get',
     response: _ => {
       return {

@@ -15,6 +15,11 @@
           {{ scope.row.code }}
         </template>
       </el-table-column>
+        <el-table-column align="header-center" label="Status">
+            <template slot-scope="scope">
+                {{ scope.row.status }}
+            </template>
+        </el-table-column>
       <el-table-column align="header-center" label="Program">
         <template slot-scope="scope">
           {{ scope.row.program.name }}
@@ -42,25 +47,28 @@
         <el-form-item label="Name">
           <el-input v-model="course.name" placeholder="Course Name" required />
         </el-form-item>
-        <el-form-item label="Program">
-          <el-select v-model="course.program.id" required>
-            <el-option
-              v-for="item in programList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="course.status" required>
-            <el-option value="1" label="Ativo">Ativo</el-option>
-            <el-option value="0" label="Inativo">Inativo</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="Credit">
           <el-input v-model="course.credit" placeholder="Course Credit" required />
         </el-form-item>
+          <el-form-item label="Code">
+              <el-input v-model="course.code" placeholder="Course Code" required />
+          </el-form-item>
+          <el-form-item label="Program">
+              <el-select v-model="course.program.id" required>
+                  <el-option
+                          v-for="item in programList"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id"
+                  />
+              </el-select>
+          </el-form-item>
+          <el-form-item label="Status">
+              <el-select v-model="course.status" required>
+                  <el-option value="1" label="Ativo">Ativo</el-option>
+                  <el-option value="0" label="Inativo">Inativo</el-option>
+              </el-select>
+          </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -83,7 +91,8 @@ const defaultCourse = {
   id: '',
   name: '',
   code: '',
-  credit: 0,
+  credit: '',
+  status: '',
   program: {
     id: '',
     name: ''
@@ -95,6 +104,12 @@ const defaultProgram = {
   name: '',
   code: ''
 }
+
+const status = {
+    1: 'Ativo',
+    0: 'Inativo'
+}
+
 export default {
   data() {
     return {
@@ -104,7 +119,8 @@ export default {
       dialogType: 'new',
       checkStrictly: false,
       courseList: [],
-      programList: []
+      programList: [],
+      statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -120,7 +136,7 @@ export default {
   methods: {
     async getCourse() {
       const res = await getCourse()
-      this.courseList = res.data
+      this.courseList = this.changeType(res.data)
     },
     async getProgram() {
       const res = await enableProgram()
@@ -161,18 +177,24 @@ export default {
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
+        for (let index = 0; index < this.programList.length; index++) {
+          if (this.course.program.id == this.programList[index].id) {
+              this.course.program.name = this.programList[index].name
+              break
+          }
+        }
       if (isEdit) {
         await updateCourse(this.course.id, this.course)
         for (let index = 0; index < this.courseList.length; index++) {
           if (this.courseList[index].id === this.course.id) {
-            this.courseList.splice(index, 1, Object.assign({}, this.course))
+            this.courseList.splice(index, 1, Object.assign({}, this.changeType(this.course)))
             break
           }
         }
       } else {
         const { data } = await addCourse(this.course)
         this.course.id = data.key
-        this.courseList.push(this.course)
+        this.courseList.push(this.changeType(this.course))
       }
 
       const { name } = this.course
@@ -185,7 +207,17 @@ export default {
           `,
         type: 'success'
       })
-    }
+    },
+      changeType(courses) {
+          if (Array.isArray(courses)) {
+              for (let index = 0; index < courses.length; index++) {
+                  courses[index].status = this.statusList[courses[index].status]
+              }
+              return courses
+          }
+          courses.status = this.statusList[courses.status]
+          return courses
+      }
   }
 }
 </script>

@@ -5,7 +5,7 @@ const accessCourse = [
     id: 1,
     code: 'SI-012',
     name: 'Projeto Final',
-    status: 'ativo',
+    status: 1,
     credit: 15,
     program: {
       id: 1,
@@ -16,11 +16,11 @@ const accessCourse = [
     id: 2,
     code: 'SI-0123',
     name: 'Projeto Final 2',
-    status: 'ativo',
+    status: 0,
     credit: 15,
     program: {
-      id: 1,
-      name: 'Sistemas de informação'
+      id: 2,
+      name: 'Turismo'
     }
   }
 ]

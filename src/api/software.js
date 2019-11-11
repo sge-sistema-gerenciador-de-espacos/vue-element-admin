@@ -47,7 +47,22 @@ export function getSoftwareSpace(id) {
 
 export function getActiveSoftware() {
   return request({
-    url: `/active/software`,
+    url: `/software/active`,
     method: 'get'
+  })
+}
+
+export function deleteSoftwareSpace(SoftwareId, SpaceId) {
+  return request({
+    url: `/software/${SoftwareId}/space/${SpaceId}`,
+    method: 'delete'
+  })
+}
+
+export function addSoftwareSpace(data) {
+  return request({
+    url: `/software/space`,
+    method: 'post',
+    data
   })
 }

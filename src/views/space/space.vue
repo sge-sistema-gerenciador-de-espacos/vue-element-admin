@@ -23,13 +23,13 @@
       </el-table-column>
       <el-table-column align="center" :data="spaceList" label="Operations">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.type == 'lab'" type="primary" size="small" @click="handleSoftwares(scope)">
+          <el-button v-if="scope.row.type == 'laboratorio'" type="primary" size="small" @click="handleSoftwares(scope)">
             {{ $t('space.softwares') }}
           </el-button>
-          <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
+          <el-button v-if="scope.row.status == 'Ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
             {{ $t('space.disable') }}
           </el-button>
-          <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
+          <el-button v-if="scope.row.status == 'Inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
             {{ $t('space.enable') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
@@ -59,10 +59,10 @@
             <el-option value="LAB" label="Lab">Lab</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="space.type == '1'" label="Number of Chairs">
+        <el-form-item v-if="space.type == 'ROOM'" label="Number of Chairs">
           <el-input v-model="space.numberChair" placeholder="Quantity of chairs" />
         </el-form-item>
-        <el-form-item v-if="space.type == '2'" label="Number of PCs">
+        <el-form-item v-if="space.type == 'LAB'" label="Number of PCs">
           <el-input v-model="space.numberPc" placeholder="Quantity of PCs" />
         </el-form-item>
         <el-form-item label="Projector">
@@ -139,8 +139,8 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getSpace, addSpace, deleteSpace, updateSpace, deleteSoftwareSpace, addSoftwareSpace } from '@/api/space'
-import { getSoftwareSpace, getActiveSoftware } from '@/api/software'
+import { getSpace, addSpace, deleteSpace, updateSpace} from '@/api/space'
+import { getSoftwareSpace, getActiveSoftware, deleteSoftwareSpace, addSoftwareSpace } from '@/api/software'
 
 const defaultSpace = {
   id: '',
@@ -205,6 +205,17 @@ export default {
       const res = await getSoftwareSpace(this.space.id)
       this.softwareSpaceList = res.data
       const response = await getActiveSoftware()
+      //   for (let indexResponse = 0; indexResponse < response.data.length; indexResponse ++) {
+      //     console.log(response.data[indexResponse].id)
+      //       for (let indexSoftware = 0; indexSoftware < this.softwareList.length; indexSoftware ++) {
+      //         console.log(this.softwareList[indexSoftware].id)
+      //           console.log(this.softwareList[indexSoftware].id == response.data[indexResponse].id)
+      //           if (this.softwareList[indexSoftware].id == response.data[indexResponse].id) {
+      //               response.data.splice(indexResponse)
+      //               continue
+      //           }
+      //       }
+      // }
       this.softwareList = response.data
       this.dialogSoftware = true
     },
@@ -294,7 +305,7 @@ export default {
       })
     },
     async handleAddSoftwareSpace({ $index, row }) {
-      const { data } = await addSoftwareSpace(row.id, this.space.id)
+      const { data } = await addSoftwareSpace({softwareID: row.id, spaceID: this.space.id})
       this.softwareList.splice($index, 1)
       this.softwareSpaceList.push(row)
       const { name } = row
