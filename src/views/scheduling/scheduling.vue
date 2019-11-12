@@ -97,6 +97,35 @@
             </el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="date">
+              <el-date-picker
+                      v-model="scheduling.filterdate"
+                      type="daterange"
+                      range-separator="Até"
+                      start-placeholder="Start date"
+                      end-placeholder="End date"
+                      :picker-date="pickerOptions"
+                      value-format="yyyy-MM-dd"
+              >
+              </el-date-picker>
+          </el-form-item>
+        <el-form-item label="Time">
+          <el-time-select
+                  v-model="scheduling.initialtime"
+                  :picker-options="{
+                  start: '08:00',
+                  step: '00:30',
+                  end: '22:30'
+                  }"
+                  placeholder="Hora Inicial">
+          </el-time-select>
+          <el-time-select
+                  arrow-control
+                  v-model="scheduling.endtime"
+                  :picker-options="{start: '08:00', step: '00:30', end: '22:30'}"
+                  placeholder="Hora Final">
+          </el-time-select>
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -192,7 +221,7 @@ import { getClassEnable } from '@/api/classes'
 
 const defaultScheduling = {
   id: '',
-  status: '',
+  status: 0,
   classes: {
     id: '',
     name: ''
@@ -208,13 +237,21 @@ const defaultScheduling = {
   scheduler: {
     id: '',
     name: ''
-  }
+  },
+    initialtime: '',
+    endtime: '',
+    filterdate: ''
 }
 
 export default {
   data() {
     return {
       scheduling: Object.assign({}, defaultScheduling),
+        pickerOptions: {
+            disabledDate(time) {
+                return time.getTime() < Date.now();
+            },
+        },
       dialogVisible: false,
       dialogAddLack: false,
       dialogStudent: false,
