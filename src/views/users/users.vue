@@ -64,16 +64,16 @@
           <el-input v-model="user.name" placeholder="User Name" />
         </el-form-item>
         <el-form-item label="Email">
-          <el-input v-model="user.email" placeholder="User Email" />
+          <el-input v-model="user.email" placeholder="User Email" required type="e-mail" />
         </el-form-item>
         <el-form-item label="Status">
-          <el-select v-model="user.status">
+          <el-select v-model="user.status" required>
             <el-option value="1" label="Ativo" selected>Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Type">
-          <el-select v-model="user.type">
+          <el-select v-model="user.type" required>
             <el-option value="ADMINISTRATOR" label="Admin" selected>Admin</el-option>
             <el-option value="PROFESSOR" label="Professor">Professor</el-option>
             <el-option value="TI_SUPPORT" label="TI">TI</el-option>
@@ -83,7 +83,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="State">
-          <el-select v-model="user.state">
+          <el-select v-model="user.state" required>
             <el-option
               v-for="item in stateList"
               :key="item.ID"
@@ -93,16 +93,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="City">
-          <el-input v-model="user.city" placeholder="City" />
+          <el-input v-model="user.city" placeholder="City" required />
         </el-form-item>
         <el-form-item label="Street">
-          <el-input v-model="user.street" placeholder="Street" />
+          <el-input v-model="user.street" placeholder="Street" required />
         </el-form-item>
         <el-form-item label="Number">
-          <el-input v-model="user.number" placeholder="Number" />
+          <el-input-number v-model="user.number" :min="0" placeholder="Number" required />
         </el-form-item>
         <el-form-item label="Telephone Number">
-          <el-input v-model="user.telephones" placeholder="Telephone Number" />
+          <el-input v-model="user.telephones" type="telephone" placeholder="Telephone Number" required />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -136,17 +136,17 @@ const defaultUser = {
 }
 
 const types = {
-    ADMINISTRATOR: "Admin",
-    PROFESSOR: "Professor",
-    TI_SUPPORT: "TI",
-    ASSISTANT: "Auxiliar",
-    STUDENT: "Aluno",
-    MANAGER: "Gerenciador"
+  ADMINISTRATOR: 'Admin',
+  PROFESSOR: 'Professor',
+  TI_SUPPORT: 'TI',
+  ASSISTANT: 'Auxiliar',
+  STUDENT: 'Aluno',
+  MANAGER: 'Gerenciador'
 }
 
 const status = {
-    1: 'Ativo',
-    0: 'Inativo'
+  ACTIVE: 'Ativo',
+  INACTIVE: 'Inativo'
 }
 
 export default {
@@ -234,7 +234,7 @@ export default {
         await updateUser(this.user.id, this.user)
         for (let index = 0; index < this.usersList.length; index++) {
           if (this.usersList[index].id === this.user.id) {
-              this.usersList.splice(index, 1, Object.assign({}, this.changeType(this.user)))
+            this.usersList.splice(index, 1, Object.assign({}, this.changeType(this.user)))
             break
           }
         }
@@ -256,16 +256,16 @@ export default {
       })
     },
     changeType(users) {
-        if (Array.isArray(users)) {
-            for (let index = 0; index < users.length; index++) {
-                users[index].type = this.typesList[users[index].type];
-                users[index].status = this.statusList[users[index].status]
-            }
-            return users
+      if (Array.isArray(users)) {
+        for (let index = 0; index < users.length; index++) {
+          users[index].type = this.typesList[users[index].type]
+          users[index].status = this.statusList[users[index].status]
         }
-        users.type = this.typesList[users.type];
-        users.status = this.statusList[users.status]
         return users
+      }
+      users.type = this.typesList[users.type]
+      users.status = this.statusList[users.status]
+      return users
     }
   }
 }

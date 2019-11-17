@@ -15,11 +15,11 @@
           {{ scope.row.code }}
         </template>
       </el-table-column>
-        <el-table-column align="header-center" label="Status">
-            <template slot-scope="scope">
-                {{ scope.row.status }}
-            </template>
-        </el-table-column>
+      <el-table-column align="header-center" label="Status">
+        <template slot-scope="scope">
+          {{ scope.row.status }}
+        </template>
+      </el-table-column>
       <el-table-column align="header-center" label="Program">
         <template slot-scope="scope">
           {{ scope.row.program.name }}
@@ -48,27 +48,27 @@
           <el-input v-model="course.name" placeholder="Course Name" required />
         </el-form-item>
         <el-form-item label="Credit">
-          <el-input v-model="course.credit" placeholder="Course Credit" required />
+          <el-input-number v-model="course.credit" placeholder="Course Credit" required />
         </el-form-item>
-          <el-form-item label="Code">
-              <el-input v-model="course.code" placeholder="Course Code" required />
-          </el-form-item>
-          <el-form-item label="Program">
-              <el-select v-model="course.program.id" required>
-                  <el-option
-                          v-for="item in programList"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id"
-                  />
-              </el-select>
-          </el-form-item>
-          <el-form-item label="Status">
-              <el-select v-model="course.status" required>
-                  <el-option value="1" label="Ativo">Ativo</el-option>
-                  <el-option value="0" label="Inativo">Inativo</el-option>
-              </el-select>
-          </el-form-item>
+        <el-form-item label="Code">
+          <el-input v-model="course.code" placeholder="Course Code" required />
+        </el-form-item>
+        <el-form-item label="Program">
+          <el-select v-model="course.program.id" required>
+            <el-option
+              v-for="item in programList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Status">
+          <el-select v-model="course.status" required>
+            <el-option value="1" label="Ativo">Ativo</el-option>
+            <el-option value="0" label="Inativo">Inativo</el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -106,8 +106,8 @@ const defaultProgram = {
 }
 
 const status = {
-    1: 'Ativo',
-    0: 'Inativo'
+  1: 'Ativo',
+  0: 'Inativo'
 }
 
 export default {
@@ -177,12 +177,12 @@ export default {
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
-        for (let index = 0; index < this.programList.length; index++) {
-          if (this.course.program.id == this.programList[index].id) {
-              this.course.program.name = this.programList[index].name
-              break
-          }
+      for (let index = 0; index < this.programList.length; index++) {
+        if (this.course.program.id == this.programList[index].id) {
+          this.course.program.name = this.programList[index].name
+          break
         }
+      }
       if (isEdit) {
         await updateCourse(this.course.id, this.course)
         for (let index = 0; index < this.courseList.length; index++) {
@@ -208,16 +208,16 @@ export default {
         type: 'success'
       })
     },
-      changeType(courses) {
-          if (Array.isArray(courses)) {
-              for (let index = 0; index < courses.length; index++) {
-                  courses[index].status = this.statusList[courses[index].status]
-              }
-              return courses
-          }
-          courses.status = this.statusList[courses.status]
-          return courses
+    changeType(courses) {
+      if (Array.isArray(courses)) {
+        for (let index = 0; index < courses.length; index++) {
+          courses[index].status = this.statusList[courses[index].status]
+        }
+        return courses
       }
+      courses.status = this.statusList[courses.status]
+      return courses
+    }
   }
 }
 </script>

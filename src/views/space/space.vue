@@ -60,10 +60,10 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="space.type == 'ROOM'" label="Number of Chairs">
-          <el-input v-model="space.numberChair" placeholder="Quantity of chairs" />
+          <el-input-number v-model="space.numberChair" placeholder="Quantity of chairs" />
         </el-form-item>
         <el-form-item v-if="space.type == 'LAB'" label="Number of PCs">
-          <el-input v-model="space.numberPc" placeholder="Quantity of PCs" />
+          <el-input-number v-model="space.numberPc" :min="1" placeholder="Quantity of PCs" />
         </el-form-item>
         <el-form-item label="Projector">
           <el-select v-model="space.project">
@@ -139,7 +139,7 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getSpace, addSpace, deleteSpace, updateSpace} from '@/api/space'
+import { getSpace, addSpace, deleteSpace, updateSpace } from '@/api/space'
 import { getSoftwareSpace, getActiveSoftware, deleteSoftwareSpace, addSoftwareSpace } from '@/api/software'
 
 const defaultSpace = {
@@ -161,29 +161,29 @@ const defaultSoftware = {
 }
 
 const types = {
-    ROOM: 'sala',
-    LAB: 'laboratorio'
+  ROOM: 'sala',
+  LAB: 'laboratorio'
 }
 
 const status = {
-    1: 'Ativo',
-    0: 'Inativo'
+  1: 'Ativo',
+  0: 'Inativo'
 }
 
 export default {
   data() {
     return {
-        space: Object.assign({}, defaultSpace),
-        software: Object.assign({}, defaultSoftware),
-        dialogVisible: false,
-        dialogSoftware: false,
-        dialogType: 'new',
-        checkStrictly: false,
-        spaceList: [],
-        softwareSpaceList: [],
-        softwareList: [],
-        typesList: Object.assign({}, types),
-        statusList: Object.assign({}, status)
+      space: Object.assign({}, defaultSpace),
+      software: Object.assign({}, defaultSoftware),
+      dialogVisible: false,
+      dialogSoftware: false,
+      dialogType: 'new',
+      checkStrictly: false,
+      spaceList: [],
+      softwareSpaceList: [],
+      softwareList: [],
+      typesList: Object.assign({}, types),
+      statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -305,7 +305,7 @@ export default {
       })
     },
     async handleAddSoftwareSpace({ $index, row }) {
-      const { data } = await addSoftwareSpace({softwareID: row.id, spaceID: this.space.id})
+      const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id })
       this.softwareList.splice($index, 1)
       this.softwareSpaceList.push(row)
       const { name } = row
@@ -318,18 +318,18 @@ export default {
         type: 'success'
       })
     },
-      changeType(spaces) {
-          if (Array.isArray(spaces)) {
-              for (let index = 0; index < spaces.length; index++) {
-                  spaces[index].type = this.typesList[spaces[index].type];
-                  spaces[index].status = this.statusList[spaces[index].status]
-              }
-              return spaces
-          }
-          spaces.type = this.typesList[spaces.type];
-          spaces.status = this.statusList[spaces.status]
-          return spaces
+    changeType(spaces) {
+      if (Array.isArray(spaces)) {
+        for (let index = 0; index < spaces.length; index++) {
+          spaces[index].type = this.typesList[spaces[index].type]
+          spaces[index].status = this.statusList[spaces[index].status]
+        }
+        return spaces
       }
+      spaces.type = this.typesList[spaces.type]
+      spaces.status = this.statusList[spaces.status]
+      return spaces
+    }
   }
 }
 </script>

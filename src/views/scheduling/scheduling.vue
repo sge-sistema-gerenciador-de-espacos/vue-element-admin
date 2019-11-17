@@ -10,30 +10,28 @@
           {{ scope.row.space.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="center" label="Status" width="155">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Scheduler Name">
+      <el-table-column align="center" label="Scheduler Name" width="240">
         <template slot-scope="scope">
           {{ scope.row.scheduler.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="IT Responsable">
-        <template slot-scope="scope">
-          {{ scope.row.it_responsable.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="header-center" label="Professor">
+      <el-table-column align="center" label="Professor" width="240">
         <template slot-scope="scope">
           {{ scope.row.classes.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations" width="400">
+      <el-table-column align="center" label="Operations" width="600">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleAddStudent(scope)">
+          <el-button v-if="scope.row.status == 'Ativo'" type="primary" size="small" @click="handleChangeStatus(scope, 'ACCEPTED')">
             {{ $t('scheduling.accept') }}
+          </el-button>
+          <el-button v-if="scope.row.status == 'Ativo'" type="danger" size="small" @click="handleChangeStatus(scope, 'DENIED')">
+            {{ $t('scheduling.denied') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('scheduling.edit') }}
@@ -60,8 +58,9 @@
         </el-form-item>
         <el-form-item label="Status">
           <el-select v-model="scheduling.status">
-            <el-option value="1" label="Ativo">Ativo</el-option>
-            <el-option value="0" label="Inativo">Inativo</el-option>
+            <el-option value="WAITING" label="Esperando Resposta">Esperando Resposta</el-option>
+            <el-option value="ACCEPTED" label="Aceito">Aceito</el-option>
+            <el-option value="DENIED" label="Negado">Negado</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Class Name">
@@ -97,34 +96,33 @@
             </el-option>
           </el-select>
         </el-form-item>
-          <el-form-item label="date">
-              <el-date-picker
-                      v-model="scheduling.filterdate"
-                      type="daterange"
-                      range-separator="Até"
-                      start-placeholder="Start date"
-                      end-placeholder="End date"
-                      :picker-date="pickerOptions"
-                      value-format="yyyy-MM-dd"
-              >
-              </el-date-picker>
-          </el-form-item>
+        <el-form-item label="date">
+          <el-date-picker
+            v-model="scheduling.filterdate"
+            type="daterange"
+            range-separator="Até"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            :picker-date="pickerOptions"
+            value-format="yyyy-MM-dd"
+          />
+        </el-form-item>
         <el-form-item label="Time">
           <el-time-select
-                  v-model="scheduling.initialtime"
-                  :picker-options="{
-                  start: '08:00',
-                  step: '00:30',
-                  end: '22:30'
-                  }"
-                  placeholder="Hora Inicial">
-          </el-time-select>
+            v-model="scheduling.initialtime"
+            :picker-options="{
+              start: '08:00',
+              step: '00:30',
+              end: '22:30'
+            }"
+            placeholder="Hora Inicial"
+          />
           <el-time-select
-                  arrow-control
-                  v-model="scheduling.endtime"
-                  :picker-options="{start: '08:00', step: '00:30', end: '22:30'}"
-                  placeholder="Hora Final">
-          </el-time-select>
+            v-model="scheduling.endtime"
+            arrow-control
+            :picker-options="{start: '08:00', step: '00:30', end: '22:30'}"
+            placeholder="Hora Final"
+          />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -221,7 +219,7 @@ import { getClassEnable } from '@/api/classes'
 
 const defaultScheduling = {
   id: '',
-  status: 0,
+  status: '',
   classes: {
     id: '',
     name: ''
@@ -238,20 +236,21 @@ const defaultScheduling = {
     id: '',
     name: ''
   },
-    initialtime: '',
-    endtime: '',
-    filterdate: ''
+  initialtime: '',
+  endtime: '',
+  initialdate: '',
+  enddate: ''
 }
 
 export default {
   data() {
     return {
       scheduling: Object.assign({}, defaultScheduling),
-        pickerOptions: {
-            disabledDate(time) {
-                return time.getTime() < Date.now();
-            },
-        },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now()
+        }
+      },
       dialogVisible: false,
       dialogAddLack: false,
       dialogStudent: false,
@@ -362,7 +361,7 @@ export default {
         }
       } else {
         const { data } = await addScheduling(this.scheduling)
-        this.scheduling.id = data.id
+        this.scheduling.id = data.key
         this.schedulingList.push(this.scheduling)
       }
 
