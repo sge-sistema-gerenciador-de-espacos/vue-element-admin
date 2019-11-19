@@ -144,11 +144,24 @@ const types = {
   MANAGER: 'Gerenciador'
 }
 
-const status = {
-  ACTIVE: 'Ativo',
-  INACTIVE: 'Inativo'
+const sendTypes = {
+    'Admin': 'ADMINISTRATOR',
+    'Professor': 'PROFESSOR',
+    'TI': 'TI_SUPPORT',
+    'Auxiliar': 'ASSISTANT',
+    'Aluno': 'STUDENT',
+    'Gerenciador': 'MANAGER'
 }
 
+const status = {
+  1: 'Ativo',
+  0: 'Inativo'
+}
+
+const status = {
+    'Ativo': 1,
+    'Inativo': 0
+}
 export default {
   data() {
     return {
@@ -160,7 +173,9 @@ export default {
       usersList: [],
       stateList: [],
       typesList: Object.assign({}, types),
-      statusList: Object.assign({}, status)
+      statusList: Object.assign({}, status),
+      sendTypesList: Object.assign({}, sendTypes),
+      sendStatusList: Object.assign({}, sendStatus),
     }
   },
   computed: {
@@ -231,7 +246,7 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
-        await updateUser(this.user.id, this.user)
+        await updateUser(this.user.id, this.changeSendType(this.user))
         for (let index = 0; index < this.usersList.length; index++) {
           if (this.usersList[index].id === this.user.id) {
             this.usersList.splice(index, 1, Object.assign({}, this.changeType(this.user)))
@@ -239,7 +254,7 @@ export default {
           }
         }
       } else {
-        const { data } = await addUser(this.user)
+        const { data } = await addUser(this.changeSendType(this.user))
         this.user.id = data.key
         this.usersList.push(this.changeType(this.user))
       }
@@ -266,6 +281,11 @@ export default {
       users.type = this.typesList[users.type]
       users.status = this.statusList[users.status]
       return users
+    },
+    changeSendType(user) {
+        user.type = this.sendTypesList[user.type]
+        user.status = this.sendStatusList[user.status]
+        return user
     }
   }
 }
