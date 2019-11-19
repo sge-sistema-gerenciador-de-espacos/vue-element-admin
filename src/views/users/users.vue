@@ -158,7 +158,7 @@ const status = {
   0: 'Inativo'
 }
 
-const status = {
+const sendStatus = {
     'Ativo': 1,
     'Inativo': 0
 }
