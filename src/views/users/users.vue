@@ -66,6 +66,9 @@
         <el-form-item label="Email">
           <el-input v-model="user.email" placeholder="User Email" required type="e-mail" />
         </el-form-item>
+        <el-form-item label="Password">
+          <el-input v-model="user.password" placeholder="User Password" required show-password type="e-mail" />
+        </el-form-item>
         <el-form-item label="Status">
           <el-select v-model="user.status" required>
             <el-option value="1" label="Ativo" selected>Ativo</el-option>
@@ -102,7 +105,7 @@
           <el-input-number v-model="user.number" :min="0" placeholder="Number" required />
         </el-form-item>
         <el-form-item label="Telephone Number">
-          <el-input v-model="user.telephones" type="telephone" placeholder="Telephone Number" required />
+          <el-input v-model="user.telephone" type="telephone" placeholder="Telephone Number" required />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -132,7 +135,8 @@ const defaultUser = {
   city: '',
   state: '',
   number: '',
-  telephones: ''
+  telephone: '',
+  password: ''
 }
 
 const types = {
@@ -145,12 +149,12 @@ const types = {
 }
 
 const sendTypes = {
-    'Admin': 'ADMINISTRATOR',
-    'Professor': 'PROFESSOR',
-    'TI': 'TI_SUPPORT',
-    'Auxiliar': 'ASSISTANT',
-    'Aluno': 'STUDENT',
-    'Gerenciador': 'MANAGER'
+  'Admin': 'ADMINISTRATOR',
+  'Professor': 'PROFESSOR',
+  'TI': 'TI_SUPPORT',
+  'Auxiliar': 'ASSISTANT',
+  'Aluno': 'STUDENT',
+  'Gerenciador': 'MANAGER'
 }
 
 const status = {
@@ -159,8 +163,8 @@ const status = {
 }
 
 const sendStatus = {
-    'Ativo': 1,
-    'Inativo': 0
+  'Ativo': 1,
+  'Inativo': 0
 }
 export default {
   data() {
@@ -175,7 +179,7 @@ export default {
       typesList: Object.assign({}, types),
       statusList: Object.assign({}, status),
       sendTypesList: Object.assign({}, sendTypes),
-      sendStatusList: Object.assign({}, sendStatus),
+      sendStatusList: Object.assign({}, sendStatus)
     }
   },
   computed: {
@@ -273,19 +277,31 @@ export default {
     changeType(users) {
       if (Array.isArray(users)) {
         for (let index = 0; index < users.length; index++) {
-          users[index].type = this.typesList[users[index].type]
-          users[index].status = this.statusList[users[index].status]
+          if (this.typesList[users[index].type]) {
+            users[index].type = this.typesList[users[index].type]
+          }
+          if (this.statusList[users[index].status]) {
+            users[index].status = this.statusList[users[index].status]
+          }
         }
         return users
       }
-      users.type = this.typesList[users.type]
-      users.status = this.statusList[users.status]
+      if (this.typesList[users.type]) {
+        users.type = this.typesList[users.type]
+      }
+      if (this.statusList[users.status]) {
+        users.status = this.statusList[users.status]
+      }
       return users
     },
     changeSendType(user) {
+      if (this.sendTypesList[user.type]) {
         user.type = this.sendTypesList[user.type]
+      }
+      if (this.sendStatusList[user.status]) {
         user.status = this.sendStatusList[user.status]
-        return user
+      }
+      return user
     }
   }
 }
