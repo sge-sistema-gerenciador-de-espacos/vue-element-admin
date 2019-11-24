@@ -16,9 +16,9 @@
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="Status">
-          <template slot-scope="scope">
-              {{ scope.row.status }}
-          </template>
+        <template slot-scope="scope">
+          {{ scope.row.status }}
+        </template>
       </el-table-column>
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
@@ -36,6 +36,9 @@
       <el-form :model="program" label-width="80px" label-position="left">
         <el-form-item label="Name">
           <el-input v-model="program.name" placeholder="Program Name" />
+        </el-form-item>
+        <el-form-item label="Code">
+          <el-input v-model="program.code" placeholder="Program Code" />
         </el-form-item>
         <el-form-item label="Status">
           <el-select v-model="program.status">
@@ -68,19 +71,19 @@ const defaultProgram = {
 }
 
 const status = {
-    1: 'Ativo',
-    0: 'Inativo'
+  1: 'Ativo',
+  0: 'Inativo'
 }
 
 export default {
   data() {
     return {
-        program: Object.assign({}, defaultProgram),
-        dialogVisible: false,
-        dialogType: 'new',
-        checkStrictly: false,
-        programList: [],
-        statusList: Object.assign({}, status)
+      program: Object.assign({}, defaultProgram),
+      dialogVisible: false,
+      dialogType: 'new',
+      checkStrictly: false,
+      programList: [],
+      statusList: Object.assign({}, status)
     }
   },
   computed: {
@@ -157,16 +160,20 @@ export default {
         type: 'success'
       })
     },
-      changeType(programs) {
-          if (Array.isArray(programs)) {
-              for (let index = 0; index < programs.length; index++) {
-                  programs[index].status = this.statusList[programs[index].status]
-              }
-              return programs
+    changeType(programs) {
+      if (Array.isArray(programs)) {
+        for (let index = 0; index < programs.length; index++) {
+          if (this.statusList[programs[index].status]) {
+            programs[index].status = this.statusList[programs[index].status]
           }
-          programs.status = this.statusList[programs.status]
-          return programs
+        }
+        return programs
       }
+      if (this.statusList[programs.status]) {
+        programs.status = this.statusList[programs.status]
+      }
+      return programs
+    }
   }
 }
 </script>

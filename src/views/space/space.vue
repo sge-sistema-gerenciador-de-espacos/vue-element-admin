@@ -60,7 +60,7 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="space.type == 'ROOM'" label="Number of Chairs">
-          <el-input-number v-model="space.numberChair" placeholder="Quantity of chairs" />
+          <el-input-number v-model="space.numberChair" :min="1" placeholder="Quantity of chairs" />
         </el-form-item>
         <el-form-item v-if="space.type == 'LAB'" label="Number of PCs">
           <el-input-number v-model="space.numberPc" :min="1" placeholder="Quantity of PCs" />

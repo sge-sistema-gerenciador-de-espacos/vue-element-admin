@@ -110,6 +110,11 @@ const status = {
   0: 'Inativo'
 }
 
+const sendStatus = {
+  'Ativo': 1,
+  'Inativo': 0
+}
+
 export default {
   data() {
     return {
@@ -120,7 +125,8 @@ export default {
       checkStrictly: false,
       courseList: [],
       programList: [],
-      statusList: Object.assign({}, status)
+      statusList: Object.assign({}, status),
+      sendStatusList: Object.assign({}, sendStatus)
     }
   },
   computed: {
@@ -217,6 +223,15 @@ export default {
       }
       courses.status = this.statusList[courses.status]
       return courses
+    },
+    changeSendType(course) {
+      if (this.sendTypesList[course.type]) {
+        course.type = this.sendTypesList[course.type]
+      }
+      if (this.sendStatusList[course.status]) {
+        course.status = this.sendStatusList[course.status]
+      }
+      return course
     }
   }
 }
