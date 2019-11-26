@@ -5,7 +5,7 @@
     </el-button>
 
     <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Software Name" width="220">
+      <el-table-column align="center" label="Software Name">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -15,7 +15,7 @@
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column :data="softwareList" align="center" label="Operations">
+      <el-table-column :data="softwareList" align="center" label="Operations" width="400">
         <template slot-scope="scope">
           <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
             {{ $t('software.disable') }}
@@ -34,12 +34,12 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Software':'New Software'">
-      <el-form :model="software" label-width="80px" label-position="left">
-        <el-form-item label="Name">
-          <el-input v-model="software.name" placeholder="Software Name" />
+      <el-form ref="software" :model="software" label-width="80px" :rules="softwareRules" label-position="left">
+        <el-form-item label="Name" prop="name">
+          <el-input ref="name" v-model="software.name" placeholder="Software Name" />
         </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="software.status">
+        <el-form-item label="Status" prop="status">
+          <el-select ref="status" v-model="software.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
@@ -49,7 +49,7 @@
         <el-button type="danger" @click="dialogVisible=false">
           {{ $t('software.cancel') }}
         </el-button>
-        <el-button type="primary" @click="confirmRole">
+        <el-button type="primary" :loading="loading" @click.native.prevent @click="confirmRole">
           {{ $t('software.confirm') }}
         </el-button>
       </div>
@@ -68,19 +68,49 @@ const defaultSoftware = {
 }
 
 const status = {
-    1: 'Ativo',
-    0: 'Inativo'
+  1: 'Ativo',
+  0: 'Inativo'
 }
 
+const sendStatus = {
+  'Ativo': 1,
+  'Inativo': 0
+}
 export default {
   data() {
+    const validateEmpty = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('The field can not be empty!'))
+      } else {
+        if (this.checkIfNameExists(value, this.software.id)) {
+          callback(new Error('Already a software with this name!'))
+        } else {
+          callback()
+        }
+      }
+    }
+    const validateStatus = (rule, value, callback) => {
+      console.log(value)
+      if (this.statusList[value] || this.sendStatusList[value]) {
+        callback()
+      } else {
+        callback(new Error('The status has to be Active or Inactive'))
+      }
+    }
     return {
+      formReady: false,
+      loading: false,
       software: Object.assign({}, defaultSoftware),
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
       softwareList: [],
-      statusList: Object.assign({}, status)
+      statusList: Object.assign({}, status),
+      sendStatusList: Object.assign({}, sendStatus),
+      softwareRules: {
+        status: [{ required: true, trigger: 'blur', validator: validateStatus }],
+        name: [{ required: true, trigger: 'blur', validator: validateEmpty }]
+      }
     }
   },
   computed: {
@@ -135,45 +165,79 @@ export default {
           console.error(err)
         })
     },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-
-      if (isEdit) {
-        await updateSoftware(this.software.id, this.software)
-        for (let index = 0; index < this.softwareList.length; index++) {
-          if (this.softwareList[index].id === this.software.id) {
-            this.softwareList.splice(index, 1, Object.assign({}, this.changeType(this.software)))
-            break
+    confirmRole() {
+      this.$refs.software.validate(valid => {
+        const isEdit = this.dialogType === 'edit'
+        if (valid) {
+          this.loading = true
+          if (isEdit) {
+            new Promise((resolve, reject) => {
+              updateSoftware(this.software.id, this.changeSendType(this.software)).then(response => {
+                for (let index = 0; index < this.softwareList.length; index++) {
+                  if (this.softwareList[index].id === this.software.id) {
+                    this.softwareList.splice(index, 1, Object.assign({}, this.changeType(this.software)))
+                  }
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
+          } else {
+            new Promise((resolve, reject) => {
+              addSoftware(this.changeSendType(this.software)).then(response => {
+                const { data } = response
+                this.software.id = data.key
+                this.softwareList.push(this.changeType(this.software))
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
           }
-        }
-      } else {
-        const { data } = await addSoftware(this.software)
-        this.software.id = data.key
-        this.softwareList.push(this.changeType(this.software))
-      }
 
-      const { name } = this.software
-      this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
+          this.loading = false
+          const { name } = this.software
+          this.dialogVisible = false
+          this.$notify({
+            title: 'Success',
+            dangerouslyUseHTMLString: true,
+            message: `
             <div>Software: ${name}</div>
           `,
-        type: 'success'
+            type: 'success'
+          })
+        } else {
+          console.log('error submit!!')
+          this.loading = false
+          return false
+        }
       })
     },
     changeType(software) {
-        console.log(Array.isArray(software))
-        console.log(software)
-        if (Array.isArray(software)) {
-            for (let index = 0; index < software.length; index++) {
-                software[index].status = this.statusList[software[index].status]
-            }
-            return software
+      if (Array.isArray(software)) {
+        for (let index = 0; index < software.length; index++) {
+          software[index].status = this.statusList[software[index].status]
         }
-        software.status = this.statusList[software.status]
         return software
+      }
+      software.status = this.statusList[software.status]
+      return software
+    },
+    changeSendType(software) {
+      if (this.sendStatusList[software.status]) {
+        software.status = this.sendStatusList[software.status]
+      }
+      return software
+    },
+    checkIfNameExists(name, software_id) {
+      for (let index = 0; index < this.softwareList.length; index++) {
+        // eslint-disable-next-line eqeqeq
+        if (this.softwareList[index].name == name && this.softwareList[index].id != software_id) {
+          return true
+        }
+      }
+      return false
     }
   }
 }

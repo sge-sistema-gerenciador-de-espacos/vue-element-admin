@@ -7,8 +7,8 @@ export function isExternal(path) {
 }
 
 export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+  const valid_email = /\S+@\S+\.\S+/
+  return valid_email.test(str)
 }
 
 export function validURL(url) {

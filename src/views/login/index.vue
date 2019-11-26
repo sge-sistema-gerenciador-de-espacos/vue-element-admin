@@ -18,7 +18,7 @@
           v-model="loginForm.username"
           :placeholder="$t('login.username')"
           name="username"
-          type="text"
+          type="e-mail"
           auto-complete="on"
         />
       </el-form-item>
@@ -81,7 +81,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('Please enter the correct e-mail'))
       } else {
         callback()
       }
