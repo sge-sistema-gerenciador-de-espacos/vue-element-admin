@@ -43,17 +43,17 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Space':'New Space'">
-      <el-form :model="space" label-width="80px" label-position="left" :data="spaceList">
-        <el-form-item label="Name">
+      <el-form ref="space" :model="space" :rules="spaceRules" label-width="80px" label-position="left" :data="spaceList">
+        <el-form-item label="Name" prop="name">
           <el-input v-model="space.name" placeholder="Space Name" />
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="Status" prop="status">
           <el-select v-model="space.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Type">
+        <el-form-item label="Type" prop="type">
           <el-select v-model="space.type">
             <el-option value="ROOM" label="Sala" selected>Sala</el-option>
             <el-option value="LAB" label="Lab">Lab</el-option>
@@ -65,19 +65,19 @@
         <el-form-item v-if="space.type == 'LAB'" label="Number of PCs">
           <el-input-number v-model="space.numberPc" :min="1" placeholder="Quantity of PCs" />
         </el-form-item>
-        <el-form-item label="Projector">
+        <el-form-item label="Projector" prop="project">
           <el-select v-model="space.project">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Smart Board">
+        <el-form-item label="Smart Board" prop="smartBoard">
           <el-select v-model="space.smartBoard">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Board">
+        <el-form-item label="Board" prop="board">
           <el-select v-model="space.board">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
@@ -88,7 +88,7 @@
         <el-button type="danger" @click="dialogVisible=false">
           {{ $t('space.cancel') }}
         </el-button>
-        <el-button type="primary" @click="confirmRole">
+        <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
           {{ $t('space.confirm') }}
         </el-button>
       </div>
@@ -147,11 +147,11 @@ const defaultSpace = {
   name: '',
   status: '',
   type: '',
-  smartBoard: '',
-  board: '',
   numberPc: '',
   numberChair: '',
-  project: ''
+  project: '',
+  smartBoard: '',
+  board: ''
 }
 
 const defaultSoftware = {
@@ -165,14 +165,69 @@ const types = {
   LAB: 'laboratorio'
 }
 
+const sendTypes = {
+    'sala': 'ROOM',
+    'laboratorio': 'LAB'
+}
+
 const status = {
   1: 'Ativo',
   0: 'Inativo'
 }
 
+const sendStatus = {
+    'Ativo': 1,
+    'Inativo': 0
+}
+
+const ownType = {
+    1: 'Possui',
+    0: 'Não possui'
+}
+
+const sendOwnType = {
+    'Possui': 1,
+    'Não Possui': 0
+}
+
 export default {
   data() {
+      const validateEmpty = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('The field can not be empty!'))
+          } else {
+              if (this.checkIfNameExists(value, this.space.id)) {
+                  callback(new Error('Already a space with this name!'))
+              } else {
+                  callback()
+              }
+          }
+      }
+      const validateType = (rule, value, callback) => {
+          if (this.typesList[value] || this.sendTypesList[value]) {
+              callback()
+          } else {
+              callback(new Error('The type has to be in list!'))
+          }
+      }
+      const validateStatus = (rule, value, callback) => {
+          console.log(value)
+          if (this.statusList[value] || this.sendStatusList[value]) {
+              callback()
+          } else {
+              callback(new Error('The status has to be Active or Inactive'))
+          }
+      }
+      const validateOwnType = (rule, value, callback) => {
+          console.log(value)
+          if (this.ownTypesList[value] || this.sendOwnTypeList[value]) {
+              callback()
+          } else {
+              callback(new Error('The status has to be Active or Inactive'))
+          }
+      }
     return {
+      loading: false,
       space: Object.assign({}, defaultSpace),
       software: Object.assign({}, defaultSoftware),
       dialogVisible: false,
@@ -183,7 +238,19 @@ export default {
       softwareSpaceList: [],
       softwareList: [],
       typesList: Object.assign({}, types),
-      statusList: Object.assign({}, status)
+      sendStatusList: Object.assign({}, sendStatus),
+      sendTypesList: Object.assign({}, sendTypes),
+      statusList: Object.assign({}, status),
+      ownTypesList: Object.assign({}, ownType),
+      sendOwnTypeList: Object.assign({}, sendOwnType),
+        spaceRules: {
+            type: [{ required: true, trigger: 'blur', validator: validateType }],
+            status: [{ required: true, trigger: 'blur', validator: validateStatus }],
+            name: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+            project: [{ required: true, trigger: 'blur', validator: validateOwnType }],
+            smartBoard: [{ required: true, trigger: 'blur', validator: validateOwnType }],
+            board: [{ required: true, trigger: 'blur', validator: validateOwnType }]
+        }
     }
   },
   computed: {
@@ -276,34 +343,55 @@ export default {
           console.error(err)
         })
     },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
+  confirmRole() {
+      this.$refs.space.validate(valid => {
+          const isEdit = this.dialogType === 'edit'
+          if (valid) {
+              this.loading = true
+              if (isEdit) {
+                  new Promise((resolve, reject) => {
+                      updateSpace(this.space.id, this.changeSendType(this.space)).then(response => {
+                          for (let index = 0; index < this.spaceList.length; index++) {
+                              if (this.spaceList[index].id === this.space.id) {
+                                  this.spaceList.splice(index, 1, Object.assign({}, this.changeType(this.space)))
+                              }
+                          }
+                          resolve()
+                      }).catch(error => {
+                          reject(error)
+                      })
+                  })
+              } else {
+                  new Promise((resolve, reject) => {
+                      addSpace(this.changeSendType(this.space)).then(response => {
+                          const { data } = response
+                          this.space.id = data.key
+                          this.spaceList.push(this.changeType(this.space))
+                          resolve()
+                      }).catch(error => {
+                          reject(error)
+                      })
+                  })
+              }
 
-      if (isEdit) {
-        await updateSpace(this.space.id, this.space)
-        for (let index = 0; index < this.spaceList.length; index++) {
-          if (this.spaceList[index].id === this.space.id) {
-            this.spaceList.splice(index, 1, Object.assign({}, this.changeType(this.space)))
-            break
+              this.loading = false
+              const { name } = this.software
+              this.dialogVisible = false
+              this.$notify({
+                  title: 'Success',
+                  dangerouslyUseHTMLString: true,
+                  message: `
+        <div>Space: ${name}</div>
+      `,
+                  type: 'success'
+              })
+          } else {
+              console.log('error submit!!')
+              this.loading = false
+              return false
           }
-        }
-      } else {
-        const { data } = await addSpace(this.space)
-        this.space.id = data.key
-        this.spaceList.push(this.changeType(this.space))
-      }
-
-      const { name } = this.space
-      this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
-            <div>Space: ${name}</div>
-          `,
-        type: 'success'
       })
-    },
+  },
     async handleAddSoftwareSpace({ $index, row }) {
       const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id })
       this.softwareList.splice($index, 1)
@@ -321,15 +409,68 @@ export default {
     changeType(spaces) {
       if (Array.isArray(spaces)) {
         for (let index = 0; index < spaces.length; index++) {
-          spaces[index].type = this.typesList[spaces[index].type]
-          spaces[index].status = this.statusList[spaces[index].status]
+            if (this.typesList[spaces[index].type]) {
+                spaces[index].type = this.typesList[spaces[index].type]
+            }
+            if (this.statusList[spaces[index].status]) {
+                spaces[index].status = this.statusList[spaces[index].status]
+            }
+            if (this.ownTypesList[spaces[index].project]) {
+                spaces[index].project = this.ownTypesList[spaces[index].project]
+            }
+            if (this.ownTypesList[spaces[index].smartBoard]) {
+                spaces[index].smartBoard = this.ownTypesList[spaces[index].smartBoard]
+            }
+            if (this.ownTypesList[spaces[index].board]) {
+                spaces[index].board = this.ownTypesList[spaces[index].board]
+            }
         }
         return spaces
       }
-      spaces.type = this.typesList[spaces.type]
-      spaces.status = this.statusList[spaces.status]
+      if (this.typesList[spaces.type]) {
+          spaces.type = this.typesList[spaces.type]
+      }
+      if (this.statusList[spaces.status]) {
+          spaces.status = this.statusList[spaces.status]
+      }
+        if (this.ownTypesList[spaces.project]) {
+            spaces.project = this.ownTypesList[spaces.project]
+        }
+        if (this.ownTypesList[spaces.smartBoard]) {
+            spaces.smartBoard = this.ownTypesList[spaces.smartBoard]
+        }
+        if (this.ownTypesList[spaces.board]) {
+            spaces.board = this.ownTypesList[spaces.board]
+        }
       return spaces
-    }
+    },
+      changeSendType(space) {
+          if (this.sendTypesList[space.type]) {
+              space.type = this.sendTypesList[space.type]
+          }
+          if (this.sendStatusList[space.status]) {
+              space.status = this.sendStatusList[space.status]
+          }
+          if (this.sendOwnTypeList[space.project]) {
+              space.project = this.sendOwnTypeList[space.project]
+          }
+          if (this.sendOwnTypeList[space.smartBoard]) {
+              space.smartBoard = this.sendOwnTypeList[space.smartBoard]
+          }
+          if (this.sendOwnTypeList[space.board]) {
+              space.board = this.sendOwnTypeList[space.board]
+          }
+          return space
+      },
+      checkIfNameExists(name, space_id) {
+          for (let index = 0; index < this.spaceList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.spaceList[index].name == name && this.spaceList[index].id != space_id) {
+                  return true
+              }
+          }
+          return false
+      }
   }
 }
 </script>
