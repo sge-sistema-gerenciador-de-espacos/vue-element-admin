@@ -43,17 +43,17 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Course':'New Course'">
-      <el-form :model="course" label-width="80px" label-position="left">
+      <el-form ref="course" :model="course" :rules="courseRules" label-width="80px" label-position="left">
         <el-form-item label="Name">
           <el-input v-model="course.name" placeholder="Course Name" required />
         </el-form-item>
-        <el-form-item label="Credit">
-          <el-input-number v-model="course.credit" placeholder="Course Credit" required />
+        <el-form-item label="Credit" prop="credit">
+          <el-input-number v-model="course.credit" :min="1" placeholder="Course Credit" required />
         </el-form-item>
-        <el-form-item label="Code">
+        <el-form-item label="Code" prop="code">
           <el-input v-model="course.code" placeholder="Course Code" required />
         </el-form-item>
-        <el-form-item label="Program">
+        <el-form-item label="Program" prop="program_id">
           <el-select v-model="course.program.id" required>
             <el-option
               v-for="item in programList"
@@ -63,7 +63,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="Status" prop="status">
           <el-select v-model="course.status" required>
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
@@ -71,7 +71,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">
+        <el-button type="danger" @click="closeDialog">
           {{ $t('course.cancel') }}
         </el-button>
         <el-button type="primary" @click="confirmRole">
@@ -117,6 +117,33 @@ const sendStatus = {
 
 export default {
   data() {
+      const validateStatus = (rule, value, callback) => {
+          var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+          if (status_validate.includes(value)) {
+              callback()
+          } else {
+              callback(new Error('The status has to be Active or Inactive'))
+          }
+      }
+      const validateEmpty = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('The field can not be empty is invalid!'))
+          } else {
+              callback()
+          }
+      }
+      const validateProgram = (rule, value, callback) => {
+          if (value) {
+              if (this.checkIfProgramExists(value)) {
+                  callback(new Error('The state is invalid!'))
+              } else {
+                  callback()
+              }
+          }
+          else {
+              callback(new Error('The state is invalid!'))
+          }
+      }
     return {
       course: Object.assign({}, defaultCourse),
       program: Object.assign({}, defaultProgram),
@@ -126,7 +153,12 @@ export default {
       courseList: [],
       programList: [],
       statusList: Object.assign({}, status),
-      sendStatusList: Object.assign({}, sendStatus)
+      sendStatusList: Object.assign({}, sendStatus),
+        courseRules: {
+            status: [{ required: true, trigger: 'blur', validator: validateStatus }],
+            credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+            program_id: [{ required: true, trigger: 'blur', validator: validateProgram }],
+        }
     }
   },
   computed: {
@@ -140,6 +172,10 @@ export default {
     this.getCourse()
   },
   methods: {
+      closeDialog() {
+          this.$refs.course.resetFields()
+          this.dialogVisible = false
+      },
     async getCourse() {
       const res = await getCourse()
       this.courseList = this.changeType(res.data)
@@ -180,40 +216,60 @@ export default {
           console.error(err)
         })
     },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
+      confirmRole() {
+          this.$refs.course.validate(valid => {
+              const isEdit = this.dialogType === 'edit'
+              if (valid) {
+                  this.formReady = true
+                  this.loading = true
+                  if (isEdit) {
+                      new Promise((resolve, reject) => {
+                          updateCourse(this.course.id, this.changeSendType(this.course)).then(response => {
+                              for (let index = 0; index < this.courseList.length; index++) {
+                                  if (this.courseList[index].id === this.course.id) {
+                                      this.courseList.splice(index, 1, Object.assign({}, this.changeType(this.course)))
+                                      break
+                                  }
+                              }
+                              resolve()
+                          }).catch(error => {
+                              reject(error)
+                          })
+                      })
+                  } else {
+                      new Promise((resolve, reject) => {
+                          addCourse(this.changeSendType(this.course)).then(response => {
+                              const { data } = response
+                              this.course.id = data.key
+                              this.courseList.push(this.changeType(this.course))
+                              resolve()
+                          }).catch(error => {
+                              reject(error)
+                          })
+                      })
+                  }
+                  this.loading = false
 
-      for (let index = 0; index < this.programList.length; index++) {
-        if (this.course.program.id == this.programList[index].id) {
-          this.course.program.name = this.programList[index].name
-          break
-        }
-      }
-      if (isEdit) {
-        await updateCourse(this.course.id, this.course)
-        for (let index = 0; index < this.courseList.length; index++) {
-          if (this.courseList[index].id === this.course.id) {
-            this.courseList.splice(index, 1, Object.assign({}, this.changeType(this.course)))
-            break
-          }
-        }
-      } else {
-        const { data } = await addCourse(this.course)
-        this.course.id = data.key
-        this.courseList.push(this.changeType(this.course))
-      }
-
-      const { name } = this.course
-      this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
+                  const { name } = this.user
+                  this.dialogVisible = false
+                  this.$notify({
+                      title: 'Success',
+                      dangerouslyUseHTMLString: true,
+                      message: `
             <div>Course: ${name}</div>
           `,
-        type: 'success'
-      })
-    },
+                      type: 'success'
+                  })
+              } else {
+                  this.formReady = false
+                  this.loading = false
+                  console.log('error submit!!')
+                  return false
+              }
+          })
+      },
+
+
     changeType(courses) {
       if (Array.isArray(courses)) {
         for (let index = 0; index < courses.length; index++) {
@@ -225,14 +281,20 @@ export default {
       return courses
     },
     changeSendType(course) {
-      if (this.sendTypesList[course.type]) {
-        course.type = this.sendTypesList[course.type]
-      }
-      if (this.sendStatusList[course.status]) {
+      if (this.sendStatusList[course.status]  || course.status == 'Inativo') {
         course.status = this.sendStatusList[course.status]
       }
       return course
-    }
+    },
+      checkIfProgramExists(id) {
+          for (let index = 0; index < this.programList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.programList[index].id == id) {
+                  return true
+              }
+          }
+          return false
+      }
   }
 }
 </script>

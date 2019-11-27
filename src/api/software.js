@@ -47,7 +47,7 @@ export function getSoftwareSpace(id) {
 
 export function getActiveSoftware() {
   return request({
-    url: `/software/active`,
+    url: `/software/enable`,
     method: 'get'
   })
 }

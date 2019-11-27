@@ -90,8 +90,8 @@ export default {
       }
     }
     const validateStatus = (rule, value, callback) => {
-      console.log(value)
-      if (this.statusList[value] || this.sendStatusList[value]) {
+      var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+      if (status_validate.includes(value)) {
         callback()
       } else {
         callback(new Error('The status has to be Active or Inactive'))
@@ -123,6 +123,10 @@ export default {
     this.getSoftware()
   },
   methods: {
+      closeDialog() {
+          this.$refs.software.resetFields()
+          this.dialogVisible = false
+      },
     async getSoftware() {
       const res = await getSoftware()
       this.softwareList = this.changeType(res.data)
@@ -225,7 +229,8 @@ export default {
       return software
     },
     changeSendType(software) {
-      if (this.sendStatusList[software.status]) {
+        console.log(software.status + ' ' + this.sendStatusList[software.status])
+      if (this.sendStatusList[software.status] || software.status == 'Inativo') {
         software.status = this.sendStatusList[software.status]
       }
       return software

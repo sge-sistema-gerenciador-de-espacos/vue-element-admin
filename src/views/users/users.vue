@@ -109,7 +109,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">
+        <el-button type="danger" @click="closeDialog">
           {{ $t('users.cancel') }}
         </el-button>
         <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
@@ -188,12 +188,12 @@ export default {
       }
     }
     const validateStatus = (rule, value, callback) => {
-      console.log(value)
-      if (this.statusList[value] || this.sendStatusList[value]) {
-        callback()
-      } else {
-        callback(new Error('The status has to be Active or Inactive'))
-      }
+        var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+        if (status_validate.includes(value)) {
+            callback()
+        } else {
+            callback(new Error('The status has to be Active or Inactive'))
+        }
     }
     const validateType = (rule, value, callback) => {
       if (this.typesList[value] || this.sendTypesList[value]) {
@@ -265,6 +265,10 @@ export default {
     this.getStates()
   },
   methods: {
+      closeDialog() {
+          this.$refs.user.resetFields()
+          this.dialogVisible = false
+      },
     async getUsers() {
       const res = await getUsers()
       this.usersList = this.changeType(res.data)
@@ -394,7 +398,7 @@ export default {
       if (this.sendTypesList[user.type]) {
         user.type = this.sendTypesList[user.type]
       }
-      if (this.sendStatusList[user.status]) {
+      if (this.sendStatusList[user.status] || user.status == 'Inativo') {
         user.status = this.sendStatusList[user.status]
       }
       return user

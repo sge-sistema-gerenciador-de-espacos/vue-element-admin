@@ -55,7 +55,7 @@ export function deleteUser(id) {
 
 export function getMasterUsers() {
   return request({
-    url: '/user/masters',
+    url: '/user/professor',
     method: 'get'
   })
 }

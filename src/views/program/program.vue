@@ -33,14 +33,14 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Program':'New Program'">
-      <el-form :model="program" label-width="80px" label-position="left">
+      <el-form ref="program" :model="program" :rules="programRules" label-width="80px" label-position="left">
         <el-form-item label="Name">
           <el-input v-model="program.name" placeholder="Program Name" />
         </el-form-item>
-        <el-form-item label="Code">
+        <el-form-item label="Code" prop="code">
           <el-input v-model="program.code" placeholder="Program Code" />
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="Status" prop="status">
           <el-select v-model="program.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
@@ -48,10 +48,10 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">
+        <el-button type="danger" @click="closeDialog">
           {{ $t('program.cancel') }}
         </el-button>
-        <el-button type="primary" @click="confirmRole">
+        <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
           {{ $t('program.confirm') }}
         </el-button>
       </div>
@@ -75,15 +75,56 @@ const status = {
   0: 'Inativo'
 }
 
+const sendStatus = {
+    'Ativo': 1,
+    'Inativo': 0
+}
+
 export default {
   data() {
+      const validateName = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('The field can not be empty!'))
+          } else {
+              if (this.checkIfNameExists(value, this.program.id)) {
+                  callback(new Error('Already a program with this name!'))
+              } else {
+                  callback()
+              }
+          }
+      }
+      const validateCode = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('The field can not be empty!'))
+          } else {
+              if (this.checkIfCodeExists(value, this.program.id)) {
+                  callback(new Error('Already a program with this name!'))
+              } else {
+                  callback()
+              }
+          }
+      }
+      const validateStatus = (rule, value, callback) => {
+          var statusValidate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+          if (statusValidate.includes(value)) {
+              callback()
+          } else {
+              callback(new Error('The status has to be Active or Inactive'))
+          }
+      }
     return {
+      loading: false,
       program: Object.assign({}, defaultProgram),
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
       programList: [],
-      statusList: Object.assign({}, status)
+      statusList: Object.assign({}, status),
+      sendStatusList: Object.assign({}, sendStatus),
+      programRules: {
+          status: [{ required: true, trigger: 'blur', validator: validateStatus }],
+          code: [{ required: true, trigger: 'blur', validator: validateCode }]
+      }
     }
   },
   computed: {
@@ -96,6 +137,10 @@ export default {
     this.getProgram()
   },
   methods: {
+      closeDialog() {
+          this.$refs.program.resetFields()
+          this.dialogVisible = false
+      },
     async getProgram() {
       const res = await getProgram()
       this.programList = this.changeType(res.data)
@@ -132,34 +177,55 @@ export default {
           console.error(err)
         })
     },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
+      confirmRole() {
+          this.$refs.program.validate(valid => {
+              const isEdit = this.dialogType === 'edit'
+              if (valid) {
+                  this.loading = true
+                  if (isEdit) {
+                      new Promise((resolve, reject) => {
+                          updateProgram(this.program.id, this.changeSendType(this.program)).then(response => {
+                              for (let index = 0; index < this.programList.length; index++) {
+                                  if (this.programList[index].id === this.program.id) {
+                                      this.programList.splice(index, 1, Object.assign({}, this.changeType(this.program)))
+                                  }
+                              }
+                              resolve()
+                          }).catch(error => {
+                              reject(error)
+                          })
+                      })
+                  } else {
+                      new Promise((resolve, reject) => {
+                          addProgram(this.changeSendType(this.program)).then(response => {
+                              const { data } = response
+                              this.program.id = data.key
+                              this.programList.push(this.changeType(this.program))
+                              resolve()
+                          }).catch(error => {
+                              reject(error)
+                          })
+                      })
+                  }
 
-      if (isEdit) {
-        await updateProgram(this.program.id, this.program)
-        for (let index = 0; index < this.programList.length; index++) {
-          if (this.programList[index].id === this.program.id) {
-            this.programList.splice(index, 1, Object.assign({}, this.changeType(this.program)))
-            break
-          }
-        }
-      } else {
-        const { data } = await addProgram(this.program)
-        this.program.id = data.id
-        this.programList.push(this.changeType(this.program))
-      }
-
-      const { name } = this.program
-      this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
+                  this.loading = false
+                  const { name } = this.program
+                  this.dialogVisible = false
+                  this.$notify({
+                      title: 'Success',
+                      dangerouslyUseHTMLString: true,
+                      message: `
             <div>Program: ${name}</div>
           `,
-        type: 'success'
-      })
-    },
+                      type: 'success'
+                  })
+              } else {
+                  console.log('error submit!!')
+                  this.loading = false
+                  return false
+              }
+          })
+      },
     changeType(programs) {
       if (Array.isArray(programs)) {
         for (let index = 0; index < programs.length; index++) {
@@ -173,7 +239,31 @@ export default {
         programs.status = this.statusList[programs.status]
       }
       return programs
-    }
+    },
+      checkIfCodeExists(code, program_id) {
+          for (let index = 0; index < this.programList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.programList[index].code == code && this.programList[index].id != program_id) {
+                  return true
+              }
+          }
+          return false
+      },
+      checkIfNameExists(name, program_id) {
+          for (let index = 0; index < this.programList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.programList[index].name == name && this.programList[index].id != program_id) {
+                  return true
+              }
+          }
+          return false
+      },
+      changeSendType(program) {
+          if (this.sendStatusList[program.status]  || program.status == 'Inativo') {
+              program.status = this.sendStatusList[program.status]
+          }
+          return program
+      }
   }
 }
 </script>

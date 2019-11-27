@@ -23,14 +23,8 @@
       </el-table-column>
       <el-table-column align="center" :data="spaceList" label="Operations">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.type == 'laboratorio'" type="primary" size="small" @click="handleSoftwares(scope)">
+          <el-button v-if="scope.row.type == 'Laboratorio' || space.type == 'LAB'" type="primary" size="small" @click="handleSoftwares(scope)">
             {{ $t('space.softwares') }}
-          </el-button>
-          <el-button v-if="scope.row.status == 'Ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
-            {{ $t('space.disable') }}
-          </el-button>
-          <el-button v-if="scope.row.status == 'Inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
-            {{ $t('space.enable') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('space.edit') }}
@@ -56,13 +50,13 @@
         <el-form-item label="Type" prop="type">
           <el-select v-model="space.type">
             <el-option value="ROOM" label="Sala" selected>Sala</el-option>
-            <el-option value="LAB" label="Lab">Lab</el-option>
+            <el-option value="LAB" label="Lab">Laboratório</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="space.type == 'ROOM'" label="Number of Chairs">
+        <el-form-item v-if="space.type == 'ROOM' || space.type == 'Sala'" label="Number of Chairs">
           <el-input-number v-model="space.numberChair" :min="1" placeholder="Quantity of chairs" />
         </el-form-item>
-        <el-form-item v-if="space.type == 'LAB'" label="Number of PCs">
+        <el-form-item v-if="space.type == 'LAB' || space.type == 'Laboratorio'" label="Number of PCs">
           <el-input-number v-model="space.numberPc" :min="1" placeholder="Quantity of PCs" />
         </el-form-item>
         <el-form-item label="Projector" prop="project">
@@ -85,7 +79,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">
+        <el-button type="danger" @click="closeDialog">
           {{ $t('space.cancel') }}
         </el-button>
         <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
@@ -161,13 +155,13 @@ const defaultSoftware = {
 }
 
 const types = {
-  ROOM: 'sala',
-  LAB: 'laboratorio'
+  ROOM: 'Sala',
+  LAB: 'Laboratorio'
 }
 
 const sendTypes = {
-    'sala': 'ROOM',
-    'laboratorio': 'LAB'
+    'Sala': 'ROOM',
+    'Laboratorio': 'LAB'
 }
 
 const status = {
@@ -182,7 +176,7 @@ const sendStatus = {
 
 const ownType = {
     1: 'Possui',
-    0: 'Não possui'
+    0: 'Não Possui'
 }
 
 const sendOwnType = {
@@ -211,16 +205,17 @@ export default {
           }
       }
       const validateStatus = (rule, value, callback) => {
-          console.log(value)
-          if (this.statusList[value] || this.sendStatusList[value]) {
+          var statusValidate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+          if (statusValidate.includes(value)) {
               callback()
           } else {
               callback(new Error('The status has to be Active or Inactive'))
           }
       }
       const validateOwnType = (rule, value, callback) => {
-          console.log(value)
-          if (this.ownTypesList[value] || this.sendOwnTypeList[value]) {
+          var ownTypeValidate = [1, 0, '1', '0', 'Possui', 'Não Possui']
+          console.log(value + ' ' + ownTypeValidate.includes(value))
+          if (ownTypeValidate.includes(value)) {
               callback()
           } else {
               callback(new Error('The status has to be Active or Inactive'))
@@ -263,14 +258,18 @@ export default {
     this.getSpace()
   },
   methods: {
+      closeDialog() {
+          this.$refs.space.resetFields()
+          this.dialogVisible = false
+      },
     async getSpace() {
       const res = await getSpace()
       this.spaceList = this.changeType(res.data)
     },
     async handleSoftwares(scope) {
       this.space = deepClone(scope.row)
-      const res = await getSoftwareSpace(this.space.id)
-      this.softwareSpaceList = res.data
+      // const res = await getSoftwareSpace(this.space.id)
+      // this.softwareSpaceList = res.data
       const response = await getActiveSoftware()
       //   for (let indexResponse = 0; indexResponse < response.data.length; indexResponse ++) {
       //     console.log(response.data[indexResponse].id)
@@ -448,16 +447,16 @@ export default {
           if (this.sendTypesList[space.type]) {
               space.type = this.sendTypesList[space.type]
           }
-          if (this.sendStatusList[space.status]) {
+          if (this.sendStatusList[space.status]  || space.status == 'Inativo') {
               space.status = this.sendStatusList[space.status]
           }
-          if (this.sendOwnTypeList[space.project]) {
+          if (this.sendOwnTypeList[space.project] || space.project == 'Não Possui') {
               space.project = this.sendOwnTypeList[space.project]
           }
-          if (this.sendOwnTypeList[space.smartBoard]) {
+          if (this.sendOwnTypeList[space.smartBoard] || space.smartBoard == 'Não Possui') {
               space.smartBoard = this.sendOwnTypeList[space.smartBoard]
           }
-          if (this.sendOwnTypeList[space.board]) {
+          if (this.sendOwnTypeList[space.board] || space.board == 'Não Possui') {
               space.board = this.sendOwnTypeList[space.board]
           }
           return space
