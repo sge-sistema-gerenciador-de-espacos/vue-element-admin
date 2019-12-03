@@ -69,7 +69,7 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-          <el-form-item label="Period" prop="period">
+          <!--<el-form-item label="Period" prop="period">-->
               <!--<el-select v-model="course.period" required>-->
                   <!--<el-option value="11" label="Anual">Anual</el-option>-->
                   <!--<el-option value="0" label="Inativo">Inativo</el-option>-->
