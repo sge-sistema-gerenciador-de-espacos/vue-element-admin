@@ -136,7 +136,8 @@ export default {
     cancel: 'Cancel',
     disable: 'Disable',
     enable: 'Enable',
-    softwares: 'Softwares'
+    softwares: 'Softwares',
+    nonUniqueProgram: 'The name has to be unique!'
   },
   course: {
     addCourse: 'New Course',
@@ -147,7 +148,9 @@ export default {
     cancel: 'Cancel',
     disable: 'Disable',
     enable: 'Enable',
-    softwares: 'Softwares'
+    softwares: 'Softwares',
+    emptyProgram: 'The program can not be null!',
+    invalidProgram: 'The program is invalid!'
   },
   classes: {
     addClass: 'New Class',
@@ -247,5 +250,9 @@ export default {
     tagsView: 'Open Tags-View',
     fixedHeader: 'Fixed Header',
     sidebarLogo: 'Sidebar Logo'
+  },
+  general: {
+    statusInvalid: 'The status is invalid!',
+    fieldEmpty: 'The field can not be empty!'
   }
 }

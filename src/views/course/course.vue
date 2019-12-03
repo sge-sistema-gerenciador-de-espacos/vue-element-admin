@@ -53,7 +53,7 @@
         <el-form-item label="Code" prop="code">
           <el-input v-model="course.code" placeholder="Course Code" required />
         </el-form-item>
-        <el-form-item label="Program" prop="program_id">
+        <el-form-item ref="program.id" label="Program" prop="program.id">
           <el-select v-model="course.program.id" required>
             <el-option
               v-for="item in programList"
@@ -69,6 +69,12 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="Period" prop="period">
+              <!--<el-select v-model="course.period" required>-->
+                  <!--<el-option value="11" label="Anual">Anual</el-option>-->
+                  <!--<el-option value="0" label="Inativo">Inativo</el-option>-->
+              <!--</el-select>-->
+          <!--</el-form-item>-->
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="closeDialog">
@@ -93,6 +99,7 @@ const defaultCourse = {
   code: '',
   credit: '',
   status: '',
+  period: '',
   program: {
     id: '',
     name: ''
@@ -135,13 +142,24 @@ export default {
       const validateProgram = (rule, value, callback) => {
           if (value) {
               if (this.checkIfProgramExists(value)) {
-                  callback(new Error('The state is invalid!'))
+                  callback(new Error('The program is invalid!'))
               } else {
                   callback()
               }
           }
           else {
-              callback(new Error('The state is invalid!'))
+              callback(new Error('The program can not be null!'))
+          }
+      }
+      const validateCode = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('The field can not be empty!'))
+          } else {
+              if (this.checkIfCodeExists(value, this.program.id)) {
+                  callback(new Error('Already a course with this name!'))
+              } else {
+                  callback()
+              }
           }
       }
     return {
@@ -157,7 +175,9 @@ export default {
         courseRules: {
             status: [{ required: true, trigger: 'blur', validator: validateStatus }],
             credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-            program_id: [{ required: true, trigger: 'blur', validator: validateProgram }],
+            'program.id': [{ required: true, trigger: 'blur', validator: validateProgram }],
+            code: [{ required: true, trigger: 'blur', validator: validateCode }],
+            period: [{ required: true, trigger: 'blur', validator: validateEmpty }]
         }
     }
   },
@@ -251,7 +271,7 @@ export default {
                   this.loading = false
 
                   const { name } = this.user
-                  this.dialogVisible = false
+                  this.closeDialog()
                   this.$notify({
                       title: 'Success',
                       dangerouslyUseHTMLString: true,
@@ -284,17 +304,33 @@ export default {
       if (this.sendStatusList[course.status]  || course.status == 'Inativo') {
         course.status = this.sendStatusList[course.status]
       }
+        for (let index = 0; index < this.programList.length; index++) {
+            // eslint-disable-next-line eqeqeq
+            if (this.programList[index].id == course.program.id) {
+                course.program.name = this.programList[index].name
+            }
+        }
+
       return course
     },
       checkIfProgramExists(id) {
           for (let index = 0; index < this.programList.length; index++) {
               // eslint-disable-next-line eqeqeq
               if (this.programList[index].id == id) {
+                  return false
+              }
+          }
+          return true
+      },
+      checkIfCodeExists(code, course_id) {
+          for (let index = 0; index < this.courseList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.courseList[index].code == code && this.courseList[index].id != course_id) {
                   return true
               }
           }
           return false
-      }
+      },
   }
 }
 </script>

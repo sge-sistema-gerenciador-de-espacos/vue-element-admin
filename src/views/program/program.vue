@@ -10,11 +10,6 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Code">
-        <template slot-scope="scope">
-          {{ scope.row.code }}
-        </template>
-      </el-table-column>
       <el-table-column align="header-center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
@@ -34,11 +29,8 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Program':'New Program'">
       <el-form ref="program" :model="program" :rules="programRules" label-width="80px" label-position="left">
-        <el-form-item label="Name">
+        <el-form-item label="Name" prop="name">
           <el-input v-model="program.name" placeholder="Program Name" />
-        </el-form-item>
-        <el-form-item label="Code" prop="code">
-          <el-input v-model="program.code" placeholder="Program Code" />
         </el-form-item>
         <el-form-item label="Status" prop="status">
           <el-select v-model="program.status">
@@ -93,17 +85,6 @@ export default {
               }
           }
       }
-      const validateCode = (rule, value, callback) => {
-          if (!value) {
-              callback(new Error('The field can not be empty!'))
-          } else {
-              if (this.checkIfCodeExists(value, this.program.id)) {
-                  callback(new Error('Already a program with this name!'))
-              } else {
-                  callback()
-              }
-          }
-      }
       const validateStatus = (rule, value, callback) => {
           var statusValidate = [1, 0, '1', '0', 'Ativo', 'Inativo']
           if (statusValidate.includes(value)) {
@@ -112,6 +93,7 @@ export default {
               callback(new Error('The status has to be Active or Inactive'))
           }
       }
+
     return {
       loading: false,
       program: Object.assign({}, defaultProgram),
@@ -123,7 +105,7 @@ export default {
       sendStatusList: Object.assign({}, sendStatus),
       programRules: {
           status: [{ required: true, trigger: 'blur', validator: validateStatus }],
-          code: [{ required: true, trigger: 'blur', validator: validateCode }]
+          name: [{ required: true, trigger: 'blur', validator: validateName }]
       }
     }
   },
@@ -210,7 +192,7 @@ export default {
 
                   this.loading = false
                   const { name } = this.program
-                  this.dialogVisible = false
+                  this.closeDialog()
                   this.$notify({
                       title: 'Success',
                       dangerouslyUseHTMLString: true,

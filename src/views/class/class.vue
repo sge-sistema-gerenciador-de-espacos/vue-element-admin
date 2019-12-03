@@ -27,9 +27,9 @@
       </el-table-column>
       <el-table-column align="center" label="Operations" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleAddLack(scope)">
-            {{ $t('classes.addLack') }}
-          </el-button>
+          <!--<el-button type="primary" size="small" @click="handleAddLack(scope)">-->
+            <!--{{ $t('classes.addLack') }}-->
+          <!--</el-button>-->
           <!--<el-button type="primary" size="small" @click="handleAddStudent(scope)">-->
           <!--{{ --$t('classes.addStudent') }}-->
           <!--</el-button>-->

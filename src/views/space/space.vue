@@ -123,7 +123,7 @@
 
       </el-form>
       <div style="text-align:right; margin-top: 10px">
-        <el-button type="danger" @click="dialogVisible=false">
+        <el-button type="danger" @click="closeDialog">
           {{ $t('space.cancel') }}
         </el-button>
       </div>
@@ -375,13 +375,11 @@ export default {
 
               this.loading = false
               const { name } = this.software
-              this.dialogVisible = false
+              this.closeDialog()
               this.$notify({
                   title: 'Success',
                   dangerouslyUseHTMLString: true,
-                  message: `
-        <div>Space: ${name}</div>
-      `,
+                  message: `<div>Space: ${name}</div>`,
                   type: 'success'
               })
           } else {

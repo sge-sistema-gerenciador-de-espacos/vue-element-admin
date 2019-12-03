@@ -70,7 +70,7 @@
           <el-input ref="password" v-model="user.password" placeholder="User Password" required show-password type="e-mail" />
         </el-form-item>
         <el-form-item label="Status" prop="status">
-          <el-select v-model="user.status" required>
+          <el-select ref="status" v-model="user.status" required>
             <el-option value="1" label="Ativo" selected>Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
@@ -98,6 +98,9 @@
         <el-form-item label="City" prop="city">
           <el-input v-model="user.city" placeholder="City" required />
         </el-form-item>
+          <el-form-item label="Neighborhood" prop="neighborhood">
+              <el-input v-model="user.neighborhood" placeholder="Neighborhood" required />
+          </el-form-item>
         <el-form-item label="Street" prop="street">
           <el-input v-model="user.street" placeholder="Street" required />
         </el-form-item>
@@ -137,7 +140,8 @@ const defaultUser = {
   state: '',
   number: '',
   telephone: '',
-  password: ''
+  password: '',
+  neighborhood: ''
 }
 
 const types = {
@@ -239,7 +243,8 @@ export default {
         state: '',
         number: '',
         telephone: '',
-        password: ''
+        password: '',
+        neighborhood: ''
       },
       userRules: {
         email: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -250,7 +255,8 @@ export default {
         city: [{ required: true, trigger: 'blur', validator: validateEmpty }],
         state: [{ required: true, trigger: 'blur', validator: validateState }],
         number: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-        street: [{ required: true, trigger: 'blur', validator: validateEmpty }]
+        street: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+        neighborhood: [{ required: true, trigger: 'blur', validator: validateEmpty }]
       }
     }
   },
@@ -357,7 +363,7 @@ export default {
           this.formReady = false
 
           const { name } = this.user
-          this.dialogVisible = false
+          this.closeDialog()
           this.$notify({
             title: 'Success',
             dangerouslyUseHTMLString: true,

@@ -81,7 +81,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct e-mail'))
+        callback(new Error('Please enter a valid e-mail'))
       } else {
         callback()
       }
