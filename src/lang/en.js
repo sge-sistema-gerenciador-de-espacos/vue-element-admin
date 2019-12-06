@@ -96,25 +96,25 @@ export default {
     cancel: 'Cancel'
   },
   users: {
-    addUser: 'New User',
-    editUser: 'Edit User',
+    addUser: 'Novo Usuário',
+    editUser: 'Editar Usuário',
     roles: 'Your roles',
     switchRoles: 'Switch roles',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
-    delete: 'Delete',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
+    delete: 'Deletar',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
     telephones: 'Check Numbers'
   },
   software: {
-    addSoftware: 'New Software',
-    edit: 'Edit Software',
+    addSoftware: 'Novo Software',
+    edit: 'Editar Software',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
-    delete: 'Delete',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
-    disable: 'Disable',
-    enable: 'Enable'
+    delete: 'Deletar',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    disable: 'Inativar',
+    enable: 'Ativar'
   },
   space: {
     addSpace: 'New Space',
@@ -166,16 +166,16 @@ export default {
     addStudent: 'Add Student'
   },
   scheduling: {
-    addScheduling: 'New Schedule',
-    edit: 'Edit Schedule',
+    addScheduling: 'Novo Agendamento',
+    edit: 'Editar Agendamento',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
-    delete: 'Delete',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
-    disable: 'Disable',
-    enable: 'Enable',
-    accept: 'Accept schedulers',
-    denied: 'Accept schedulers'
+    delete: 'Deletar',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    disable: 'Inativar',
+    enable: 'Ativar',
+    accept: 'Aceitar Agendamento',
+    denied: 'Negar Agendamento'
   },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',

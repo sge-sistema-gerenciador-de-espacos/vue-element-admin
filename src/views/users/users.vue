@@ -10,7 +10,7 @@
         width: 100%;margin-top:30px;"
       border
     >
-      <el-table-column align="center" label="User Name">
+      <el-table-column align="center" label="Nome">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -25,27 +25,25 @@
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Type">
+      <el-table-column align="center" label="Tipo">
         <template slot-scope="scope">
           {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations" width="400">
+      <el-table-column align="center" label="Operações" width="400">
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.status == 'ativo'"
             type="primary"
             size="small"
-            @click="enableDisable(scope, 0)"
-          >
+            @click="enableDisable(scope, 0)">
             {{ $t('software.disable') }}
           </el-button>
           <el-button
             v-if="scope.row.status == 'inativo'"
             type="primary"
             size="small"
-            @click="enableDisable(scope, 1)"
-          >
+            @click="enableDisable(scope, 1)">
             {{ $t('software.enable') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
@@ -58,16 +56,16 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit User':'New User'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Usuário':'Novo Usuário'">
       <el-form ref="user" status-icon :model="user" :rules="userRules" label-width="80px" label-position="left">
-        <el-form-item label="Name" prop="name">
-          <el-input ref="name" v-model="user.name" placeholder="User Name" />
+        <el-form-item label="Nome" prop="name">
+          <el-input ref="name" v-model="user.name" placeholder="Nome" />
         </el-form-item>
         <el-form-item label="Email" prop="email">
           <el-input ref="email" v-model="user.email" placeholder="User Email" required type="e-mail" />
         </el-form-item>
-        <el-form-item label="Password" prop="password">
-          <el-input ref="password" v-model="user.password" placeholder="User Password" required show-password type="e-mail" />
+        <el-form-item label="Senha" prop="password">
+          <el-input ref="password" v-model="user.password" placeholder="Senha do Usuário" required show-password type="password" />
         </el-form-item>
         <el-form-item label="Status" prop="status">
           <el-select ref="status" v-model="user.status" required>
@@ -75,7 +73,7 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Type" prop="type">
+        <el-form-item label="Tipo" prop="type">
           <el-select v-model="user.type" required>
             <el-option value="ADMINISTRATOR" label="Admin" selected>Admin</el-option>
             <el-option value="PROFESSOR" label="Professor">Professor</el-option>
@@ -85,7 +83,7 @@
             <el-option value="MANAGER" label="Gerenciador">Gerenciador</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="State" prop="state">
+        <el-form-item label="Estado" prop="state">
           <el-select v-model="user.state" required>
             <el-option
               v-for="item in stateList"
@@ -95,19 +93,19 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="City" prop="city">
+        <el-form-item label="Cidade" prop="city">
           <el-input v-model="user.city" placeholder="City" required />
         </el-form-item>
-          <el-form-item label="Neighborhood" prop="neighborhood">
+          <el-form-item label="Bairro" prop="neighborhood">
               <el-input v-model="user.neighborhood" placeholder="Neighborhood" required />
           </el-form-item>
-        <el-form-item label="Street" prop="street">
+        <el-form-item label="Rua" prop="street">
           <el-input v-model="user.street" placeholder="Street" required />
         </el-form-item>
-        <el-form-item label="Number" prop="number">
+        <el-form-item label="Número" prop="number">
           <el-input-number v-model="user.number" :min="0" placeholder="Number" required />
         </el-form-item>
-        <el-form-item label="Telephone Number">
+        <el-form-item label="telefone">
           <el-input v-model.number="user.telephone" type="telephone" placeholder="Telephone Number" required />
         </el-form-item>
       </el-form>
@@ -175,10 +173,10 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct e-mail'))
+        callback(new Error('E-mail incorreto'))
       } else {
         if (this.checkIfEmailExists(value, this.user.id)) {
-          callback(new Error('Already a user with this e-mail'))
+          callback(new Error('Já existe um usuário cadastrado com esse e-mail'))
         } else {
           callback()
         }

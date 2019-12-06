@@ -5,34 +5,28 @@
     </el-button>
 
     <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Scheduling Name" width="220">
+      <el-table-column align="center" label="Espaço">
         <template slot-scope="scope">
           {{ scope.row.space.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status" width="155">
+      <el-table-column align="center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Scheduler Name" width="240">
+      <el-table-column align="center" label="Professor">
         <template slot-scope="scope">
-          {{ scope.row.scheduler.name }}
+          {{ scope.row.professor.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Professor" width="240">
+      <el-table-column align="center" label="Turma">
         <template slot-scope="scope">
           {{ scope.row.classes.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations" width="600">
+      <el-table-column align="center" label="Operações" width="300">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.status == 'Ativo'" type="primary" size="small" @click="handleChangeStatus(scope, 'ACCEPTED')">
-            {{ $t('scheduling.accept') }}
-          </el-button>
-          <el-button v-if="scope.row.status == 'Ativo'" type="danger" size="small" @click="handleChangeStatus(scope, 'DENIED')">
-            {{ $t('scheduling.denied') }}
-          </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('scheduling.edit') }}
           </el-button>
@@ -43,9 +37,9 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Scheduling':'New Scheduling'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Agendamento':'Novo Agendamento'">
       <el-form :model="scheduling" label-width="120px" label-position="left">
-        <el-form-item label="Space">
+        <el-form-item label="Espaço">
           <el-select v-model="scheduling.space.id">
             <el-option
               v-for="spaceToShow in this.spaceList"
@@ -56,14 +50,37 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="scheduling.status">
-            <el-option value="WAITING" label="Esperando Resposta">Esperando Resposta</el-option>
-            <el-option value="ACCEPTED" label="Aceito">Aceito</el-option>
-            <el-option value="DENIED" label="Negado">Negado</el-option>
+        <el-form-item label="Tipo" prop="type">
+          <el-select v-model="scheduling.space.type">
+            <el-option value="ROOM" label="Sala" selected>Sala</el-option>
+            <el-option value="LAB" label="Lab">Laboratório</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Class Name">
+        <el-form-item v-if="scheduling.space.type == 'ROOM' || scheduling.space.type == 'Sala'" label="Numero de cadeiras">
+          <el-input-number v-model="scheduling.space.numberChair" :min="1" placeholder="Quantity of chairs" />
+        </el-form-item>
+        <el-form-item v-if="scheduling.space.type == 'LAB' || scheduling.space.type == 'Laboratorio'" label="Numero de computadores">
+          <el-input-number v-model="space.numberPc" :min="1" placeholder="Quantity of PCs" />
+        </el-form-item>
+        <el-form-item label="Projetor" prop="project">
+          <el-select v-model="scheduling.space.project">
+            <el-option value="1" label="Possui">Possui</el-option>
+            <el-option value="0" label="Não Possui">Não Possui</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Quadro Inteligente" prop="smartBoard">
+          <el-select v-model="scheduling.space.smartBoard">
+            <el-option value="1" label="Possui">Possui</el-option>
+            <el-option value="0" label="Não Possui">Não Possui</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Quadro" prop="board">
+          <el-select v-model="scheduling.space.board">
+            <el-option value="1" label="Possui">Possui</el-option>
+            <el-option value="0" label="Não Possui">Não Possui</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Turma">
           <el-select v-model="scheduling.classes.id">
             <el-option
               v-for="classesToShow in this.classesList"
@@ -74,7 +91,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Master Name">
+        <el-form-item label="Nome do Professor">
           <el-select v-model="scheduling.scheduler.name">
             <el-option
               v-for="masterToShow in this.masterList"
@@ -85,29 +102,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Master Name">
-          <el-select v-model="scheduling.it_responsable.name">
-            <el-option
-              v-for="masterToShow in this.masterList"
-              :value="masterToShow.id"
-              :label="masterToShow.name"
-            >
-              {{ masterToShow.name }}
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="date">
+        <el-form-item label="Data do Agendamento">
           <el-date-picker
             v-model="scheduling.filterdate"
             type="daterange"
             range-separator="Até"
-            start-placeholder="Start date"
-            end-placeholder="End date"
+            start-placeholder="Data inicial"
+            end-placeholder="Data final"
             :picker-date="pickerOptions"
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
-        <el-form-item label="Time">
+        <el-form-item label="Horário">
           <el-time-select
             v-model="scheduling.initialtime"
             :picker-options="{
@@ -212,7 +218,7 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getScheduling, addScheduling, deleteScheduling, updateScheduling, addLack } from '@/api/scheduling'
+import { getScheduling, addScheduling, deleteScheduling, updateScheduling } from '@/api/scheduling'
 import { getCourse } from '@/api/course'
 import { getSpaceEnable } from '@/api/space'
 import { getClassEnable } from '@/api/classes'
@@ -284,10 +290,10 @@ export default {
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
-      const space = await getSpaceEnable()
-      this.spaceList = space.data
-      const classes = await getClassEnable()
-      this.spaceList = classes.data
+      // const space = await getSpaceEnable()
+      // this.spaceList = space.data
+      // const classes = await getClassEnable()
+      // this.spaceList = classes.data
       this.dialogType = 'new'
       this.dialogVisible = true
     },
@@ -312,7 +318,7 @@ export default {
       this.scheduling = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the scheduling?', 'Warning', {
+      this.$confirm('Deseja remover o agendamento?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'

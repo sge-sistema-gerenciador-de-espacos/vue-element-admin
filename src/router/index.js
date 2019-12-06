@@ -90,8 +90,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/users/users'),
-        name: 'Users',
-        meta: { title: 'Users', icon: 'user', affix: true, noCache: true }
+        name: 'Cadastro de Usuários',
+        meta: { title: 'Cadastro de Usuários', icon: 'user', affix: true, noCache: true }
       }
     ]
   },
@@ -102,8 +102,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/softwares/software'),
-        name: 'Softwares',
-        meta: { title: 'Software', icon: 'component', affix: true, noCache: true }
+        name: 'Cadastro de Softwares',
+        meta: { title: 'Cadastro de Software', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -114,8 +114,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/space/space'),
-        name: 'Space',
-        meta: { title: 'Space', icon: 'component', affix: true, noCache: true }
+        name: 'Cadastro de Espaço',
+        meta: { title: 'Cadastro de Espaço', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -126,8 +126,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/program/program'),
-        name: 'Program',
-        meta: { title: 'Program', icon: 'component', affix: true, noCache: true }
+        name: 'Cadastro de Curso',
+        meta: { title: 'Cadastro de Curso', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -138,8 +138,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/course/course'),
-        name: 'Course',
-        meta: { title: 'Course', icon: 'component', affix: true, noCache: true }
+        name: 'Cadastro de Matéria',
+        meta: { title: 'Cadastro de Matéria', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -150,8 +150,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/class/class'),
-        name: 'Class',
-        meta: { title: 'Class', icon: 'component', affix: true, noCache: true }
+        name: 'Cadastro de Turma',
+        meta: { title: 'Cadastro de Turma', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -162,8 +162,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/scheduling/scheduling'),
-        name: 'Scheduler',
-        meta: { title: 'Scheduler', icon: 'component', affix: true, noCache: true }
+        name: 'Agendamento',
+        meta: { title: 'Agendamento', icon: 'component', affix: true, noCache: true }
       }
     ]
   }
