@@ -5,17 +5,17 @@
     </el-button>
 
     <el-table :data="programList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Program Name" width="220">
+      <el-table-column align="center" label="Nome do Curso" width="220">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations">
+      <el-table-column align="center" label="Operações">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('program.edit') }}
@@ -27,10 +27,10 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Program':'New Program'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Curso':'Novo Curso'">
       <el-form ref="program" :model="program" :rules="programRules" label-width="80px" label-position="left">
-        <el-form-item label="Name" prop="name">
-          <el-input v-model="program.name" placeholder="Program Name" />
+        <el-form-item label="Nome" prop="name">
+          <el-input v-model="program.name" placeholder="Nome" />
         </el-form-item>
         <el-form-item label="Status" prop="status">
           <el-select v-model="program.status">
@@ -76,10 +76,10 @@ export default {
   data() {
       const validateName = (rule, value, callback) => {
           if (!value) {
-              callback(new Error('The field can not be empty!'))
+              callback(new Error('O campo não pode ser vazio.'))
           } else {
               if (this.checkIfNameExists(value, this.program.id)) {
-                  callback(new Error('Already a program with this name!'))
+                  callback(new Error('Já existe um curso cadastrado com esse nome.'))
               } else {
                   callback()
               }
@@ -90,7 +90,7 @@ export default {
           if (statusValidate.includes(value)) {
               callback()
           } else {
-              callback(new Error('The status has to be Active or Inactive'))
+              callback(new Error('Selecione um status válido.'))
           }
       }
 
@@ -142,7 +142,7 @@ export default {
       this.program = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the program?', 'Warning', {
+      this.$confirm('Deseja desabilitar o curso?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -152,7 +152,7 @@ export default {
           this.programList.splice($index, 1)
           this.$message({
             type: 'success',
-            message: 'Delete succed!'
+            message: 'Desabilitado com sucesso!'
           })
         })
         .catch(err => {
@@ -196,9 +196,7 @@ export default {
                   this.$notify({
                       title: 'Success',
                       dangerouslyUseHTMLString: true,
-                      message: `
-            <div>Program: ${name}</div>
-          `,
+                      message: `<div>Curso: ${name}</div>`,
                       type: 'success'
                   })
               } else {
