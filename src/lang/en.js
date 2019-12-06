@@ -141,7 +141,7 @@ export default {
   },
   course: {
     addCourse: 'Nova Matéria',
-    edit: 'Edit Course',
+    edit: 'Editar Matéria',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
     delete: 'Deletar',
     confirm: 'Confirmar',

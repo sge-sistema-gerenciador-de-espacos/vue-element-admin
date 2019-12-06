@@ -5,32 +5,32 @@
     </el-button>
 
     <el-table :data="courseList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Course Name" width="220">
+      <el-table-column align="center" label="Nome da Matéria" width="220">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Code">
+      <el-table-column align="center" label="Código">
         <template slot-scope="scope">
           {{ scope.row.code }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Program">
+      <el-table-column align="center" label="Curso">
         <template slot-scope="scope">
           {{ scope.row.program.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Credit">
+      <el-table-column align="center" label="Crédito">
         <template slot-scope="scope">
           {{ scope.row.credit }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations">
+      <el-table-column align="center" label="Operações">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('course.edit') }}
@@ -42,18 +42,18 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Course':'New Course'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Matéria':'Nova Matéria'">
       <el-form ref="course" :model="course" :rules="courseRules" label-width="80px" label-position="left">
-        <el-form-item label="Name">
-          <el-input v-model="course.name" placeholder="Course Name" required />
+        <el-form-item label="Nome">
+          <el-input v-model="course.name" placeholder="Nome" required />
         </el-form-item>
-        <el-form-item label="Credit" prop="credit">
-          <el-input-number v-model="course.credit" :min="1" placeholder="Course Credit" required />
+        <el-form-item label="Crédito" prop="credit">
+          <el-input-number v-model="course.credit" :min="1" placeholder="Crédito" required />
         </el-form-item>
-        <el-form-item label="Code" prop="code">
-          <el-input v-model="course.code" placeholder="Course Code" required />
+        <el-form-item label="Código" prop="code">
+          <el-input v-model="course.code" placeholder="Código" required />
         </el-form-item>
-        <el-form-item ref="program.id" label="Program" prop="program.id">
+        <el-form-item ref="program.id" label="Curso" prop="program.id">
           <el-select v-model="course.program.id" required>
             <el-option
               v-for="item in programList"
@@ -129,12 +129,12 @@ export default {
           if (status_validate.includes(value)) {
               callback()
           } else {
-              callback(new Error('The status has to be Active or Inactive'))
+              callback(new Error('Selecione um status válido.'))
           }
       }
       const validateEmpty = (rule, value, callback) => {
           if (!value) {
-              callback(new Error('The field can not be empty is invalid!'))
+              callback(new Error('O campo não pode ser vazio.'))
           } else {
               callback()
           }
@@ -142,21 +142,21 @@ export default {
       const validateProgram = (rule, value, callback) => {
           if (value) {
               if (this.checkIfProgramExists(value)) {
-                  callback(new Error('The program is invalid!'))
+                  callback(new Error('Selecione um curso válido.'))
               } else {
                   callback()
               }
           }
           else {
-              callback(new Error('The program can not be null!'))
+              callback(new Error('Selecione um curso válido.'))
           }
       }
       const validateCode = (rule, value, callback) => {
           if (!value) {
-              callback(new Error('The field can not be empty!'))
+              callback(new Error('O campo não pode ser vazio.'))
           } else {
               if (this.checkIfCodeExists(value, this.program.id)) {
-                  callback(new Error('Already a course with this name!'))
+                  callback(new Error('Já existe uma matéria cadastrada com esse nome.'))
               } else {
                   callback()
               }
@@ -219,7 +219,7 @@ export default {
       this.course = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the course?', 'Warning', {
+      this.$confirm('Deseja remover a matéria?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -229,7 +229,7 @@ export default {
           this.courseList.splice($index, 1)
           this.$message({
             type: 'success',
-            message: 'Delete succed!'
+            message: 'Removido com sucesso!'
           })
         })
         .catch(err => {
@@ -275,9 +275,7 @@ export default {
                   this.$notify({
                       title: 'Success',
                       dangerouslyUseHTMLString: true,
-                      message: `
-            <div>Course: ${name}</div>
-          `,
+                      message: `<div>Matéria: ${name}</div>`,
                       type: 'success'
                   })
               } else {
