@@ -5,17 +5,17 @@
     </el-button>
 
     <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Software Name">
+      <el-table-column align="center" label="Nome do Software">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column :data="softwareList" align="center" label="Operations" width="400">
+      <el-table-column :data="softwareList" align="center" label="Operações" width="400">
         <template slot-scope="scope">
           <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
             {{ $t('software.disable') }}
@@ -33,10 +33,10 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Software':'New Software'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Software':'Novo Software'">
       <el-form ref="software" :model="software" label-width="80px" :rules="softwareRules" label-position="left">
-        <el-form-item label="Name" prop="name">
-          <el-input ref="name" v-model="software.name" placeholder="Software Name" />
+        <el-form-item label="Nome" prop="name">
+          <el-input ref="name" v-model="software.name" placeholder="Nome do Software" />
         </el-form-item>
         <el-form-item label="Status" prop="status">
           <el-select ref="status" v-model="software.status">
@@ -80,10 +80,10 @@ export default {
   data() {
     const validateEmpty = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('The field can not be empty!'))
+        callback(new Error('O campo não pode ser vazio!'))
       } else {
         if (this.checkIfNameExists(value, this.software.id)) {
-          callback(new Error('Already a software with this name!'))
+          callback(new Error('Já existe um software cadastrado com esse nome!'))
         } else {
           callback()
         }
@@ -94,7 +94,7 @@ export default {
       if (status_validate.includes(value)) {
         callback()
       } else {
-        callback(new Error('The status has to be Active or Inactive'))
+        callback(new Error('Selecione um status válido.'))
       }
     }
     return {
@@ -123,10 +123,10 @@ export default {
     this.getSoftware()
   },
   methods: {
-      closeDialog() {
-          this.$refs.software.resetFields()
-          this.dialogVisible = false
-      },
+    closeDialog() {
+      this.$refs.software.resetFields()
+      this.dialogVisible = false
+    },
     async getSoftware() {
       const res = await getSoftware()
       this.softwareList = this.changeType(res.data)
@@ -152,7 +152,7 @@ export default {
       this.confirmRole()
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the software?', 'Warning', {
+      this.$confirm('Deseja remover o software?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -162,7 +162,7 @@ export default {
           this.softwareList.splice($index, 1)
           this.$message({
             type: 'success',
-            message: 'Delete succed!'
+            message: 'Software deletado com sucesso!'
           })
         })
         .catch(err => {
@@ -229,7 +229,7 @@ export default {
       return software
     },
     changeSendType(software) {
-        console.log(software.status + ' ' + this.sendStatusList[software.status])
+      console.log(software.status + ' ' + this.sendStatusList[software.status])
       if (this.sendStatusList[software.status] || software.status == 'Inativo') {
         software.status = this.sendStatusList[software.status]
       }
