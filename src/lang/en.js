@@ -73,10 +73,10 @@ export default {
     size: 'Global Size'
   },
   login: {
-    title: 'Login Form',
+    title: 'SGE - Sistema Gerenciador de Espaços',
     logIn: 'Log in',
-    username: 'Username',
-    password: 'Password',
+    username: 'E-mail',
+    password: 'Senha',
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
