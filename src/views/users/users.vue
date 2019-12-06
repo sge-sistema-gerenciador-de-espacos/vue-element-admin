@@ -173,10 +173,10 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('E-mail incorreto'))
+        callback(new Error('E-mail inválido.'))
       } else {
         if (this.checkIfEmailExists(value, this.user.id)) {
-          callback(new Error('Já existe um usuário cadastrado com esse e-mail'))
+          callback(new Error('Já existe um usuário cadastrado com esse e-mail.'))
         } else {
           callback()
         }
@@ -184,7 +184,7 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('A senha não pode ter menos de 6 digitos.'))
       } else {
         callback()
       }
@@ -194,26 +194,26 @@ export default {
         if (status_validate.includes(value)) {
             callback()
         } else {
-            callback(new Error('The status has to be Active or Inactive'))
+            callback(new Error('Selecione um status válido.'))
         }
     }
     const validateType = (rule, value, callback) => {
       if (this.typesList[value] || this.sendTypesList[value]) {
         callback()
       } else {
-        callback(new Error('The type has to be in list!'))
+        callback(new Error('Selecione um tipo válido.'))
       }
     }
     const validateState = (rule, value, callback) => {
       if (!this.stateList[value]) {
-        callback(new Error('The state is invalid!'))
+        callback(new Error('Selecione um estado válido.'))
       } else {
         callback()
       }
     }
     const validateEmpty = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('The field can not be empty is invalid!'))
+        callback(new Error('O campo não pode ser vazio.'))
       } else {
         callback()
       }
@@ -303,7 +303,7 @@ export default {
       this.user = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the user?', 'Aviso', {
+      this.$confirm('Deseja remover o usuário?', 'Aviso', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -313,7 +313,7 @@ export default {
           this.usersList.splice($index, 1)
           this.$message({
             type: 'success',
-            message: 'Delete succed!'
+            message: 'Usuário removido com sucesso!'
           })
         })
         .catch(err => {
@@ -366,7 +366,7 @@ export default {
             title: 'Success',
             dangerouslyUseHTMLString: true,
             message: `
-            <div>User: ${name}</div>
+            <div>Usuário: ${name}</div>
           `,
             type: 'success'
           })
