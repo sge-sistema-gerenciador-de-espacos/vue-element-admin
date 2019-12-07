@@ -105,7 +105,7 @@
         <el-form-item label="Número" prop="number">
           <el-input-number v-model="user.number" :min="0" placeholder="Number" required />
         </el-form-item>
-        <el-form-item label="telefone">
+        <el-form-item label="Telefone">
           <el-input v-model.number="user.telephone" type="telephone" placeholder="Telephone Number" required />
         </el-form-item>
       </el-form>
