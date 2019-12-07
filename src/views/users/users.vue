@@ -36,14 +36,16 @@
             v-if="scope.row.status == 'ativo'"
             type="primary"
             size="small"
-            @click="enableDisable(scope, 0)">
+            @click="enableDisable(scope, 0)"
+          >
             {{ $t('software.disable') }}
           </el-button>
           <el-button
             v-if="scope.row.status == 'inativo'"
             type="primary"
             size="small"
-            @click="enableDisable(scope, 1)">
+            @click="enableDisable(scope, 1)"
+          >
             {{ $t('software.enable') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
@@ -96,9 +98,9 @@
         <el-form-item label="Cidade" prop="city">
           <el-input v-model="user.city" placeholder="City" required />
         </el-form-item>
-          <el-form-item label="Bairro" prop="neighborhood">
-              <el-input v-model="user.neighborhood" placeholder="Neighborhood" required />
-          </el-form-item>
+        <el-form-item label="Bairro" prop="neighborhood">
+          <el-input v-model="user.neighborhood" placeholder="Neighborhood" required />
+        </el-form-item>
         <el-form-item label="Rua" prop="street">
           <el-input v-model="user.street" placeholder="Street" required />
         </el-form-item>
@@ -110,7 +112,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="closeDialog">
+        <el-button type="danger" @click="dialogVisible=false">
           {{ $t('users.cancel') }}
         </el-button>
         <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
@@ -139,7 +141,8 @@ const defaultUser = {
   number: '',
   telephone: '',
   password: '',
-  neighborhood: ''
+  neighborhood: '',
+  street: ''
 }
 
 const types = {
@@ -190,12 +193,12 @@ export default {
       }
     }
     const validateStatus = (rule, value, callback) => {
-        var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
-        if (status_validate.includes(value)) {
-            callback()
-        } else {
-            callback(new Error('Selecione um status válido.'))
-        }
+      var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+      if (status_validate.includes(value)) {
+        callback()
+      } else {
+        callback(new Error('Selecione um status válido.'))
+      }
     }
     const validateType = (rule, value, callback) => {
       if (this.typesList[value] || this.sendTypesList[value]) {
@@ -242,7 +245,8 @@ export default {
         number: '',
         telephone: '',
         password: '',
-        neighborhood: ''
+        neighborhood: '',
+        street: ''
       },
       userRules: {
         email: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -269,10 +273,10 @@ export default {
     this.getStates()
   },
   methods: {
-      closeDialog() {
-          this.$refs.user.resetFields()
-          this.dialogVisible = false
-      },
+    closeDialog() {
+      this.$refs.user.resetFields()
+      this.dialogVisible = false
+    },
     async getUsers() {
       const res = await getUsers()
       this.usersList = this.changeType(res.data)
@@ -328,6 +332,7 @@ export default {
     },
     confirmRole() {
       this.$refs.user.validate(valid => {
+        console.log(this.user)
         const isEdit = this.dialogType === 'edit'
         if (valid) {
           this.formReady = true
@@ -361,7 +366,7 @@ export default {
           this.formReady = false
 
           const { name } = this.user
-          this.closeDialog()
+          this.dialogVisible = false
           this.$notify({
             title: 'Success',
             dangerouslyUseHTMLString: true,
@@ -408,6 +413,8 @@ export default {
       return user
     },
     checkIfEmailExists(email, user_id) {
+      console.log(user_id + ' ' + email)
+      console.log(this.usersList)
       for (let index = 0; index < this.usersList.length; index++) {
         // eslint-disable-next-line eqeqeq
         if (this.usersList[index].email == email && this.usersList[index].id != user_id) {

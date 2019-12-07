@@ -6,6 +6,9 @@ const tokens = {
   },
   editor: {
     token: 'editor-token'
+  },
+  'admin@admin.com': {
+    token: 'admin-token'
   }
 }
 
@@ -27,27 +30,31 @@ const users = {
 const accessUsers = [
   {
     id: 1,
-    type: 'admin',
-    email: 'admin@admin.com',
-    status: 'ativo',
-    name: 'Super Admin',
+    type: 'ADMINISTRATOR',
+    email: 'teste1@teste.com',
+    status: 0,
+    name: 'teste',
     city: 'Rio de Janeiro',
-    state: 'RJ',
+    state: '1',
     number: '20',
-    street: 'bcdhcgdvcdg',
-    telephones: '2199999-9999'
+    telephone: '21',
+    password: '123456',
+    neighborhood: 'teste',
+    street: 'Rua teste'
   },
   {
     id: 2,
-    type: 'editor',
-    email: 'editor@editor.com',
-    status: 'ativo',
-    name: 'Normal Editor',
+    type: 'ADMINISTRATOR',
+    email: 'teste@teste.com',
+    status: 0,
+    name: 'teste',
     city: 'Rio de Janeiro',
-    state: 'RJ',
+    state: '1',
     number: '20',
-    street: 'bcdhcgdvcdg',
-    telephones: '2199999-9999'
+    telephone: '21',
+    password: '123456',
+    neighborhood: 'teste',
+    street: 'Rua teste'
   }
 ]
 

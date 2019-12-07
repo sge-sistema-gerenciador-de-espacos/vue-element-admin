@@ -8,6 +8,9 @@
         </h6>
         <lang-select class="set-language" />
       </div>
+      <!--<div>-->
+      <!--<img src="{{ url }}"/>-->
+      <!--</div>-->
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -92,7 +95,8 @@ export default {
       passwordType: 'password',
       loading: false,
       showDialog: false,
-      redirect: undefined
+      redirect: undefined,
+      url: 'http://localhost:9527/sge.png'
     }
   },
   watch: {
