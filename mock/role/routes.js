@@ -401,36 +401,36 @@ export const asyncRoutes = [
     path: '/excel',
     component: 'layout/Layout',
     redirect: '/excel/export-excel',
-    name: 'Excel',
+    name: 'Relatórios',
     meta: {
-      title: 'excel',
+      title: 'Relatórios',
       icon: 'excel'
     },
     children: [
       {
         path: 'export-excel',
         component: 'views/excel/exportExcel',
-        name: 'ExportExcel',
+        name: 'Relatório de Faltas dos professores',
         meta: { title: 'exportExcel' }
       },
       {
         path: 'export-selected-excel',
         component: 'views/excel/selectExcel',
-        name: 'SelectExcel',
+        name: 'Relatório de evasão dos alunos',
         meta: { title: 'selectExcel' }
       },
       {
         path: 'export-merge-header',
         component: 'views/excel/mergeHeader',
-        name: 'MergeHeader',
+        name: 'Relatório de utilização de espaços',
         meta: { title: 'mergeHeader' }
-      },
-      {
-        path: 'upload-excel',
-        component: 'views/excel/uploadExcel',
-        name: 'UploadExcel',
-        meta: { title: 'uploadExcel' }
       }
+      // {
+      //   path: 'upload-excel',
+      //   component: 'views/excel/uploadExcel',
+      //   name: 'UploadExcel',
+      //   meta: { title: 'uploadExcel' }
+      // }
     ]
   },
 

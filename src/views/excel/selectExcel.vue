@@ -1,18 +1,19 @@
 <template>
   <div class="app-container">
-    <!-- $t is vue-i18n global function to translate lang -->
-    <el-input v-model="filename" :placeholder="$t('excel.placeholder')" style="width:340px;" prefix-icon="el-icon-document" />
-    <el-button :loading="downloadLoading" style="margin-bottom:20px" type="primary" icon="document" @click="handleDownload">
-      {{ $t('excel.selectedExport') }}
-    </el-button>
-    <a href="https://panjiachen.github.io/vue-element-admin-site/feature/component/excel.html" target="_blank" style="margin-left:15px;">
-      <el-tag type="info">Documentation</el-tag>
-    </a>
+    <div>
+      <FilenameOption v-model="filename"/>
+      <AutoWidthOption v-model="autoWidth" />
+      <BookTypeOption v-model="bookType" />
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">
+        {{ $t('excel.export') }} Excel
+      </el-button>
+    </div>
+
     <el-table
       ref="multipleTable"
       v-loading="listLoading"
       :data="list"
-      element-loading-text="拼命加载中"
+      element-loading-text="Carregando Dados"
       border
       fit
       highlight-current-row
@@ -51,9 +52,13 @@
 
 <script>
 import { fetchList } from '@/api/article'
+import FilenameOption from './components/FilenameOption'
+import AutoWidthOption from './components/AutoWidthOption'
+import BookTypeOption from './components/BookTypeOption'
 
 export default {
   name: 'SelectExcel',
+  components: { FilenameOption, AutoWidthOption, BookTypeOption },
   data() {
     return {
       list: null,

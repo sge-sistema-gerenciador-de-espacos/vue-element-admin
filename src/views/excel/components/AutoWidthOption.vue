@@ -1,12 +1,12 @@
 <template>
   <div style="display:inline-block;">
-    <label class="radio-label">Cell Auto-Width: </label>
+    <label class="radio-label">Célula com largura automática: </label>
     <el-radio-group v-model="autoWidth">
       <el-radio :label="true" border>
-        True
+        Sim
       </el-radio>
       <el-radio :label="false" border>
-        False
+        Não
       </el-radio>
     </el-radio-group>
   </div>

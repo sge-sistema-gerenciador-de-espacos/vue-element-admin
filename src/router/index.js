@@ -176,35 +176,35 @@ export const constantRoutes = [
 */
 export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
-  chartsRouter,
-  tableRouter,
+  // chartsRouter,
+  // tableRouter,
   {
     path: '/excel',
     component: Layout,
     redirect: '/excel/export-excel',
-    name: 'Excel',
+    name: 'Relatórios',
     meta: {
-      title: 'excel',
+      title: 'Relatórios',
       icon: 'excel'
     },
     children: [
       {
         path: 'export-excel',
         component: () => import('@/views/excel/exportExcel'),
-        name: 'ExportExcel',
-        meta: { title: 'exportExcel' }
+        name: 'Relatório de Faltas dos professores',
+        meta: { title: 'Relatório de Faltas dos professores' }
       },
       {
         path: 'export-selected-excel',
         component: () => import('@/views/excel/selectExcel'),
-        name: 'SelectExcel',
-        meta: { title: 'selectExcel' }
+        name: 'Relatório de evasão dos alunos',
+        meta: { title: 'Relatório de evasão dos alunos' }
       },
       {
         path: 'export-merge-header',
         component: () => import('@/views/excel/mergeHeader'),
-        name: 'MergeHeader',
-        meta: { title: 'mergeHeader' }
+        name: 'Relatório de utilização de espaços',
+        meta: { title: 'Relatório de utilização de espaços' }
       },
       {
         path: 'upload-excel',
@@ -215,40 +215,40 @@ export const asyncRoutes = [
     ]
   },
 
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    alwaysShow: true,
-    meta: { title: 'zip', icon: 'zip' },
-    children: [
-      {
-        path: 'download',
-        component: () => import('@/views/zip/index'),
-        name: 'ExportZip',
-        meta: { title: 'exportZip' }
-      }
-    ]
-  },
+  // {
+  //   path: '/zip',
+  //   component: Layout,
+  //   redirect: '/zip/download',
+  //   alwaysShow: true,
+  //   meta: { title: 'zip', icon: 'zip' },
+  //   children: [
+  //     {
+  //       path: 'download',
+  //       component: () => import('@/views/zip/index'),
+  //       name: 'ExportZip',
+  //       meta: { title: 'exportZip' }
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/pdf/index'),
-        name: 'PDF',
-        meta: { title: 'pdf', icon: 'pdf' }
-      }
-    ]
-  },
-  {
-    path: '/pdf/download',
-    component: () => import('@/views/pdf/download'),
-    hidden: true
-  },
+  // {
+  //   path: '/pdf',
+  //   component: Layout,
+  //   redirect: '/pdf/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/pdf/index'),
+  //       name: 'PDF',
+  //       meta: { title: 'pdf', icon: 'pdf' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/pdf/download',
+  //   component: () => import('@/views/pdf/download'),
+  //   hidden: true
+  // },
   {
     path: '*',
     redirect: '/404',

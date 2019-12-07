@@ -5,27 +5,27 @@
     </el-button>
 
     <el-table :data="classesList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Class Name" width="220">
+      <el-table-column align="center" label="Nome da Turma" width="220">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Status">
+      <el-table-column align="center" label="Status">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Course Name">
+      <el-table-column align="center" label="Matéria">
         <template slot-scope="scope">
           {{ scope.row.course.name }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="Professor">
+      <el-table-column align="center" label="Professor">
         <template slot-scope="scope">
           {{ scope.row.master.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations" width="400">
+      <el-table-column align="center" label="Operações" width="400">
         <template slot-scope="scope">
           <!--<el-button type="primary" size="small" @click="handleAddLack(scope)">-->
             <!--{{ $t('classes.addLack') }}-->
@@ -43,10 +43,10 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Class':'New Class'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Turma':'Nova Turma'">
       <el-form :model="classes" label-width="120px" label-position="left">
-        <el-form-item label="Name">
-          <el-input v-model="classes.name" placeholder="Class Name" />
+        <el-form-item label="Nome">
+          <el-input v-model="classes.name" placeholder="Nome" />
         </el-form-item>
         <el-form-item label="Status">
           <el-select v-model="classes.status">
@@ -54,7 +54,7 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Course Name">
+        <el-form-item label="Matéria">
           <el-select v-model="classes.course.id">
             <el-option
               v-for="courseToShow in this.courseList"
@@ -64,7 +64,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Master Name">
+        <el-form-item label="Professor">
           <el-select v-model="classes.master.id">
             <el-option
               v-for="masterToShow in this.masterList"
@@ -276,7 +276,7 @@ export default {
       this.classes = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Confirm to remove the classes?', 'Warning', {
+      this.$confirm('Deseja remover a turma?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -286,7 +286,7 @@ export default {
           this.classesList.splice($index, 1)
           this.$message({
             type: 'success',
-            message: 'Delete succed!'
+            message: 'Removido com sucesso!'
           })
         })
         .catch(err => {

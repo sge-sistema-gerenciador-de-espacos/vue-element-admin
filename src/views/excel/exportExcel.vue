@@ -2,18 +2,15 @@
   <!-- $t is vue-i18n global function to translate lang -->
   <div class="app-container">
     <div>
-      <FilenameOption v-model="filename" />
+      <FilenameOption v-model="filename"/>
       <AutoWidthOption v-model="autoWidth" />
       <BookTypeOption v-model="bookType" />
       <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">
         {{ $t('excel.export') }} Excel
       </el-button>
-      <a href="https://panjiachen.github.io/vue-element-admin-site/feature/component/excel.html" target="_blank" style="margin-left:15px;">
-        <el-tag type="info">Documentation</el-tag>
-      </a>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="拼命加载中" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Carregando Dados" border fit highlight-current-row>
       <el-table-column align="center" label="Id" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}

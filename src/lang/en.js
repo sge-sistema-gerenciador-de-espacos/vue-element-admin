@@ -153,14 +153,14 @@ export default {
     invalidProgram: 'The program is invalid!'
   },
   classes: {
-    addClass: 'New Class',
-    edit: 'Edit Class',
+    addClass: 'Nova Turma',
+    edit: 'Editar Turma',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
-    delete: 'Delete',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
-    disable: 'Disable',
-    enable: 'Enable',
+    delete: 'Deletar',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    disable: 'Inativar',
+    enable: 'Ativar',
     softwares: 'Softwares',
     addLack: 'Add Lack',
     addStudent: 'Add Student'
@@ -222,9 +222,9 @@ export default {
     documentation: 'Document introduction'
   },
   excel: {
-    export: 'Export',
-    selectedExport: 'Export Selected Items',
-    placeholder: 'Please enter the file name(default excel-list)'
+    export: 'Exportar',
+    selectedExport: 'Exportar itens selecionados',
+    placeholder: 'Por favor, digite o nome do arquivo(padrão excel-list)'
   },
   zip: {
     export: 'Export',
