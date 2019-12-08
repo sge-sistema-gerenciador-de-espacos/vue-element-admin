@@ -11,7 +11,8 @@
                     <p>Nome: {{ scope.row.name }}</p>
                     <p>Matricula: {{ scope.row.application }}</p>
                     <p>Telefone: {{ scope.row.telephone }}</p>
-                    <p>Estado: {{ scope.row.state}}</p>
+                    <p>Cidade: {{ scope.row.city }}</p>
+                    <p>Bairro: {{ scope.row.neighborhood }}</p>
                     <p>Rua: {{ scope.row.street }}</p>
                     <p>Numero: {{ scope.row.number }}</p>
                     <div slot="reference" class="name-wrapper">
