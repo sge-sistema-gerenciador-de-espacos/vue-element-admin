@@ -191,7 +191,7 @@ export default {
     }
       const validateApplication = (rule, value, callback) => {
           if (this.checkIfApplicationExists(value, this.user.id)) {
-              callback(new Error('Já existe um usuário cadastrado com esse e-mail.'))
+              callback(new Error('Já existe um usuário cadastrado com essa matricula.'))
           } else {
               callback()
           }
