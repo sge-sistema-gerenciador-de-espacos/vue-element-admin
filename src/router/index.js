@@ -191,8 +191,8 @@ export const asyncRoutes = [
       {
         path: 'export-excel',
         component: () => import('@/views/excel/exportExcel'),
-        name: 'Relatório de Faltas dos professores',
-        meta: { title: 'Relatório de Faltas dos professores' }
+        name: 'Relatório de Utilização dos Espaços',
+        meta: { title: 'Relatório de Utilização dos Espaços' }
       },
       {
         path: 'export-selected-excel',

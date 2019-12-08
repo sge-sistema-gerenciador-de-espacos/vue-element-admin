@@ -410,7 +410,7 @@ export const asyncRoutes = [
       {
         path: 'export-excel',
         component: 'views/excel/exportExcel',
-        name: 'Relatório de Faltas dos professores',
+        name: 'Relatório de Utilização dos Espaços',
         meta: { title: 'exportExcel' }
       },
       {
