@@ -114,7 +114,8 @@ export default {
     confirm: 'Confirmar',
     cancel: 'Cancelar',
     disable: 'Inativar',
-    enable: 'Ativar'
+    enable: 'Ativar',
+    addSoftwareSpace: 'Adicionar o Software'
   },
   space: {
     addSpace: 'Novo Espaço',

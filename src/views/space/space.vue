@@ -57,7 +57,7 @@
           <el-input-number v-model="space.numberChair" :min="1" placeholder="Número de cadeira" />
         </el-form-item>
         <el-form-item v-if="space.type == 'LAB' || space.type == 'Laboratorio'" label="Número de Computadores">
-          <el-input-number v-model="space.numberPc" :min="1" placeholder="Número de Computadores" />
+            <el-input-number v-model="space.numberPc" :min="1" placeholder="Número de Computadores" />
         </el-form-item>
         <el-form-item label="Projetor" prop="project">
           <el-select v-model="space.project">
@@ -88,37 +88,40 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogSoftware" :title="'Softwares'">
+    <el-dialog :visible.sync="dialogSoftware" :title="'Softwares'" align="center">
       <el-form :model="software" label-width="80px" label-position="left">
         <el-table :data="softwareSpaceList" style="width: 100%;margin-top:30px;" border>
-          <h1>Teste</h1>
-          <el-table-column align="center" label="Space Name" width="220">
-            <template slot-scope="softwareSpaceScopeList">
-              {{ softwareSpaceScopeList.row.name }}
-            </template>
-          </el-table-column>
-          <el-table-column align="center" :data="softwareSpaceList" label="Operations">
-            <template slot-scope="softwareSpaceScope">
-              <el-button type="danger" size="small" @click="handleDeleteSoftware(softwareSpaceScope)">
-                {{ $t('space.delete') }}
-              </el-button>
-            </template>
+          <el-table-column label="Softwares Adicionados" align="center">
+            <el-table-column align="center" label="Software">
+              <template slot-scope="softwareSpaceScopeList">
+                {{ softwareSpaceScopeList.row.name }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" :data="softwareSpaceList" label="Operações">
+              <template slot-scope="softwareSpaceScope">
+                <el-button type="danger" size="small" @click="handleDeleteSoftware(softwareSpaceScope)">
+                  {{ $t('space.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table-column>
         </el-table>
 
         <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-          <el-table-column align="center" label="Space Name" width="220">
-            <template slot-scope="softwareScope">
-              {{ softwareScope.row.name }}
-            </template>
-          </el-table-column>
-          <el-table-column align="center" :data="softwareList" label="Operations">
-            <template slot-scope="softwareScope">
-              <el-button type="submit" size="small" @click="handleAddSoftwareSpace(softwareScope)">
-                {{ $t('software.addSoftware') }}
-              </el-button>
-            </template>
-          </el-table-column>
+            <el-table-column label="Softwares a Adicionar" align="center">
+                  <el-table-column align="center" label="Space Name">
+                    <template slot-scope="softwareScope">
+                      {{ softwareScope.row.name }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :data="softwareList" label="Operations">
+                    <template slot-scope="softwareScope">
+                      <el-button type="submit" size="small" @click="handleAddSoftwareSpace(softwareScope)">
+                        {{ $t('software.addSoftwareSpace') }}
+                      </el-button>
+                    </template>
+                  </el-table-column>
+            </el-table-column>
         </el-table>
 
       </el-form>
@@ -267,21 +270,19 @@ export default {
       this.spaceList = this.changeType(res.data)
     },
     async handleSoftwares(scope) {
-      this.space = deepClone(scope.row)
-      // const res = await getSoftwareSpace(this.space.id)
-      // this.softwareSpaceList = res.data
+      const res = await getSoftwareSpace(scope.row.id)
+      this.softwareSpaceList = res.data
       const response = await getActiveSoftware()
-      //   for (let indexResponse = 0; indexResponse < response.data.length; indexResponse ++) {
-      //     console.log(response.data[indexResponse].id)
-      //       for (let indexSoftware = 0; indexSoftware < this.softwareList.length; indexSoftware ++) {
-      //         console.log(this.softwareList[indexSoftware].id)
-      //           console.log(this.softwareList[indexSoftware].id == response.data[indexResponse].id)
-      //           if (this.softwareList[indexSoftware].id == response.data[indexResponse].id) {
-      //               response.data.splice(indexResponse)
-      //               continue
-      //           }
-      //       }
-      // }
+        for (let indexResponse = 0; indexResponse < response.data.length; indexResponse ++) {
+          console.log(response.data[indexResponse].id)
+            for (let indexSoftware = 0; indexSoftware < this.softwareSpaceList.length; indexSoftware ++) {
+              console.log(this.softwareList[indexSoftware].id)
+                console.log(this.softwareList[indexSoftware].id == response.data[indexResponse].id)
+                if (this.softwareSpaceList[indexSoftware].id == response.data[indexResponse].id) {
+                    response.data.splice(indexResponse)
+                }
+            }
+      }
       this.softwareList = response.data
       this.dialogSoftware = true
     },
@@ -390,7 +391,7 @@ export default {
       })
     },
     async handleAddSoftwareSpace({ $index, row }) {
-      const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id })
+      const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id }, this.space.id)
       this.softwareList.splice($index, 1)
       this.softwareSpaceList.push(row)
       const { name } = row

@@ -425,12 +425,6 @@ export const asyncRoutes = [
         name: 'Relatório de utilização de espaços',
         meta: { title: 'mergeHeader' }
       }
-      // {
-      //   path: 'upload-excel',
-      //   component: 'views/excel/uploadExcel',
-      //   name: 'UploadExcel',
-      //   meta: { title: 'uploadExcel' }
-      // }
     ]
   },
 

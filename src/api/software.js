@@ -40,7 +40,7 @@ export function deleteSoftware(id) {
 
 export function getSoftwareSpace(id) {
   return request({
-    url: `/software/space/${id}`,
+    url: `/space/${id}/software`,
     method: 'get'
   })
 }
@@ -54,14 +54,14 @@ export function getActiveSoftware() {
 
 export function deleteSoftwareSpace(SoftwareId, SpaceId) {
   return request({
-    url: `/software/${SoftwareId}/space/${SpaceId}`,
+    url: `/space/${SpaceId}/software/${SoftwareId}`,
     method: 'delete'
   })
 }
 
-export function addSoftwareSpace(data) {
+export function addSoftwareSpace(data, spaceId) {
   return request({
-    url: `/software/space`,
+    url: `space/${spaceId}/software`,
     method: 'post',
     data
   })

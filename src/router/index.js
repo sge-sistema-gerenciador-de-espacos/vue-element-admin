@@ -191,20 +191,20 @@ export const asyncRoutes = [
       {
         path: 'export-excel',
         component: () => import('@/views/excel/exportExcel'),
-        name: 'Relatório de Utilização dos Espaços',
-        meta: { title: 'Relatório de Utilização dos Espaços' }
+        name: 'Utilização dos Espaços',
+        meta: { title: 'Ocupação dos Espaços' }
       },
       {
         path: 'export-selected-excel',
         component: () => import('@/views/excel/selectExcel'),
         name: 'Relatório de evasão dos alunos',
-        meta: { title: 'Relatório de evasão dos alunos' }
+        meta: { title: 'Evasão dos alunos' }
       },
       {
         path: 'export-merge-header',
         component: () => import('@/views/excel/mergeHeader'),
         name: 'Relatório de utilização de espaços',
-        meta: { title: 'Relatório de utilização de espaços' }
+        meta: { title: 'Frequencia dos espaços' }
       },
       {
         path: 'upload-excel',
