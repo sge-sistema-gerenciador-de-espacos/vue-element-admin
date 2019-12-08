@@ -126,7 +126,7 @@
 
       </el-form>
       <div style="text-align:right; margin-top: 10px">
-        <el-button type="danger" @click="dialogVisible=false">
+        <el-button type="danger" @click="dialogSoftware=false">
           {{ $t('space.cancel') }}
         </el-button>
       </div>

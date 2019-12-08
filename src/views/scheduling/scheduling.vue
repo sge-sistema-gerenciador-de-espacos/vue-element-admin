@@ -102,11 +102,21 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="Dia da Semana" prop="weekDay">
+          <el-select v-model="scheduling.weekDay">
+            <el-option value="1" label="Segunda">Segunda</el-option>
+            <el-option value="2" label="Terça">Terça</el-option>
+            <el-option value="3" label="Quarta">Quarta</el-option>
+            <el-option value="4" label="Quinta">Quinta</el-option>
+            <el-option value="5" label="Sexta">Sexta</el-option>
+            <el-option value="6" label="Sabado">Sabado</el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="Data do Agendamento">
           <el-date-picker
+            align="center"
             v-model="scheduling.filterdate"
             type="daterange"
-            range-separator="Até"
             start-placeholder="Data inicial"
             end-placeholder="Data final"
             :picker-date="pickerOptions"
