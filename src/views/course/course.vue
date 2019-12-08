@@ -4,8 +4,8 @@
       {{ $t('course.addCourse') }}
     </el-button>
 
-    <el-table :data="courseList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Nome da Matéria" width="220" fixed>
+    <el-table :data="courseList" style="width: 100%;margin-top:30px;" border max-height="250">
+      <el-table-column align="center" label="Nome da Matéria" width="220" fixed >
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>

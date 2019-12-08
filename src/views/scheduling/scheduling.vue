@@ -4,7 +4,7 @@
       {{ $t('scheduling.addScheduling') }}
     </el-button>
 
-    <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Espaço" fixed>
         <template slot-scope="scope">
           {{ scope.row.space.name }}

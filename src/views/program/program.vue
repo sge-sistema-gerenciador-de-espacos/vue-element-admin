@@ -4,7 +4,7 @@
       {{ $t('program.addProgram') }}
     </el-button>
 
-    <el-table :data="programList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="programList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Nome do Curso" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}

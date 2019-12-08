@@ -4,7 +4,7 @@
       {{ $t('software.addSoftware') }}
     </el-button>
 
-    <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Nome do Software" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}

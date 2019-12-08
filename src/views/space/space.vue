@@ -4,9 +4,9 @@
       {{ $t('space.addSpace') }}
     </el-button>
 
-    <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border max-height="250">
 
-      <el-table-column align="center" label="Nome do Espaço" width="350" fixed>
+      <el-table-column align="center" label="Nome do Espaço" width="350" fixed >
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>

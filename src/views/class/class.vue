@@ -4,7 +4,7 @@
       {{ $t('classes.addClass') }}
     </el-button>
 
-    <el-table :data="classesList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="classesList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Nome da Turma" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
