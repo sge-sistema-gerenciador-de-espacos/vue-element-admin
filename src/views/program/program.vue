@@ -40,7 +40,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="closeDialog">
+        <el-button type="danger" @click="dialogVisible=false">
           {{ $t('program.cancel') }}
         </el-button>
         <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
@@ -192,7 +192,7 @@ export default {
 
                   this.loading = false
                   const { name } = this.program
-                  this.closeDialog()
+                  this.dialogVisible=false
                   this.$notify({
                       title: 'Success',
                       dangerouslyUseHTMLString: true,

@@ -79,7 +79,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="closeDialog">
+        <el-button type="danger" @click="dialogVisible=false">
           {{ $t('space.cancel') }}
         </el-button>
         <el-button type="primary" :loading="loading" @click.native.prevent="confirmRole">
@@ -123,7 +123,7 @@
 
       </el-form>
       <div style="text-align:right; margin-top: 10px">
-        <el-button type="danger" @click="closeDialog">
+        <el-button type="danger" @click="dialogVisible=false">
           {{ $t('space.cancel') }}
         </el-button>
       </div>
@@ -375,11 +375,11 @@ export default {
 
           this.loading = false
           const { name } = this.software
-          this.closeDialog()
+          this.dialogVisible=false
           this.$notify({
             title: 'Success',
             dangerouslyUseHTMLString: true,
-            message: `<div>Espaço: ${name}</div>`,
+            message: `<div>Espaço: ${ name }</div>`,
             type: 'success'
           })
         } else {

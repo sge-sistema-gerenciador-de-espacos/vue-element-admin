@@ -20,27 +20,23 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" align="center" />
-      <el-table-column align="center" label="Id" width="95">
+      <el-table-column align="center" label="Id">
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="Nome do Aluno" align="center">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.author }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Readings" width="115" align="center">
+      <el-table-column align="center" label="Data de Entrada">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          <i class="el-icon-time" />
+          <span>{{ scope.row.initial_time }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="PDate" width="220">
+      <el-table-column align="center" label="Data de Evasão">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.display_time }}</span>
@@ -86,8 +82,8 @@ export default {
       if (this.multipleSelection.length) {
         this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
-          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
+          const tHeader = ['Id', 'Aluno', 'Evasão']
+          const filterVal = ['id', 'author', 'display_time']
           const list = this.multipleSelection
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({

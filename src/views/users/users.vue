@@ -85,6 +85,9 @@
             <el-option value="MANAGER" label="Gerenciador">Gerenciador</el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="Matricula" prop="application">
+          <el-input v-model.number="user.application" placeholder="Matricula" required />
+        </el-form-item>
         <el-form-item label="Estado" prop="state">
           <el-select v-model="user.state" required>
             <el-option
@@ -142,7 +145,8 @@ const defaultUser = {
   telephone: '',
   password: '',
   neighborhood: '',
-  street: ''
+  street: '',
+  application: ''
 }
 
 const types = {
@@ -185,6 +189,13 @@ export default {
         }
       }
     }
+      const validateApplication = (rule, value, callback) => {
+          if (this.checkIfApplicationExists(value, this.user.id)) {
+              callback(new Error('Já existe um usuário cadastrado com esse e-mail.'))
+          } else {
+              callback()
+          }
+      }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('A senha não pode ter menos de 6 digitos.'))
@@ -246,7 +257,8 @@ export default {
         telephone: '',
         password: '',
         neighborhood: '',
-        street: ''
+        street: '',
+        application:  ''
       },
       userRules: {
         email: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -258,7 +270,8 @@ export default {
         state: [{ required: true, trigger: 'blur', validator: validateState }],
         number: [{ required: true, trigger: 'blur', validator: validateEmpty }],
         street: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-        neighborhood: [{ required: true, trigger: 'blur', validator: validateEmpty }]
+        neighborhood: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+        application: [{ required: true, trigger: 'blur', validator: validateApplication }]
       }
     }
   },
@@ -422,7 +435,18 @@ export default {
         }
       }
       return false
-    }
+    },
+      checkIfApplicationExists(application, user_id) {
+          console.log(user_id + ' ' + application)
+          console.log(this.usersList)
+          for (let index = 0; index < this.usersList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.usersList[index].application == application && this.usersList[index].id != user_id) {
+                  return true
+              }
+          }
+          return false
+      }
   }
 }
 </script>

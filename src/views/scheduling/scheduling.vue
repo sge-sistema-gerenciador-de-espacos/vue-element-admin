@@ -234,6 +234,10 @@ const defaultScheduling = {
     id: '',
     name: ''
   },
+  professor: {
+      id: '',
+      name: ''
+  },
   it_responsable: {
     id: '',
     name: ''
@@ -245,7 +249,8 @@ const defaultScheduling = {
   initialtime: '',
   endtime: '',
   initialdate: '',
-  enddate: ''
+  enddate: '',
+  filterdate: []
 }
 
 export default {
@@ -263,6 +268,7 @@ export default {
       dialogType: 'new',
       checkStrictly: false,
       schedulingList: [],
+      masterList: [],
       spaceList: [],
       classesList: []
     }

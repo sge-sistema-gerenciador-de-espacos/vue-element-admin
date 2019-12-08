@@ -31,9 +31,9 @@ const accessUsers = [
   {
     id: 1,
     type: 'ADMINISTRATOR',
-    email: 'teste1@teste.com',
+    email: 'matheus.tere7@gmail.com',
     status: 0,
-    name: 'teste',
+    name: 'Anthony Rodrigues',
     city: 'Rio de Janeiro',
     state: '1',
     number: '20',
@@ -45,9 +45,9 @@ const accessUsers = [
   {
     id: 2,
     type: 'ADMINISTRATOR',
-    email: 'teste@teste.com',
+    email: 'cabral@gmail.com',
     status: 0,
-    name: 'teste',
+    name: 'Tiago Cabral',
     city: 'Rio de Janeiro',
     state: '1',
     number: '20',
