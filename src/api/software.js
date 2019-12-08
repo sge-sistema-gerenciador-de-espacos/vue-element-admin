@@ -59,9 +59,9 @@ export function deleteSoftwareSpace(SoftwareId, SpaceId) {
   })
 }
 
-export function addSoftwareSpace(data, spaceId) {
+export function addSoftwareSpace(data) {
   return request({
-    url: `space/${spaceId}/software`,
+    url: `space/software`,
     method: 'post',
     data
   })

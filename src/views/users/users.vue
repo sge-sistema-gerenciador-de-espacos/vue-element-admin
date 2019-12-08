@@ -4,33 +4,38 @@
       {{ $t('users.addUser') }}
     </el-button>
 
-    <el-table
-      :data="usersList"
-      style="
-        width: 100%;margin-top:30px;"
-      border
-    >
-      <el-table-column align="center" label="Nome">
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="E-mail">
+    <el-table :data="usersList" style=" width: 100%;margin-top:30px;" border >
+        <el-table-column label="Nome" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Nome: {{ scope.row.name }}</p>
+                    <p>Matricula: {{ scope.row.application }}</p>
+                    <p>Telefone: {{ scope.row.telephone }}</p>
+                    <p>Estado: {{ scope.row.state}}</p>
+                    <p>Rua: {{ scope.row.street }}</p>
+                    <p>Numero: {{ scope.row.number }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.name }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+      <el-table-column align="center" label="E-mail" fixed>
         <template slot-scope="scope">
           {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Tipo">
+      <el-table-column align="center" label="Tipo" fixed>
         <template slot-scope="scope">
           {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações" width="400">
+      <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.status == 'ativo'"

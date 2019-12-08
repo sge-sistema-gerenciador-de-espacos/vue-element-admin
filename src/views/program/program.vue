@@ -5,17 +5,17 @@
     </el-button>
 
     <el-table :data="programList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Nome do Curso" width="220">
+      <el-table-column align="center" label="Nome do Curso" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações">
+      <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('program.edit') }}

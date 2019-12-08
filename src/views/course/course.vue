@@ -5,32 +5,32 @@
     </el-button>
 
     <el-table :data="courseList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Nome da Matéria" width="220">
+      <el-table-column align="center" label="Nome da Matéria" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Código">
+      <el-table-column align="center" label="Código" fixed>
         <template slot-scope="scope">
           {{ scope.row.code }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Curso">
+      <el-table-column align="center" label="Curso" fixed>
         <template slot-scope="scope">
           {{ scope.row.program.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Crédito">
+      <el-table-column align="center" label="Crédito" fixed>
         <template slot-scope="scope">
           {{ scope.row.credit }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações">
+      <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('course.edit') }}
@@ -69,12 +69,21 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-          <!--<el-form-item label="Period" prop="period">-->
-              <!--<el-select v-model="course.period" required>-->
-                  <!--<el-option value="11" label="Anual">Anual</el-option>-->
-                  <!--<el-option value="0" label="Inativo">Inativo</el-option>-->
-              <!--</el-select>-->
-          <!--</el-form-item>-->
+          <el-form-item label="Period" prop="period">
+              <el-select v-model="course.period" required>
+                <el-option value="11" label="Anual">Anual</el-option>
+                <el-option value="1" label="1º">1º</el-option>
+                <el-option value="2" label="2º">2º</el-option>
+                <el-option value="3" label="3º">3º</el-option>
+                <el-option value="4" label="4º">4º</el-option>
+                <el-option value="5" label="5º">5º</el-option>
+                <el-option value="6" label="6º">6º</el-option>
+                <el-option value="7" label="7º">7º</el-option>
+                <el-option value="8" label="8º">8º</el-option>
+                <el-option value="9" label="9º">9º</el-option>
+                <el-option value="10" label="10º">10º</el-option>
+              </el-select>
+          </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">

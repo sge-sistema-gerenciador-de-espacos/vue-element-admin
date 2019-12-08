@@ -5,27 +5,27 @@
     </el-button>
 
     <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Espaço">
+      <el-table-column align="center" label="Espaço" fixed>
         <template slot-scope="scope">
           {{ scope.row.space.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Professor">
+      <el-table-column align="center" label="Professor" fixed>
         <template slot-scope="scope">
           {{ scope.row.professor.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Turma">
+      <el-table-column align="center" label="Turma" fixed>
         <template slot-scope="scope">
           {{ scope.row.classes.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações" width="300">
+      <el-table-column align="center" label="Operações" width="300" fixed>
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('scheduling.edit') }}

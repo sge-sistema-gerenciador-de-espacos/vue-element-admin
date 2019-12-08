@@ -5,17 +5,17 @@
     </el-button>
 
     <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Nome do Software">
+      <el-table-column align="center" label="Nome do Software" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column :data="softwareList" align="center" label="Operações" width="400">
+      <el-table-column :data="softwareList" align="center" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
             {{ $t('software.disable') }}

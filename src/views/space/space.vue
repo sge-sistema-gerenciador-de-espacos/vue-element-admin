@@ -6,22 +6,22 @@
 
     <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border>
 
-      <el-table-column align="center" label="Nome do Espaço" width="350">
+      <el-table-column align="center" label="Nome do Espaço" width="350" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status" style="width: 100%;margin-top:30px;">
+      <el-table-column align="center" label="Status" style="width: 100%;margin-top:30px;" fixed>
         <template slot-scope="scope" align="center" width="150">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Tipo" width="100">
+      <el-table-column align="center" label="Tipo" width="100" fixed>
         <template slot-scope="scope">
           {{ scope.row.type }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :data="spaceList" label="Operações">
+      <el-table-column align="center" :data="spaceList" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button v-if="scope.row.type == 'Laboratorio' || space.type == 'LAB'" type="primary" size="small" @click="handleSoftwares(scope)">
             {{ $t('space.softwares') }}
@@ -391,7 +391,7 @@ export default {
       })
     },
     async handleAddSoftwareSpace({ $index, row }) {
-      const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id }, this.space.id)
+      const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id })
       this.softwareList.splice($index, 1)
       this.softwareSpaceList.push(row)
       const { name } = row

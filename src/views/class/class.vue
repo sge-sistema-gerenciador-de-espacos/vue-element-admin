@@ -5,27 +5,27 @@
     </el-button>
 
     <el-table :data="classesList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="Nome da Turma" width="220">
+      <el-table-column align="center" label="Nome da Turma" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Status">
+      <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Matéria">
+      <el-table-column align="center" label="Matéria" fixed>
         <template slot-scope="scope">
           {{ scope.row.course.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Professor">
+      <el-table-column align="center" label="Professor" fixed>
         <template slot-scope="scope">
           {{ scope.row.master.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações" width="400">
+      <el-table-column align="center" label="Operações" width="400" fixed>
         <template slot-scope="scope">
           <!--<el-button type="primary" size="small" @click="handleAddLack(scope)">-->
             <!--{{ $t('classes.addLack') }}-->
