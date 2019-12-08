@@ -21,21 +21,54 @@
                 </el-popover>
             </template>
         </el-table-column>
-      <el-table-column align="center" label="E-mail" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.email }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Status" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Tipo" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.type }}
-        </template>
-      </el-table-column>
+        <el-table-column label="E-mail" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Nome: {{ scope.row.name }}</p>
+                    <p>Matricula: {{ scope.row.application }}</p>
+                    <p>Telefone: {{ scope.row.telephone }}</p>
+                    <p>Cidade: {{ scope.row.city }}</p>
+                    <p>Bairro: {{ scope.row.neighborhood }}</p>
+                    <p>Rua: {{ scope.row.street }}</p>
+                    <p>Numero: {{ scope.row.number }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.email }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+        <el-table-column label="Status" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Nome: {{ scope.row.name }}</p>
+                    <p>Matricula: {{ scope.row.application }}</p>
+                    <p>Telefone: {{ scope.row.telephone }}</p>
+                    <p>Cidade: {{ scope.row.city }}</p>
+                    <p>Bairro: {{ scope.row.neighborhood }}</p>
+                    <p>Rua: {{ scope.row.street }}</p>
+                    <p>Numero: {{ scope.row.number }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.status }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+        <el-table-column label="Tipo" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Nome: {{ scope.row.name }}</p>
+                    <p>Matricula: {{ scope.row.application }}</p>
+                    <p>Telefone: {{ scope.row.telephone }}</p>
+                    <p>Cidade: {{ scope.row.city }}</p>
+                    <p>Bairro: {{ scope.row.neighborhood }}</p>
+                    <p>Rua: {{ scope.row.street }}</p>
+                    <p>Numero: {{ scope.row.number }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.type }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button
