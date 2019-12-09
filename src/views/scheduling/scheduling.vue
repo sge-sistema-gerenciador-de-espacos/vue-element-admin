@@ -114,8 +114,8 @@
         </el-form-item>
         <el-form-item label="Data do Agendamento">
           <el-date-picker
-            align="center"
             v-model="scheduling.filterdate"
+            align="center"
             type="daterange"
             start-placeholder="Data inicial"
             end-placeholder="Data final"
@@ -129,14 +129,20 @@
             :picker-options="{
               start: '08:00',
               step: '00:30',
-              end: '22:30'
+              end: '22:30',
+              maxTime: scheduling.endtime
             }"
             placeholder="Hora Inicial"
           />
           <el-time-select
             v-model="scheduling.endtime"
             arrow-control
-            :picker-options="{start: '08:00', step: '00:30', end: '22:30'}"
+            :picker-options="{
+              start: '08:00',
+              step: '00:30',
+              end: '22:30',
+              minTime: scheduling.initialtime
+            }"
             placeholder="Hora Final"
           />
         </el-form-item>
@@ -232,10 +238,12 @@ import { getScheduling, addScheduling, deleteScheduling, updateScheduling } from
 import { getCourse } from '@/api/course'
 import { getSpaceEnable } from '@/api/space'
 import { getClassEnable } from '@/api/classes'
+import { getMasterUsers } from '@/api/user'
 
 const defaultScheduling = {
   id: '',
   status: '',
+  weekDay: '',
   classes: {
     id: '',
     name: ''
@@ -245,8 +253,8 @@ const defaultScheduling = {
     name: ''
   },
   professor: {
-      id: '',
-      name: ''
+    id: '',
+    name: ''
   },
   it_responsable: {
     id: '',
@@ -258,8 +266,6 @@ const defaultScheduling = {
   },
   initialtime: '',
   endtime: '',
-  initialdate: '',
-  enddate: '',
   filterdate: []
 }
 
@@ -291,6 +297,8 @@ export default {
   created() {
     // Mock: get all routes and roles list from server
     this.getScheduling()
+    this.getSpaceEnable()
+    this.getMasterUsers()
   },
   methods: {
     async getScheduling() {
@@ -306,10 +314,10 @@ export default {
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
-      // const space = await getSpaceEnable()
-      // this.spaceList = space.data
-      // const classes = await getClassEnable()
-      // this.spaceList = classes.data
+      const space = await getSpaceEnable()
+      this.spaceList = space.data
+      const classes = await getClassEnable()
+      this.spaceList = classes.data
       this.dialogType = 'new'
       this.dialogVisible = true
     },

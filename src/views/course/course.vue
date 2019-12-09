@@ -5,7 +5,7 @@
     </el-button>
 
     <el-table :data="courseList" style="width: 100%;margin-top:30px;" border max-height="250">
-      <el-table-column align="center" label="Nome da Matéria" width="220" fixed >
+      <el-table-column align="center" label="Nome da Matéria" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -69,21 +69,21 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-          <el-form-item label="Period" prop="period">
-              <el-select v-model="course.period" required>
-                <el-option value="11" label="Anual">Anual</el-option>
-                <el-option value="1" label="1º">1º</el-option>
-                <el-option value="2" label="2º">2º</el-option>
-                <el-option value="3" label="3º">3º</el-option>
-                <el-option value="4" label="4º">4º</el-option>
-                <el-option value="5" label="5º">5º</el-option>
-                <el-option value="6" label="6º">6º</el-option>
-                <el-option value="7" label="7º">7º</el-option>
-                <el-option value="8" label="8º">8º</el-option>
-                <el-option value="9" label="9º">9º</el-option>
-                <el-option value="10" label="10º">10º</el-option>
-              </el-select>
-          </el-form-item>
+        <el-form-item label="Period" prop="period">
+          <el-select v-model="course.period" required>
+            <el-option value="11" label="Anual">Anual</el-option>
+            <el-option value="1" label="1º">1º</el-option>
+            <el-option value="2" label="2º">2º</el-option>
+            <el-option value="3" label="3º">3º</el-option>
+            <el-option value="4" label="4º">4º</el-option>
+            <el-option value="5" label="5º">5º</el-option>
+            <el-option value="6" label="6º">6º</el-option>
+            <el-option value="7" label="7º">7º</el-option>
+            <el-option value="8" label="8º">8º</el-option>
+            <el-option value="9" label="9º">9º</el-option>
+            <el-option value="10" label="10º">10º</el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -133,44 +133,43 @@ const sendStatus = {
 
 export default {
   data() {
-      const validateStatus = (rule, value, callback) => {
-          var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
-          if (status_validate.includes(value)) {
-              callback()
-          } else {
-              callback(new Error('Selecione um status válido.'))
-          }
+    const validateStatus = (rule, value, callback) => {
+      var status_validate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+      if (status_validate.includes(value)) {
+        callback()
+      } else {
+        callback(new Error('Selecione um status válido.'))
       }
-      const validateEmpty = (rule, value, callback) => {
-          if (!value) {
-              callback(new Error('O campo não pode ser vazio.'))
-          } else {
-              callback()
-          }
+    }
+    const validateEmpty = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('O campo não pode ser vazio.'))
+      } else {
+        callback()
       }
-      const validateProgram = (rule, value, callback) => {
-          if (value) {
-              if (this.checkIfProgramExists(value)) {
-                  callback(new Error('Selecione um curso válido.'))
-              } else {
-                  callback()
-              }
-          }
-          else {
-              callback(new Error('Selecione um curso válido.'))
-          }
+    }
+    const validateProgram = (rule, value, callback) => {
+      if (value) {
+        if (this.checkIfProgramExists(value)) {
+          callback(new Error('Selecione um curso válido.'))
+        } else {
+          callback()
+        }
+      } else {
+        callback(new Error('Selecione um curso válido.'))
       }
-      const validateCode = (rule, value, callback) => {
-          if (!value) {
-              callback(new Error('O campo não pode ser vazio.'))
-          } else {
-              if (this.checkIfCodeExists(value, this.program.id)) {
-                  callback(new Error('Já existe uma matéria cadastrada com esse nome.'))
-              } else {
-                  callback()
-              }
-          }
+    }
+    const validateCode = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('O campo não pode ser vazio.'))
+      } else {
+        if (this.checkIfCodeExists(value, this.course.id)) {
+          callback(new Error('Já existe uma matéria cadastrada com esse nome.'))
+        } else {
+          callback()
+        }
       }
+    }
     return {
       course: Object.assign({}, defaultCourse),
       program: Object.assign({}, defaultProgram),
@@ -181,13 +180,13 @@ export default {
       programList: [],
       statusList: Object.assign({}, status),
       sendStatusList: Object.assign({}, sendStatus),
-        courseRules: {
-            status: [{ required: true, trigger: 'blur', validator: validateStatus }],
-            credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-            'program.id': [{ required: true, trigger: 'blur', validator: validateProgram }],
-            code: [{ required: true, trigger: 'blur', validator: validateCode }],
-            period: [{ required: true, trigger: 'blur', validator: validateEmpty }]
-        }
+      courseRules: {
+        status: [{ required: true, trigger: 'blur', validator: validateStatus }],
+        credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+        'program.id': [{ required: true, trigger: 'blur', validator: validateProgram }],
+        code: [{ required: true, trigger: 'blur', validator: validateCode }],
+        period: [{ required: true, trigger: 'blur', validator: validateEmpty }]
+      }
     }
   },
   computed: {
@@ -201,10 +200,10 @@ export default {
     this.getCourse()
   },
   methods: {
-      closeDialog() {
-          this.$refs.course.resetFields()
-          this.dialogVisible = false
-      },
+    closeDialog() {
+      this.$refs.course.resetFields()
+      this.dialogVisible = false
+    },
     async getCourse() {
       const res = await getCourse()
       this.courseList = this.changeType(res.data)
@@ -245,57 +244,56 @@ export default {
           console.error(err)
         })
     },
-      confirmRole() {
-          this.$refs.course.validate(valid => {
-              const isEdit = this.dialogType === 'edit'
-              if (valid) {
-                  this.formReady = true
-                  this.loading = true
-                  if (isEdit) {
-                      new Promise((resolve, reject) => {
-                          updateCourse(this.course.id, this.changeSendType(this.course)).then(response => {
-                              for (let index = 0; index < this.courseList.length; index++) {
-                                  if (this.courseList[index].id === this.course.id) {
-                                      this.courseList.splice(index, 1, Object.assign({}, this.changeType(this.course)))
-                                      break
-                                  }
-                              }
-                              resolve()
-                          }).catch(error => {
-                              reject(error)
-                          })
-                      })
-                  } else {
-                      new Promise((resolve, reject) => {
-                          addCourse(this.changeSendType(this.course)).then(response => {
-                              const { data } = response
-                              this.course.id = data.key
-                              this.courseList.push(this.changeType(this.course))
-                              resolve()
-                          }).catch(error => {
-                              reject(error)
-                          })
-                      })
+    confirmRole() {
+      this.$refs.course.validate(valid => {
+        const isEdit = this.dialogType === 'edit'
+        if (valid) {
+          this.formReady = true
+          this.loading = true
+          if (isEdit) {
+            new Promise((resolve, reject) => {
+              updateCourse(this.course.id, this.changeSendType(this.course)).then(response => {
+                for (let index = 0; index < this.courseList.length; index++) {
+                  if (this.courseList[index].id === this.course.id) {
+                    this.courseList.splice(index, 1, Object.assign({}, this.changeType(this.course)))
+                    break
                   }
-                  this.loading = false
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
+          } else {
+            new Promise((resolve, reject) => {
+              addCourse(this.changeSendType(this.course)).then(response => {
+                const { data } = response
+                this.course.id = data.key
+                this.courseList.push(this.changeType(this.course))
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
+          }
+          this.loading = false
 
-                  const { name } = this.course
-                  this.dialogVisible=false
-                  this.$notify({
-                      title: 'Success',
-                      dangerouslyUseHTMLString: true,
-                      message: `<div>Matéria: ${name}</div>`,
-                      type: 'success'
-                  })
-              } else {
-                  this.formReady = false
-                  this.loading = false
-                  console.log('error submit!!')
-                  return false
-              }
+          const { name } = this.course
+          this.dialogVisible = false
+          this.$notify({
+            title: 'Success',
+            dangerouslyUseHTMLString: true,
+            message: `<div>Matéria: ${name}</div>`,
+            type: 'success'
           })
-      },
-
+        } else {
+          this.formReady = false
+          this.loading = false
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
 
     changeType(courses) {
       if (Array.isArray(courses)) {
@@ -308,36 +306,36 @@ export default {
       return courses
     },
     changeSendType(course) {
-      if (this.sendStatusList[course.status]  || course.status == 'Inativo') {
+      if (this.sendStatusList[course.status] || course.status == 'Inativo') {
         course.status = this.sendStatusList[course.status]
       }
-        for (let index = 0; index < this.programList.length; index++) {
-            // eslint-disable-next-line eqeqeq
-            if (this.programList[index].id == course.program.id) {
-                course.program.name = this.programList[index].name
-            }
+      for (let index = 0; index < this.programList.length; index++) {
+        // eslint-disable-next-line eqeqeq
+        if (this.programList[index].id == course.program.id) {
+          course.program.name = this.programList[index].name
         }
+      }
 
       return course
     },
-      checkIfProgramExists(id) {
-          for (let index = 0; index < this.programList.length; index++) {
-              // eslint-disable-next-line eqeqeq
-              if (this.programList[index].id == id) {
-                  return false
-              }
-          }
-          return true
-      },
-      checkIfCodeExists(code, course_id) {
-          for (let index = 0; index < this.courseList.length; index++) {
-              // eslint-disable-next-line eqeqeq
-              if (this.courseList[index].code == code && this.courseList[index].id != course_id) {
-                  return true
-              }
-          }
+    checkIfProgramExists(id) {
+      for (let index = 0; index < this.programList.length; index++) {
+        // eslint-disable-next-line eqeqeq
+        if (this.programList[index].id == id) {
           return false
-      },
+        }
+      }
+      return true
+    },
+    checkIfCodeExists(code, course_id) {
+      for (let index = 0; index < this.courseList.length; index++) {
+        // eslint-disable-next-line eqeqeq
+        if (this.courseList[index].code == code && this.courseList[index].id != course_id) {
+          return true
+        }
+      }
+      return false
+    }
   }
 }
 </script>
