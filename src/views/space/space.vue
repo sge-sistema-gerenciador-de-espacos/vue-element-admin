@@ -6,7 +6,7 @@
 
     <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border max-height="250">
 
-      <el-table-column align="center" label="Nome do Espaço" width="350" fixed >
+      <el-table-column align="center" label="Nome do Espaço" width="350" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -57,7 +57,7 @@
           <el-input-number v-model="space.numberChair" :min="1" placeholder="Número de cadeira" />
         </el-form-item>
         <el-form-item v-if="space.type == 'LAB' || space.type == 'Laboratorio'" label="Número de Computadores">
-            <el-input-number v-model="space.numberPc" :min="1" placeholder="Número de Computadores" />
+          <el-input-number v-model="space.numberPc" :min="1" placeholder="Número de Computadores" />
         </el-form-item>
         <el-form-item label="Projetor" prop="project">
           <el-select v-model="space.project">
@@ -108,20 +108,20 @@
         </el-table>
 
         <el-table :data="softwareList" style="width: 100%;margin-top:30px;" border>
-            <el-table-column label="Softwares a Adicionar" align="center">
-                  <el-table-column align="center" label="Space Name">
-                    <template slot-scope="softwareScope">
-                      {{ softwareScope.row.name }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column align="center" :data="softwareList" label="Operations">
-                    <template slot-scope="softwareScope">
-                      <el-button type="submit" size="small" @click="handleAddSoftwareSpace(softwareScope)">
-                        {{ $t('software.addSoftwareSpace') }}
-                      </el-button>
-                    </template>
-                  </el-table-column>
+          <el-table-column label="Softwares a Adicionar" align="center">
+            <el-table-column align="center" label="Space Name">
+              <template slot-scope="softwareScope">
+                {{ softwareScope.row.name }}
+              </template>
             </el-table-column>
+            <el-table-column align="center" :data="softwareList" label="Operations">
+              <template slot-scope="softwareScope">
+                <el-button type="submit" size="small" @click="handleAddSoftwareSpace(softwareScope)">
+                  {{ $t('software.addSoftwareSpace') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table-column>
         </el-table>
 
       </el-form>
@@ -270,18 +270,19 @@ export default {
       this.spaceList = this.changeType(res.data)
     },
     async handleSoftwares(scope) {
-      const res = await getSoftwareSpace(scope.row.id)
+      this.space = deepClone(scope.row)
+      const res = await getSoftwareSpace(this.space.id)
       this.softwareSpaceList = res.data
       const response = await getActiveSoftware()
-        for (let indexResponse = 0; indexResponse < response.data.length; indexResponse ++) {
-          console.log(response.data[indexResponse].id)
-            for (let indexSoftware = 0; indexSoftware < this.softwareSpaceList.length; indexSoftware ++) {
-              console.log(this.softwareList[indexSoftware].id)
-                console.log(this.softwareList[indexSoftware].id == response.data[indexResponse].id)
-                if (this.softwareSpaceList[indexSoftware].id == response.data[indexResponse].id) {
-                    response.data.splice(indexResponse)
-                }
-            }
+      for (let indexResponse = 0; indexResponse < response.data.length; indexResponse++) {
+        console.log(response.data[indexResponse].id)
+        for (let indexSoftware = 0; indexSoftware < this.softwareSpaceList.length; indexSoftware++) {
+          console.log(this.softwareList[indexSoftware].id)
+          console.log(this.softwareList[indexSoftware].id == response.data[indexResponse].id)
+          if (this.softwareSpaceList[indexSoftware].id == response.data[indexResponse].id) {
+            response.data.splice(indexResponse)
+          }
+        }
       }
       this.softwareList = response.data
       this.dialogSoftware = true
@@ -376,11 +377,11 @@ export default {
 
           this.loading = false
           const { name } = this.software
-          this.dialogVisible=false
+          this.dialogVisible = false
           this.$notify({
             title: 'Success',
             dangerouslyUseHTMLString: true,
-            message: `<div>Espaço: ${ name }</div>`,
+            message: `<div>Espaço: ${name}</div>`,
             type: 'success'
           })
         } else {
