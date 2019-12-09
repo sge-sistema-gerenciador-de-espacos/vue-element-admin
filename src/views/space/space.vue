@@ -6,21 +6,66 @@
 
     <el-table :data="spaceList" style="width: 100%;margin-top:30px;" border max-height="250">
 
-      <el-table-column align="center" label="Nome do Espaço" width="350" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Status" style="width: 100%;margin-top:30px;" fixed>
-        <template slot-scope="scope" align="center" width="150">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Tipo" width="100" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.type }}
-        </template>
-      </el-table-column>
+        <el-table-column label="Nome do Espaço" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Espaço: {{ scope.row.name }}</p>
+                    <p v-if="scope.row.project == 1 || scope.row.project == '1' || scope.row.project == 'Possui'">Possui Projetor: Possui</p>
+                    <p v-if="scope.row.project == 0 || scope.row.project == '0' || scope.row.project == 'Não Possui'">Possui Projetor: Não Possui</p>
+                    <p v-if="scope.row.smartBoard == 1 || scope.row.smartBoard == '1' || scope.row.smartBoard == 'Possui'">Possui Quadro Inteligente: Possui</p>
+                    <p v-if="scope.row.smartBoard == 0 || scope.row.smartBoard == '0' || scope.row.smartBoard == 'Não Possui'">Possui Quadro Inteligente: Não Possui</p>
+                    <p v-if="scope.row.board == 1 || scope.row.board == '1' || scope.row.board == 'Possui'">Possui Quadro: Possui</p>
+                    <p v-if="scope.row.board == 0 || scope.row.board == '0' || scope.row.board == 'Não Possui'">Possui Quadro: Não Possui</p>
+
+                    <p v-if="scope.row.type == 'ROOM' || scope.row.type == 'Sala'">Quantidade de cadeiras: {{ scope.row.numberChair }}</p>
+                    <p v-if="space.type == 'LAB' || space.type == 'Laboratorio'">Quantidade de cadeiras: {{ scope.row.numberPc }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.name }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="Status" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Espaço: {{ scope.row.name }}</p>
+                    <p v-if="scope.row.project == 1 || scope.row.project == '1' || scope.row.project == 'Possui'">Possui Projetor: Possui</p>
+                    <p v-if="scope.row.project == 0 || scope.row.project == '0' || scope.row.project == 'Não Possui'">Possui Projetor: Não Possui</p>
+                    <p v-if="scope.row.smartBoard == 1 || scope.row.smartBoard == '1' || scope.row.smartBoard == 'Possui'">Possui Quadro Inteligente: Possui</p>
+                    <p v-if="scope.row.smartBoard == 0 || scope.row.smartBoard == '0' || scope.row.smartBoard == 'Não Possui'">Possui Quadro Inteligente: Não Possui</p>
+                    <p v-if="scope.row.board == 1 || scope.row.board == '1' || scope.row.board == 'Possui'">Possui Quadro: Possui</p>
+                    <p v-if="scope.row.board == 0 || scope.row.board == '0' || scope.row.board == 'Não Possui'">Possui Quadro: Não Possui</p>
+
+                    <p v-if="scope.row.type == 'ROOM' || scope.row.type == 'Sala'">Quantidade de cadeiras: {{ scope.row.numberChair }}</p>
+                    <p v-if="space.type == 'LAB' || space.type == 'Laboratorio'">Quantidade de cadeiras: {{ scope.row.numberPc }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.status }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="Tipo" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Espaço: {{ scope.row.name }}</p>
+                    <p v-if="scope.row.project == 1 || scope.row.project == '1' || scope.row.project == 'Possui'">Possui Projetor: Possui</p>
+                    <p v-if="scope.row.project == 0 || scope.row.project == '0' || scope.row.project == 'Não Possui'">Possui Projetor: Não Possui</p>
+                    <p v-if="scope.row.smartBoard == 1 || scope.row.smartBoard == '1' || scope.row.smartBoard == 'Possui'">Possui Quadro Inteligente: Possui</p>
+                    <p v-if="scope.row.smartBoard == 0 || scope.row.smartBoard == '0' || scope.row.smartBoard == 'Não Possui'">Possui Quadro Inteligente: Não Possui</p>
+                    <p v-if="scope.row.board == 1 || scope.row.board == '1' || scope.row.board == 'Possui'">Possui Quadro: Possui</p>
+                    <p v-if="scope.row.board == 0 || scope.row.board == '0' || scope.row.board == 'Não Possui'">Possui Quadro: Não Possui</p>
+
+                    <p v-if="scope.row.type == 'ROOM' || scope.row.type == 'Sala'">Quantidade de cadeiras: {{ scope.row.numberChair }}</p>
+                    <p v-if="space.type == 'LAB' || space.type == 'Laboratorio'">Quantidade de cadeiras: {{ scope.row.numberPc }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.type }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
       <el-table-column align="center" :data="spaceList" label="Operações" fixed>
         <template slot-scope="scope">
           <el-button v-if="scope.row.type == 'Laboratorio' || space.type == 'LAB'" type="primary" size="small" @click="handleSoftwares(scope)">

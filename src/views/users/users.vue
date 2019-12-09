@@ -4,7 +4,7 @@
       {{ $t('users.addUser') }}
     </el-button>
 
-    <el-table :data="usersList" style=" width: 100%;margin-top:30px;" border max-height="250">
+    <el-table :data="usersList" style=" width: 100%;margin-top:30px;" border max-height="250"">
         <el-table-column label="Nome" align="center" fixed>
             <template slot-scope="scope">
                 <el-popover trigger="hover" placement="top">

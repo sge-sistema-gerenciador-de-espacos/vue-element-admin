@@ -5,34 +5,88 @@
     </el-button>
 
     <el-table :data="classesList" style="width: 100%;margin-top:30px;" border max-height="250">
-      <el-table-column align="center" label="Nome da Turma" width="220" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Status" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Matéria" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.course.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Professor" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.master.name }}
-        </template>
-      </el-table-column>
+        <el-table-column label="Nome da Turma" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Turma: {{ scope.row.name }}</p>
+                    <p>Ano: {{ scope.row.year }}</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.name }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="Status" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Turma: {{ scope.row.name }}</p>
+                    <p>Ano: {{ scope.row.year }}</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.status }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="Matéria" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Turma: {{ scope.row.name }}</p>
+                    <p>Ano: {{ scope.row.year }}</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.course.name }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="Professor" align="center" fixed>
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <p>Turma: {{ scope.row.name }}</p>
+                    <p>Ano: {{ scope.row.year }}</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+
+                    <div slot="reference" class="name-wrapper">
+                        {{ scope.row.master.name }}
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
       <el-table-column align="center" label="Operações" width="400" fixed>
         <template slot-scope="scope">
-          <!--<el-button type="primary" size="small" @click="handleAddLack(scope)">-->
-            <!--{{ $t('classes.addLack') }}-->
-          <!--</el-button>-->
-          <!--<el-button type="primary" size="small" @click="handleAddStudent(scope)">-->
-          <!--{{ --$t('classes.addStudent') }}-->
-          <!--</el-button>-->
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('classes.edit') }}
           </el-button>
@@ -221,6 +275,11 @@ const status = {
     0: 'Inativo'
 }
 
+const sendStatus = {
+    'Ativo': 1,
+    'Inativo': 0
+}
+
 export default {
   data() {
       const validateStatus = (rule, value, callback) => {
@@ -235,11 +294,18 @@ export default {
           if (!value) {
               callback(new Error('O campo não pode ser vazio.'))
           } else {
-              if (this.checkIfNameExists(value, this.space.id)) {
+              if (this.checkIfNameExists(value, this.classes.id)) {
                   callback(new Error('Já existe um espaço cadastrado com esse nome.'))
               } else {
                   callback()
               }
+          }
+      }
+      const validateEmpty = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('O campo não pode ser vazio.'))
+          } else {
+                  callback()
           }
       }
     return {
@@ -249,6 +315,7 @@ export default {
       lack: Object.assign({}, defaultLack),
       students: Object.assign({}, defaultStudent),
       statusList: Object.assign({}, status),
+      sendStatusList: Object.assign({}, sendStatus),
       dialogVisible: false,
       dialogAddLack: false,
       dialogStudent: false,
@@ -260,12 +327,14 @@ export default {
       studentsList: [],
       studentsClassList: [],
       classesRules: {
-          shift: [{ required: true, trigger: 'blur', validator: validateEmpty }],
           status: [{ required: true, trigger: 'blur', validator: validateStatus }],
           name: [{ required: true, trigger: 'blur', validator: validateName }],
+          shift: [{ required: true, trigger: 'blur', validator: validateEmpty }],
           credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-          smartBoard: [{ required: true, trigger: 'blur', validator: validateOwnType }],
-          board: [{ required: true, trigger: 'blur', validator: validateOwnType }]
+          semester: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+          year: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+          'master.id': [{ required: true, trigger: 'blur', validator: validateEmpty }],
+          'course.id': [{ required: true, trigger: 'blur', validator: validateEmpty }]
       }
     }
   },
@@ -362,48 +431,69 @@ export default {
           console.error(err)
         })
     },
-    async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
+      confirmRole() {
+          this.$refs.classes.validate(valid => {
+              const isEdit = this.dialogType === 'edit'
+              if (valid) {
+                  for (let index = 0; index < this.masterList.length; index++) {
+                      if (this.classes.master.id == this.masterList[index].id) {
+                          this.classes.master.name = this.masterList[index].name
+                          break
+                      }
+                  }
 
-        for (let index = 0; index < this.masterList.length; index++) {
-          if (this.classes.master.id == this.masterList[index].id) {
-              this.classes.master.name = this.masterList[index].name
-              break
-          }
-        }
+                  for (let index = 0; index < this.courseList.length; index++) {
+                      if (this.classes.course.id == this.courseList[index].id) {
+                          this.classes.course.name = this.courseList[index].name
+                          break
+                      }
+                  }
+                  this.formReady = true
+                  this.loading = true
+                  if (isEdit) {
+                      new Promise((resolve, reject) => {
+                          updateClass(this.classes.id, this.changeSendType(this.classes)).then(response => {
+                              for (let index = 0; index < this.classesList.length; index++) {
+                                  if (this.classesList[index].id === this.classes.id) {
+                                      this.classesList.splice(index, 1, Object.assign({}, this.changeType(this.classes)))
+                                      break
+                                  }
+                              }
+                              resolve()
+                          }).catch(error => {
+                              reject(error)
+                          })
+                      })
+                  } else {
+                      new Promise((resolve, reject) => {
+                          addClass(this.changeSendType(this.classes)).then(response => {
+                              const {data} = response
+                              this.classes.id = data.key
+                              this.classesList.push(this.changeType(this.classes))
+                              resolve()
+                          }).catch(error => {
+                              reject(error)
+                          })
+                      })
+                  }
+                  this.loading = false
 
-        for (let index = 0; index < this.courseList.length; index++) {
-            if (this.classes.course.id == this.courseList[index].id) {
-                this.classes.course.name = this.courseList[index].name
-                break
-            }
-        }
-
-      if (isEdit) {
-        await updateClass(this.classes.id, this.classes)
-        for (let index = 0; index < this.classesList.length; index++) {
-          if (this.classesList[index].id === this.classes.id) {
-            this.classesList.splice(index, 1, Object.assign({}, this.changeType(this.classes)))
-            break
-          }
-        }
-      } else {
-        const { data } = await addClass(this.classes)
-        this.classes.id = data.key
-        this.classesList.push(this.changeType(this.classes))
-      }
-
-      const { name } = this.classes
-      this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
-            <div>Class: ${name}</div>
-          `,
-        type: 'success'
-      })
-    },
+                  const {name} = this.classes
+                  this.dialogVisible = false
+                  this.$notify({
+                      title: 'Success',
+                      dangerouslyUseHTMLString: true,
+                      message: `<div>Matéria: ${name}</div>`,
+                      type: 'success'
+                  })
+              } else {
+                  this.formReady = false
+                  this.loading = false
+                  console.log('error submit!!')
+                  return false
+              }
+          })
+      },
     async confirmLack() {
       this.lack.classes.id = this.classes.id
       this.lack.master.id = this.classes.master.id
@@ -428,6 +518,21 @@ export default {
           }
           clazz.status = this.statusList[clazz.status]
           return clazz
+      },
+      changeSendType(clazz) {
+          if (this.sendStatusList[clazz.status] || clazz.status == 'Inativo') {
+              clazz.status = this.sendStatusList[clazz.status]
+          }
+          return clazz
+      },
+      checkIfNameExists(name, classes_id) {
+          for (let index = 0; index < this.classesList.length; index++) {
+              // eslint-disable-next-line eqeqeq
+              if (this.classesList[index].name == name && this.classesList[index].id != classes_id) {
+                  return true
+              }
+          }
+          return false
       }
   }
 }
