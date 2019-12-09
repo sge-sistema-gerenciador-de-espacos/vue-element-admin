@@ -54,6 +54,7 @@ export default {
     errorLog: 'Registro de errores',
     excel: 'Excel',
     exportExcel: 'Exportar a Excel',
+    frequenciaDosEspacos: 'Frequencia Dos Espaços',
     selectExcel: 'Export seleccionado',
     mergeHeader: 'Merge Header',
     uploadExcel: 'Subir Excel',

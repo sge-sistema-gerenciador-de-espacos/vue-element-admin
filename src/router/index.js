@@ -90,8 +90,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/users/users'),
-        name: 'Cadastro de Usuários',
-        meta: { title: 'Cadastro de Usuários', icon: 'user', affix: true, noCache: true }
+        name: 'user',
+        meta: { title: 'user', icon: 'user', affix: true, noCache: true }
       }
     ]
   },
@@ -102,8 +102,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/softwares/software'),
-        name: 'Cadastro de Softwares',
-        meta: { title: 'Cadastro de Software', icon: 'component', affix: true, noCache: true }
+        name: 'softwares',
+        meta: { title: 'softwares', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -114,8 +114,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/space/space'),
-        name: 'Cadastro de Espaço',
-        meta: { title: 'Cadastro de Espaço', icon: 'component', affix: true, noCache: true }
+        name: 'space',
+        meta: { title: 'space', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -126,8 +126,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/program/program'),
-        name: 'Cadastro de Curso',
-        meta: { title: 'Cadastro de Curso', icon: 'component', affix: true, noCache: true }
+        name: 'programs',
+        meta: { title: 'programs', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -138,8 +138,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/course/course'),
-        name: 'Cadastro de Matéria',
-        meta: { title: 'Cadastro de Matéria', icon: 'component', affix: true, noCache: true }
+        name: 'courses',
+        meta: { title: 'courses', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -150,8 +150,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/class/class'),
-        name: 'Cadastro de Turma',
-        meta: { title: 'Cadastro de Turma', icon: 'component', affix: true, noCache: true }
+        name: 'clazz',
+        meta: { title: 'clazz', icon: 'component', affix: true, noCache: true }
       }
     ]
   },
@@ -162,8 +162,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/scheduling/scheduling'),
-        name: 'Agendamento',
-        meta: { title: 'Agendamento', icon: 'component', affix: true, noCache: true }
+        name: 'scheduling',
+        meta: { title: 'schedulings', icon: 'component', affix: true, noCache: true }
       }
     ]
   }
@@ -182,35 +182,29 @@ export const asyncRoutes = [
     path: '/excel',
     component: Layout,
     redirect: '/excel/export-excel',
-    name: 'Relatórios',
+    name: 'relatorio',
     meta: {
-      title: 'Relatórios',
+      title: 'relatorios',
       icon: 'excel'
     },
     children: [
       {
         path: 'export-excel',
         component: () => import('@/views/excel/exportExcel'),
-        name: 'Utilização dos Espaços',
-        meta: { title: 'Ocupação dos Espaços' }
+        name: 'spaceUsage',
+        meta: { title: 'spaceUsage' }
       },
       {
         path: 'export-selected-excel',
         component: () => import('@/views/excel/selectExcel'),
-        name: 'Relatório de evasão dos alunos',
-        meta: { title: 'Evasão dos alunos' }
+        name: 'studentEvasion',
+        meta: { title: 'studentEvasion' }
       },
       {
         path: 'export-merge-header',
         component: () => import('@/views/excel/mergeHeader'),
-        name: 'Relatório de utilização de espaços',
-        meta: { title: 'Frequencia dos espaços' }
-      },
-      {
-        path: 'upload-excel',
-        component: () => import('@/views/excel/uploadExcel'),
-        name: 'UploadExcel',
-        meta: { title: 'uploadExcel' }
+        name: 'FrequenciaDosEspacos',
+        meta: { title: 'frequenciaDosEspacos' }
       }
     ]
   },
