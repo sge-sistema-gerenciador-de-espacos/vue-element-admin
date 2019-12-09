@@ -327,8 +327,8 @@ export default {
     },
     handleDeleteSoftware({ $index, row }) {
       this.$confirm('Deseja remover o software do espaço?', 'Warning', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
         type: 'warning'
       })
         .then(async() => {

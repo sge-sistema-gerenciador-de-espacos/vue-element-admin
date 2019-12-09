@@ -305,9 +305,13 @@ export default {
       const res = await getScheduling()
       this.schedulingList = res.data
     },
-    async getMaster() {
+    async getMasterUsers() {
       const res = await getMasterUsers()
       this.masterList = res.data
+    },
+    async getSpaceEnable() {
+        const res = await getSpaceEnable()
+        this.spaceList = res.data
     },
     async handleaddScheduling() {
       this.scheduling = Object.assign({}, defaultScheduling)

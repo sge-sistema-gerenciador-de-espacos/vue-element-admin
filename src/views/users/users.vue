@@ -360,8 +360,8 @@ export default {
     },
     handleDelete({ $index, row }) {
       this.$confirm('Deseja remover o usuário?', 'Aviso', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
         type: 'warning'
       })
         .then(async() => {

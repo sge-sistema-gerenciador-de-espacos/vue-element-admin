@@ -44,17 +44,17 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Turma':'Nova Turma'">
-      <el-form :model="classes" label-width="120px" label-position="left">
-        <el-form-item label="Nome">
+      <el-form ref="classes" :model="classes" :rules="classesRules" label-width="120px" label-position="left">
+        <el-form-item label="Nome" prop="name">
           <el-input v-model="classes.name" placeholder="Nome" />
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="Status" prop="status">
           <el-select v-model="classes.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Matéria">
+        <el-form-item label="Matéria" prop="course.id">
           <el-select v-model="classes.course.id">
             <el-option
               v-for="courseToShow in this.courseList"
@@ -64,7 +64,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Professor">
+        <el-form-item label="Professor" prop="master.id">
           <el-select v-model="classes.master.id">
             <el-option
               v-for="masterToShow in this.masterList"
@@ -73,6 +73,28 @@
               :value="masterToShow.id"
             />
           </el-select>
+        </el-form-item>
+
+        <el-form-item label="Turno" prop="shift">
+          <el-select v-model="classes.shift">
+              <el-option value="1" label="Manhã">Manhã</el-option>
+              <el-option value="2" label="Tarde">Tarde</el-option>
+              <el-option value="3" label="Noite">Noite</el-option>
+          </el-select>
+        </el-form-item>
+          <el-form-item label="Semestre" prop="semester">
+              <el-select v-model="classes.semester">
+                  <el-option value="1" label="Primeiro">Primeiro</el-option>
+                  <el-option value="2" label="Segundo">Segundo</el-option>
+                  <el-option value="3" label="Anual">Anual</el-option>
+              </el-select>
+          </el-form-item>
+        <el-form-item label="Ano" prop="year">
+          <el-date-picker
+                  v-model="classes.year"
+                  type="year"
+                  placeholder="Pick a year">
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -156,16 +178,17 @@ const defaultClass = {
   id: '',
   status: '',
   name: '',
-  status: '',
   course: {
     id: '',
       name: ''
   },
-  master:
-        {
-          id: '',
-          name: ''
-        }
+  master: {
+      id: '',
+      name: ''
+  },
+  shift: '',
+  semester: '',
+  year: ''
 }
 
 const defaultCourse = {
@@ -200,6 +223,25 @@ const status = {
 
 export default {
   data() {
+      const validateStatus = (rule, value, callback) => {
+          var statusValidate = [1, 0, '1', '0', 'Ativo', 'Inativo']
+          if (statusValidate.includes(value)) {
+              callback()
+          } else {
+              callback(new Error('Selecione um status válido.'))
+          }
+      }
+      const validateName = (rule, value, callback) => {
+          if (!value) {
+              callback(new Error('O campo não pode ser vazio.'))
+          } else {
+              if (this.checkIfNameExists(value, this.space.id)) {
+                  callback(new Error('Já existe um espaço cadastrado com esse nome.'))
+              } else {
+                  callback()
+              }
+          }
+      }
     return {
       classes: Object.assign({}, defaultClass),
       courses: Object.assign({}, defaultCourse),
@@ -216,7 +258,15 @@ export default {
       courseList: [],
       masterList: [],
       studentsList: [],
-      studentsClassList: []
+      studentsClassList: [],
+      classesRules: {
+          shift: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+          status: [{ required: true, trigger: 'blur', validator: validateStatus }],
+          name: [{ required: true, trigger: 'blur', validator: validateName }],
+          credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
+          smartBoard: [{ required: true, trigger: 'blur', validator: validateOwnType }],
+          board: [{ required: true, trigger: 'blur', validator: validateOwnType }]
+      }
     }
   },
   computed: {
@@ -295,8 +345,8 @@ export default {
     },
     handleDeleteStudents({ $index, row }) {
       this.$confirm('Confirm to remove the student of the class?', 'Warning', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
         type: 'warning'
       })
         .then(async() => {

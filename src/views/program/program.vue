@@ -143,8 +143,8 @@ export default {
     },
     handleDelete({ $index, row }) {
       this.$confirm('Deseja desabilitar o curso?', 'Warning', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
         type: 'warning'
       })
         .then(async() => {

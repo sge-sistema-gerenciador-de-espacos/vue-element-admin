@@ -228,8 +228,8 @@ export default {
     },
     handleDelete({ $index, row }) {
       this.$confirm('Deseja remover a matéria?', 'Warning', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
         type: 'warning'
       })
         .then(async() => {
