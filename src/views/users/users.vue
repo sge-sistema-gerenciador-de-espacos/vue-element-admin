@@ -70,7 +70,7 @@
             </template>
         </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-permission="['ASSISTENT']" v-if="checkPermission(['ADMINISTRATOR'])">
           <el-button
             v-if="scope.row.status == 'ativo'"
             type="primary"
@@ -171,6 +171,9 @@ import { deepClone } from '@/utils'
 import { getUsers, addUser, deleteUser, updateUser } from '@/api/user'
 import { getStates } from '@/api/state'
 import { validUsername } from '@/utils/validate'
+import permission from '@/directive/permission/index.js'
+import checkPermission from '@/utils/permission'
+import store from '@/store'
 
 const defaultUser = {
   id: '',
@@ -314,6 +317,7 @@ export default {
       }
     }
   },
+  directives: { permission },
   computed: {
     routesData() {
       return this.routes
@@ -323,8 +327,10 @@ export default {
     // Mock: get all routes and roles list from server
     this.getUsers()
     this.getStates()
+    console.log(store.getters.token)
   },
   methods: {
+      checkPermission,
     closeDialog() {
       this.$refs.user.resetFields()
       this.dialogVisible = false

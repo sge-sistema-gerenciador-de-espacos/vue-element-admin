@@ -81,7 +81,7 @@ export default {
     dashboard: 'Dashboard',
     github: 'Github',
     theme: 'Theme',
-    size: 'Global Size'
+    size: 'Tamanho de Letra'
   },
   login: {
     title: 'SGE - Sistema Gerenciador de Espaços',

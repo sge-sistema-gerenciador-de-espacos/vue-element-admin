@@ -8,9 +8,6 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
     </div>
   </div>
 </template>
@@ -24,7 +21,6 @@ import { mapState } from 'vuex'
 export default {
   name: 'Layout',
   components: {
-    RightPanel,
     Navbar,
     Sidebar,
     AppMain,
