@@ -391,7 +391,7 @@ export default {
       })
     },
     async handleAddSoftwareSpace({ $index, row }) {
-      const { data } = await addSoftwareSpace({ softwareID: row.id, spaceID: this.space.id })
+      const { data } = await addSoftwareSpace({ softwareId: row.id, spaceId: this.space.id })
       this.softwareList.splice($index, 1)
       this.softwareSpaceList.push(row)
       const { name } = row
