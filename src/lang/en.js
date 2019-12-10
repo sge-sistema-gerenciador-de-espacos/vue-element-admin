@@ -12,6 +12,7 @@ export default {
     frequenciaDosEspacos: 'Frequencia Dos Espaços',
     studentEvasion: 'Evasão dos Alunos',
     spaceUsage: 'Ocupação dos Espaços',
+    checkPendencies: 'Pendências de Agendamento',
     user: 'Cadastro de Usuários',
     softwares: 'Cadastro de Softwares',
     space: 'Cadastro de Espaço',
@@ -187,7 +188,9 @@ export default {
     disable: 'Inativar',
     enable: 'Ativar',
     accept: 'Aceitar Agendamento',
-    denied: 'Negar Agendamento'
+    denied: 'Negar Agendamento',
+    checkSchedulings: 'Verificar Agendamentos',
+    checkITSchedulings: 'Pendências de Software'
   },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',

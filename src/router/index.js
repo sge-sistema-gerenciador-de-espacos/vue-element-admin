@@ -166,6 +166,18 @@ export const constantRoutes = [
         meta: { title: 'schedulings', icon: 'component', affix: true, noCache: true }
       }
     ]
+  },
+  {
+    path: '/scheduling-pendencies',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/scheduling/scheduling-pendencies'),
+        name: 'scheduling_pendencies',
+        meta: { title: 'checkPendencies', icon: 'component', affix: true, noCache: true }
+      }
+    ]
   }
 
 ]

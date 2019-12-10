@@ -4,7 +4,7 @@
       {{ $t('scheduling.addScheduling') }}
     </el-button>
 
-    <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border max-height="250">
+      <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Espaço" fixed>
         <template slot-scope="scope">
           {{ scope.row.space.name }}
@@ -41,6 +41,7 @@
       <el-form :model="scheduling" label-width="120px" label-position="left">
         <el-form-item label="Espaço">
           <el-select v-model="scheduling.space.id">
+              <el-option value="" label="Sem Sala">Sem Sala</el-option>
             <el-option
               v-for="spaceToShow in this.spaceList"
               :value="spaceToShow.id"
@@ -51,31 +52,31 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Tipo" prop="type">
-          <el-select v-model="scheduling.space.type">
+          <el-select v-model="scheduling.space_item.type">
             <el-option value="ROOM" label="Sala" selected>Sala</el-option>
             <el-option value="LAB" label="Lab">Laboratório</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="scheduling.space.type == 'ROOM' || scheduling.space.type == 'Sala'" label="Numero de cadeiras">
-          <el-input-number v-model="scheduling.space.numberChair" :min="1" placeholder="Quantity of chairs" />
+        <el-form-item v-if="scheduling.space_item.type == 'ROOM' || scheduling.space_item.type == 'Sala'" label="Numero de cadeiras">
+          <el-input-number v-model="scheduling.space_item.numberChair" :min="1" placeholder="Quantity of chairs" />
         </el-form-item>
-        <el-form-item v-if="scheduling.space.type == 'LAB' || scheduling.space.type == 'Laboratorio'" label="Numero de computadores">
-          <el-input-number v-model="space.numberPc" :min="1" placeholder="Quantity of PCs" />
+        <el-form-item v-if="scheduling.space_item.type == 'LAB' || scheduling.space_item.type == 'Laboratorio'" label="Numero de computadores">
+          <el-input-number v-model="scheduling.space_item.numberPc" :min="1" placeholder="Quantity of PCs" />
         </el-form-item>
         <el-form-item label="Projetor" prop="project">
-          <el-select v-model="scheduling.space.project">
+          <el-select v-model="scheduling.space_item.project">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Quadro Inteligente" prop="smartBoard">
-          <el-select v-model="scheduling.space.smartBoard">
+          <el-select v-model="scheduling.space_item.smartBoard">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Quadro" prop="board">
-          <el-select v-model="scheduling.space.board">
+          <el-select v-model="scheduling.space_item.board">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
@@ -239,6 +240,7 @@ import { getCourse } from '@/api/course'
 import { getSpaceEnable } from '@/api/space'
 import { getClassEnable } from '@/api/classes'
 import { getMasterUsers } from '@/api/user'
+import getToken from '@/utils/auth' // get token from cookie
 
 const defaultScheduling = {
   id: '',
@@ -251,6 +253,8 @@ const defaultScheduling = {
   space: {
       id: '',
       name: '',
+  },
+  space_item: {
       type: '',
       numberPc: '',
       numberChair: '',
@@ -292,7 +296,8 @@ export default {
       schedulingList: [],
       masterList: [],
       spaceList: [],
-      classesList: []
+      classesList: [],
+      token: '',
     }
   },
   computed: {
@@ -305,6 +310,9 @@ export default {
     this.getScheduling()
     this.getSpaceEnable()
     this.getMasterUsers()
+    const token_ = getToken()
+    this.token = token_.split('-')[0]
+    this.id = token_.split('-')[1]
   },
   methods: {
     async getScheduling() {

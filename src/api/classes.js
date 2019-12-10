@@ -49,7 +49,7 @@ export function addLack(lack) {
 
 export function getClassEnable() {
   return request({
-    url: '/clazz/enable',
+    url: '/clazz',
     method: 'get'
   })
 }

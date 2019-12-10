@@ -40,7 +40,7 @@ export function deleteSpace(id) {
 
 export function getSpaceEnable() {
   return request({
-    url: '/space/enable',
+    url: '/space',
     method: 'get'
   })
 }
