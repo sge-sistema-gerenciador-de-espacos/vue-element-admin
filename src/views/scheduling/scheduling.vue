@@ -317,6 +317,7 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
+          this.scheduling.weekDay = parseInt(this.scheduling.weekDay)
         await updateScheduling(this.scheduling.id, this.scheduling)
         for (let index = 0; index < this.schedulingList.length; index++) {
           if (this.schedulingList[index].id === this.scheduling.id) {
