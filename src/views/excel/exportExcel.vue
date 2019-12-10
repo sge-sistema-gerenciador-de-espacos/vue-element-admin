@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+import { fetchArticle } from '@/api/article'
 import FilenameOption from './components/FilenameOption'
 import AutoWidthOption from './components/AutoWidthOption'
 import BookTypeOption from './components/BookTypeOption'
@@ -70,7 +70,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+        fetchArticle(this.listQuery).then(response => {
         this.list = response.data.items
         this.listLoading = false
       })
@@ -82,8 +82,13 @@ export default {
       if (this.multipleSelection.length) {
         this.downloadLoading = true
                     import('@/vendor/Export2Excel').then(excel => {
-                      const tHeader = ['Id', 'Aluno', 'Evasão']
-                      const filterVal = ['id', 'author', 'display_time']
+                      const tHeader = ['Id', 'Espaço', 'Status', 'Tipo', 'Numero de computadores', 'Numero de cadeiras', 'Projetor', 'Quadro inteligente', 'Quadro']
+                      const filterVal = ['id', 'name', 'status',' type',
+                            'numberPc',
+                            'numberChair',
+                            'project',
+                            'smartBoard',
+                            'board']
                       const list = this.multipleSelection
                       const data = this.formatJson(filterVal, list)
                       excel.export_json_to_excel({
