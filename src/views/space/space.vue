@@ -316,10 +316,21 @@ export default {
     },
     async handleSoftwares(scope) {
       this.space = deepClone(scope.row)
+        console.log('espaço')
+        console.log(this.space)
+        console.log('-----------------')
       const res = await getSoftwareSpace(this.space.id)
       this.softwareSpaceList = res.data
+        console.log('Softwares do espaço')
+        console.log(this.softwareSpaceList)
+        console.log('-----------------')
+
       const response = await getActiveSoftware()
-      for (let indexResponse = 0; indexResponse < response.data.length; indexResponse++) {
+        console.log('Softwares ativos')
+        console.log(response.data)
+        console.log('-----------------')
+
+        for (let indexResponse = 0; indexResponse < response.data.length; indexResponse++) {
         console.log(response.data[indexResponse].id)
         for (let indexSoftware = 0; indexSoftware < this.softwareSpaceList.length; indexSoftware++) {
           console.log(this.softwareList[indexSoftware].id)
