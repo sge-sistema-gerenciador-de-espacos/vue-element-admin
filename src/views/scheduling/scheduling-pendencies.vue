@@ -43,15 +43,15 @@
         </el-table>
 
         <el-dialog :visible.sync="dialogAuthorizer" :title="'Agendamentos Pendentes'">
-            <el-form :model="scheduling" label-width="120px" label-position="left">
+            <el-form :model="sendScheduling" label-width="120px" label-position="left">
                 <el-form-item label="Espaço">
-                    <el-select v-model="scheduling.status">
+                    <el-select v-model="sendScheduling.status">
                         <el-option value="ACCEPTED" label="Aceitar">Aceitar</el-option>
                         <el-option value="DENIED" label="Negar">Negar</el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="Motivo" v-if="scheduling.status == 'DENIED'">
-                    <el-input type="textarea" :rows="2" placeholder="Insira o motivo" v-model="textarea">
+                <el-form-item label="Motivo" v-if="sendScheduling.status == 'DENIED'">
+                    <el-input type="textarea" :rows="2" placeholder="Insira o motivo" v-model="sendScheduling.message">
                     </el-input>
                 </el-form-item>
             </el-form>
@@ -186,6 +186,12 @@
         filterdate: []
     }
 
+    const defaulSendScheduling = {
+        status: '',
+        type: '',
+        user_id: '',
+        message: ''
+    }
     export default {
         data() {
             return {
@@ -206,7 +212,8 @@
                 classesList: [],
                 token: '',
                 checkSchedulings: ['ADMINISTRATOR', 'ASSISTANT', 'MANAGER', 'admin'],
-                checkITSchedulings: ['IT_SUPPORT', 'admin']
+                checkITSchedulings: ['IT_SUPPORT', 'admin'],
+                sendScheduling: Object.assign({}, defaultSendScheduling)
             }
         },
         computed: {
@@ -262,8 +269,8 @@
                 this.dialogAuthorizer = true
                 this.checkStrictly = true
                 this.scheduling = deepClone(scope.row)
+                this.sendScheduling =
                 if (this.checkSchedulings.includes(this.token)) {
-
                 }
             },
             handleAddLack(scope) {

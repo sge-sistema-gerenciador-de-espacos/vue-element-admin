@@ -5,72 +5,73 @@
     </el-button>
 
     <el-table :data="usersList" style=" width: 100%;margin-top:30px;" border max-height="250"">
-        <el-table-column label="Nome" align="center" fixed>
-            <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                    <p>Nome: {{ scope.row.name }}</p>
-                    <p>Matricula: {{ scope.row.application }}</p>
-                    <p>Telefone: {{ scope.row.telephone }}</p>
-                    <p>Cidade: {{ scope.row.city }}</p>
-                    <p>Bairro: {{ scope.row.neighborhood }}</p>
-                    <p>Rua: {{ scope.row.street }}</p>
-                    <p>Numero: {{ scope.row.number }}</p>
-                    <div slot="reference" class="name-wrapper">
-                        {{ scope.row.name }}
-                    </div>
-                </el-popover>
-            </template>
-        </el-table-column>
-        <el-table-column label="E-mail" align="center" fixed>
-            <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                    <p>Nome: {{ scope.row.name }}</p>
-                    <p>Matricula: {{ scope.row.application }}</p>
-                    <p>Telefone: {{ scope.row.telephone }}</p>
-                    <p>Cidade: {{ scope.row.city }}</p>
-                    <p>Bairro: {{ scope.row.neighborhood }}</p>
-                    <p>Rua: {{ scope.row.street }}</p>
-                    <p>Numero: {{ scope.row.number }}</p>
-                    <div slot="reference" class="name-wrapper">
-                        {{ scope.row.email }}
-                    </div>
-                </el-popover>
-            </template>
-        </el-table-column>
-        <el-table-column label="Status" align="center" fixed>
-            <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                    <p>Nome: {{ scope.row.name }}</p>
-                    <p>Matricula: {{ scope.row.application }}</p>
-                    <p>Telefone: {{ scope.row.telephone }}</p>
-                    <p>Cidade: {{ scope.row.city }}</p>
-                    <p>Bairro: {{ scope.row.neighborhood }}</p>
-                    <p>Rua: {{ scope.row.street }}</p>
-                    <p>Numero: {{ scope.row.number }}</p>
-                    <div slot="reference" class="name-wrapper">
-                        {{ scope.row.status }}
-                    </div>
-                </el-popover>
-            </template>
-        </el-table-column>
-        <el-table-column label="Tipo" align="center" fixed>
-            <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                    <p>Nome: {{ scope.row.name }}</p>
-                    <p>Matricula: {{ scope.row.application }}</p>
-                    <p>Telefone: {{ scope.row.telephone }}</p>
-                    <p>Cidade: {{ scope.row.city }}</p>
-                    <p>Bairro: {{ scope.row.neighborhood }}</p>
-                    <p>Rua: {{ scope.row.street }}</p>
-                    <p>Numero: {{ scope.row.number }}</p>
-                    <div slot="reference" class="name-wrapper">
-                        {{ scope.row.type }}
-                    </div>
-                </el-popover>
-            </template>
-        </el-table-column>
+      <el-table-column label="Nome" align="center" fixed>
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>Nome: {{ scope.row.name }}</p>
+            <p>Matricula: {{ scope.row.application }}</p>
+            <p>Telefone: {{ scope.row.telephone }}</p>
+            <p>Cidade: {{ scope.row.city }}</p>
+            <p>Bairro: {{ scope.row.neighborhood }}</p>
+            <p>Rua: {{ scope.row.street }}</p>
+            <p>Numero: {{ scope.row.number }}</p>
+            <div slot="reference" class="name-wrapper">
+              {{ scope.row.name }}
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column label="E-mail" align="center" fixed>
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>Nome: {{ scope.row.name }}</p>
+            <p>Matricula: {{ scope.row.application }}</p>
+            <p>Telefone: {{ scope.row.telephone }}</p>
+            <p>Cidade: {{ scope.row.city }}</p>
+            <p>Bairro: {{ scope.row.neighborhood }}</p>
+            <p>Rua: {{ scope.row.street }}</p>
+            <p>Numero: {{ scope.row.number }}</p>
+            <div slot="reference" class="name-wrapper">
+              {{ scope.row.email }}
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column label="Status" align="center" fixed>
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>Nome: {{ scope.row.name }}</p>
+            <p>Matricula: {{ scope.row.application }}</p>
+            <p>Telefone: {{ scope.row.telephone }}</p>
+            <p>Cidade: {{ scope.row.city }}</p>
+            <p>Bairro: {{ scope.row.neighborhood }}</p>
+            <p>Rua: {{ scope.row.street }}</p>
+            <p>Numero: {{ scope.row.number }}</p>
+            <div slot="reference" class="name-wrapper">
+              {{ scope.row.status }}
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column label="Tipo" align="center" fixed>
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <p>Nome: {{ scope.row.name }}</p>
+            <p>Matricula: {{ scope.row.application }}</p>
+            <p>Telefone: {{ scope.row.telephone }}</p>
+            <p>Cidade: {{ scope.row.city }}</p>
+            <p>Bairro: {{ scope.row.neighborhood }}</p>
+            <p>Rua: {{ scope.row.street }}</p>
+            <p>Numero: {{ scope.row.number }}</p>
+            <div slot="reference" class="name-wrapper">
+              {{ scope.row.type }}
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
-        <template slot-scope="scope" v-permission="['ASSISTENT']" v-if="checkPermission(['ADMINISTRATOR'])">
+        <template slot-scope="scope">
+          <!--v-permission="['ASSISTENT']" v-if="checkPermission(['ADMINISTRATOR'])-->
           <el-button
             v-if="scope.row.status == 'ativo'"
             type="primary"
@@ -219,6 +220,7 @@ const sendStatus = {
   'Inativo': 0
 }
 export default {
+  directives: { permission },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -231,13 +233,13 @@ export default {
         }
       }
     }
-      const validateApplication = (rule, value, callback) => {
-          if (this.checkIfApplicationExists(value, this.user.id)) {
-              callback(new Error('Já existe um usuário cadastrado com essa matricula.'))
-          } else {
-              callback()
-          }
+    const validateApplication = (rule, value, callback) => {
+      if (this.checkIfApplicationExists(value, this.user.id)) {
+        callback(new Error('Já existe um usuário cadastrado com essa matricula.'))
+      } else {
+        callback()
       }
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('A senha não pode ter menos de 6 digitos.'))
@@ -300,7 +302,7 @@ export default {
         password: '',
         neighborhood: '',
         street: '',
-        application:  ''
+        application: ''
       },
       userRules: {
         email: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -317,7 +319,6 @@ export default {
       }
     }
   },
-  directives: { permission },
   computed: {
     routesData() {
       return this.routes
@@ -330,7 +331,7 @@ export default {
     console.log(store.getters.token)
   },
   methods: {
-      checkPermission,
+    checkPermission,
     closeDialog() {
       this.$refs.user.resetFields()
       this.dialogVisible = false
@@ -481,17 +482,17 @@ export default {
       }
       return false
     },
-      checkIfApplicationExists(application, user_id) {
-          console.log(user_id + ' ' + application)
-          console.log(this.usersList)
-          for (let index = 0; index < this.usersList.length; index++) {
-              // eslint-disable-next-line eqeqeq
-              if (this.usersList[index].application == application && this.usersList[index].id != user_id) {
-                  return true
-              }
-          }
-          return false
+    checkIfApplicationExists(application, user_id) {
+      console.log(user_id + ' ' + application)
+      console.log(this.usersList)
+      for (let index = 0; index < this.usersList.length; index++) {
+        // eslint-disable-next-line eqeqeq
+        if (this.usersList[index].application == application && this.usersList[index].id != user_id) {
+          return true
+        }
       }
+      return false
+    }
   }
 }
 </script>
