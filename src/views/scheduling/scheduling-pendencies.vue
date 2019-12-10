@@ -269,7 +269,7 @@
                 this.dialogAuthorizer = true
                 this.checkStrictly = true
                 this.scheduling = deepClone(scope.row)
-                this.sendScheduling =
+                // this.sendScheduling =
                 if (this.checkSchedulings.includes(this.token)) {
                 }
             },
