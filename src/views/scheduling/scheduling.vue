@@ -41,31 +41,31 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Tipo" prop="type">
+        <el-form-item label="Tipo" v-if="scheduling.space.id == ''" prop="type">
           <el-select v-model="scheduling.space_item.type">
             <el-option value="ROOM" label="Sala" selected>Sala</el-option>
             <el-option value="LAB" label="Lab">Laboratório</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="scheduling.space_item.type == 'ROOM' || scheduling.space_item.type == 'Sala'" label="Numero de cadeiras">
+        <el-form-item v-if="(scheduling.space_item.type == 'ROOM' || scheduling.space_item.type == 'Sala') & scheduling.space.id == ''" label="Numero de cadeiras">
           <el-input-number v-model="scheduling.space_item.numberChair" :min="1" placeholder="Quantity of chairs" />
         </el-form-item>
-        <el-form-item v-if="scheduling.space_item.type == 'LAB' || scheduling.space_item.type == 'Laboratorio'" label="Numero de computadores">
+        <el-form-item v-if="(scheduling.space_item.type == 'LAB' || scheduling.space_item.type == 'Laboratorio') & scheduling.space.id == ''" label="Numero de computadores">
           <el-input-number v-model="scheduling.space_item.numberPc" :min="1" placeholder="Quantity of PCs" />
         </el-form-item>
-        <el-form-item label="Projetor" prop="project">
+        <el-form-item label="Projetor" v-if="scheduling.space.id == ''" prop="project">
           <el-select v-model="scheduling.space_item.project">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Quadro Inteligente" prop="smartBoard">
+        <el-form-item label="Quadro Inteligente" v-if="scheduling.space.id == ''" prop="smartBoard">
           <el-select v-model="scheduling.space_item.smartBoard">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Quadro" prop="board">
+        <el-form-item label="Quadro" v-if="scheduling.space.id == ''" prop="board">
           <el-select v-model="scheduling.space_item.board">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
@@ -196,6 +196,13 @@ const defaultScheduling = {
   filterdate: []
 }
 
+defaultstatus = {
+    WAITING_IT:"Esperando resposta do TI",
+    WAITING: "Esperando resposta do agendamento",
+    ACCEPTED:"Aceito",
+    DENIED: "NEGADO"
+}
+
 export default {
   data() {
     return {
@@ -214,7 +221,8 @@ export default {
       masterList: [],
       spaceList: [],
       classesList: [],
-      token: ''
+      token: '',
+      status: Object.assign({}, defaultstatus)
     }
   },
   computed: {
@@ -254,14 +262,6 @@ export default {
       const classes = await getClassEnable()
       this.classesList = classes.data
       this.dialogType = 'new'
-      this.dialogVisible = true
-    },
-    async handleAddStudent() {
-      this.scheduling = deepClone(scope.row)
-      const students = await getStudents()
-      this.studentsList = students.data
-      const studentsScheduling = await getStudentScheduling(this.scheduling.id)
-      this.studentsSchedulingList = studentsScheduling.data
       this.dialogVisible = true
     },
     handleEdit(scope) {
@@ -314,24 +314,30 @@ export default {
         })
     },
     async confirmRole() {
-      const isEdit = this.dialogType === 'edit'
-
-      if (isEdit) {
-          this.scheduling.weekDay = parseInt(this.scheduling.weekDay)
-        await updateScheduling(this.scheduling.id, this.scheduling)
-        for (let index = 0; index < this.schedulingList.length; index++) {
-          if (this.schedulingList[index].id === this.scheduling.id) {
-            this.schedulingList.splice(index, 1, Object.assign({}, this.scheduling))
-            break
-          }
-        }
-      } else {
-        const { data } = await addScheduling(this.scheduling)
-        this.scheduling.id = data.key
-        this.schedulingList.push(this.scheduling)
-      }
-
-      const { name } = this.scheduling
+        await addScheduling(this.scheduling).then(response => {
+            const { data } = response
+            this.scheduling.id = data.key
+            this.scheduling.status = this.status[data.status]
+            for (let index=0; index < this.spaceList.length; index++) {
+                if (this.scheduling.space.id == this.spaceList[index].id) {
+                    this.scheduling.space.name = this.spaceList[index].name
+                }
+            }
+            for (let index=0; index < this.classesList.length; index++) {
+                if (this.scheduling.classes.id == this.classesList[index].id) {
+                    this.scheduling.classes.name = this.classesList[index].name
+                }
+            }
+            for (let index=0; index < this.masterList.length; index++) {
+                if (this.scheduling.professor.id == this.masterList[index].id) {
+                    this.scheduling.professor.name = this.masterList[index].name
+                }
+            }
+            this.schedulingList.push(this.scheduling)
+            }
+        ).catch(error => {
+            reject(error)
+        })
       this.dialogVisible = false
       this.$notify({
         title: 'Success',

@@ -75,7 +75,8 @@ export default {
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
-    externalLink: 'External Link'
+    externalLink: 'External Link',
+    lack: 'Adicionar Falta'
   },
   navbar: {
     logOut: 'Log Out',
