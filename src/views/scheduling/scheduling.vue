@@ -4,7 +4,7 @@
       {{ $t('scheduling.addScheduling') }}
     </el-button>
 
-      <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border max-height="250">
+    <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Espaço" fixed>
         <template slot-scope="scope">
           {{ scope.row.space.name }}
@@ -41,7 +41,7 @@
       <el-form :model="scheduling" label-width="120px" label-position="left">
         <el-form-item label="Espaço">
           <el-select v-model="scheduling.space.id">
-              <el-option value="" label="Sem Sala">Sem Sala</el-option>
+            <el-option value="" label="Sem Sala">Sem Sala</el-option>
             <el-option
               v-for="spaceToShow in this.spaceList"
               :value="spaceToShow.id"
@@ -251,16 +251,16 @@ const defaultScheduling = {
     name: ''
   },
   space: {
-      id: '',
-      name: '',
+    id: '',
+    name: ''
   },
   space_item: {
-      type: '',
-      numberPc: '',
-      numberChair: '',
-      project: '',
-      smartBoard: '',
-      board: ''
+    type: '',
+    numberPc: '',
+    numberChair: '',
+    project: '',
+    smartBoard: '',
+    board: ''
   },
   professor: {
     id: '',
@@ -297,7 +297,7 @@ export default {
       masterList: [],
       spaceList: [],
       classesList: [],
-      token: '',
+      token: ''
     }
   },
   computed: {
@@ -324,8 +324,8 @@ export default {
       this.masterList = res.data
     },
     async getSpaceEnable() {
-        const res = await getSpaceEnable()
-        this.spaceList = res.data
+      const res = await getSpaceEnable()
+      this.spaceList = res.data
     },
     async handleaddScheduling() {
       this.scheduling = Object.assign({}, defaultScheduling)
@@ -335,7 +335,7 @@ export default {
       const space = await getSpaceEnable()
       this.spaceList = space.data
       const classes = await getClassEnable()
-      this.spaceList = classes.data
+      this.classesList = classes.data
       this.dialogType = 'new'
       this.dialogVisible = true
     },
