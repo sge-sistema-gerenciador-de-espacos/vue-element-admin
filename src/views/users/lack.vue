@@ -70,6 +70,9 @@
 <script>
     import { deepClone } from '@/utils'
     import { getSoftware, addSoftware, deleteSoftware, updateSoftware } from '@/api/software'
+    import { getToken } from '@/utils/auth' // get token from cookie
+    import { getMasterUsers } from '@/api/user'
+    import { addLack } from "@/api/classes"
 
     const defaultSoftware = {
         id: '',
@@ -123,6 +126,9 @@
                 dialogType: 'new',
                 checkStrictly: false,
                 softwareList: [],
+                masterList: [],
+                token: '',
+                id: '',
                 statusList: Object.assign({}, status),
                 sendStatusList: Object.assign({}, sendStatus),
                 softwareRules: {
@@ -139,7 +145,11 @@
         },
         created() {
             // Mock: get all routes and roles list from server
-            this.getSoftware()
+            this.getMasterUsers()
+            const token_ = getToken()
+            this.token = token_.split('-')[0]
+            this.id = token_.split('-')[1]
+            this.handleaddSoftware()
         },
         methods: {
             closeDialog() {
@@ -151,9 +161,17 @@
                 this.softwareList = this.changeType(res.data)
             },
             handleaddSoftware() {
-                this.software = Object.assign({}, defaultSoftware)
+                this.lack = Object.assign({}, defaultLack)
                 if (this.$refs.tree) {
                     this.$refs.tree.setCheckedNodes([])
+                }
+                if (this.token == 'PROFESSOR') {
+                    this.lack.professor.id = this.id
+                    for (let index =0; index< this.masterList.length; index++) {
+                        if (this.lack.professor.id == this.masterList[index].id) {
+                            this.lack.professor.name = this.masterList[index].name
+                        }
+                    }
                 }
                 this.dialogType = 'new'
                 this.dialogVisible = true
@@ -190,44 +208,21 @@
             },
             confirmRole() {
                 this.$refs.software.validate(valid => {
-                    const isEdit = this.dialogType === 'edit'
                     if (valid) {
-                        this.loading = true
-                        if (isEdit) {
                             new Promise((resolve, reject) => {
-                                updateSoftware(this.software.id, this.changeSendType(this.software)).then(response => {
-                                    for (let index = 0; index < this.softwareList.length; index++) {
-                                        if (this.softwareList[index].id === this.software.id) {
-                                            this.softwareList.splice(index, 1, Object.assign({}, this.changeType(this.software)))
-                                        }
-                                    }
-                                    resolve()
-                                }).catch(error => {
-                                    reject(error)
-                                })
-                            })
-                        } else {
-                            new Promise((resolve, reject) => {
-                                addSoftware(this.changeSendType(this.software)).then(response => {
+                                addLack(this.lack).then(response => {
                                     const { data } = response
-                                    this.software.id = data.key
-                                    this.softwareList.push(this.changeType(this.software))
                                     resolve()
                                 }).catch(error => {
                                     reject(error)
                                 })
                             })
-                        }
-
                         this.loading = false
-                        const { name } = this.software
                         this.dialogVisible = false
                         this.$notify({
                             title: 'Success',
                             dangerouslyUseHTMLString: true,
-                            message: `
-            <div>Software: ${name}</div>
-          `,
+                            message: `<div>Falta Adicionada com sucesso.</div>`,
                             type: 'success'
                         })
                     } else {

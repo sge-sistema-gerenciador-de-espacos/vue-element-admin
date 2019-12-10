@@ -73,13 +73,12 @@ export const constantRoutes = [
   {
     path: '',
     component: Layout,
-    redirect: 'dashboard',
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true, affix: true }
+        path: 'index',
+        component: () => import('@/views/users/users'),
+        name: 'user',
+        meta: { title: 'user', icon: 'user', affix: true, noCache: true }
       }
     ]
   },

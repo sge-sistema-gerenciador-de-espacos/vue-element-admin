@@ -1,12 +1,5 @@
 <template>
   <div class="app-container">
-    <!--<el-button type="primary" v-if="checkSchedulings.includes(token)" @click="handleaddScheduling">-->
-    <!--{{ $t('scheduling.checkSchedulings') }}-->
-    <!--</el-button>-->
-
-    <!--<el-button type="primary" v-if="checkITSchedulings.includes(token)" @click="handleaddScheduling">-->
-    <!--{{ $t('scheduling.checkITSchedulings') }}-->
-    <!--</el-button>-->
 
     <el-table :data="schedulingList" style="width: 100%;margin-top:30px;" border max-height="250">
       <el-table-column align="center" label="Espaço" fixed>
@@ -111,7 +104,7 @@ const defaultScheduling = {
   filterdate: []
 }
 
-const defaulSendScheduling = {
+const defaultSendScheduling = {
   status: '',
   type: '',
   user_id: '',
@@ -154,7 +147,7 @@ export default {
     if (this.checkITSchedulings.includes(this.token)) {
       type = this.token
     }
-    this.getSchedulingByType(type)
+    const data = getSchedulingByType(type)
     this.getSpaceEnable()
     this.getMasterUsers()
   },

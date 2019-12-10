@@ -162,6 +162,7 @@ import { getToken } from '@/utils/auth' // get token from cookie
 const defaultScheduling = {
   id: '',
   status: '',
+  status_scheduling: '',
   weekDay: '',
   classes: {
     id: '',
@@ -196,7 +197,7 @@ const defaultScheduling = {
   filterdate: []
 }
 
-defaultstatus = {
+const defaultstatus = {
     WAITING_IT:"Esperando resposta do TI",
     WAITING: "Esperando resposta do agendamento",
     ACCEPTED:"Aceito",
@@ -222,6 +223,7 @@ export default {
       spaceList: [],
       classesList: [],
       token: '',
+      id: '',
       status: Object.assign({}, defaultstatus)
     }
   },
@@ -243,6 +245,9 @@ export default {
     async getScheduling() {
       const res = await getScheduling()
       this.schedulingList = res.data
+        for (let index=0; index < this.schedulingList.length; index++) {
+          this.schedulingList[index].status = this.status[this.schedulingList[index].status_scheduling]
+        }
     },
     async getMasterUsers() {
       const res = await getMasterUsers()
@@ -313,40 +318,51 @@ export default {
           console.error(err)
         })
     },
-    async confirmRole() {
-        await addScheduling(this.scheduling).then(response => {
-            const { data } = response
-            this.scheduling.id = data.key
-            this.scheduling.status = this.status[data.status]
-            for (let index=0; index < this.spaceList.length; index++) {
-                if (this.scheduling.space.id == this.spaceList[index].id) {
-                    this.scheduling.space.name = this.spaceList[index].name
+    confirmRole() {
+        new Promise((resolve, reject) => {
+            addScheduling(this.scheduling).then(response => {
+                    const { data } = response
+                    console.log(data)
+                    this.scheduling.id = data.id
+                    this.scheduling.status = this.status[data.status]
+                    if (this.scheduling.space.id != '') {
+                        for (let index = 0; index < this.spaceList.length; index++) {
+                            if (this.scheduling.space.id == this.spaceList[index].id) {
+                                this.scheduling.space.name = this.spaceList[index].name
+                            }
+                        }
+                    } else {
+                        this.scheduling.space.id = data.spaceModel.id
+                        this.scheduling.space.name = data.spaceModel.name
+                    }
+                    for (let index=0; index < this.classesList.length; index++) {
+                        if (this.scheduling.classes.id == this.classesList[index].id) {
+                            this.scheduling.classes.name = this.classesList[index].name
+                        }
+                    }
+                    for (let index=0; index < this.masterList.length; index++) {
+                        if (this.scheduling.professor.id == this.masterList[index].id) {
+                            this.scheduling.professor.name = this.masterList[index].name
+                        }
+                    }
+                    this.scheduling.status = this.status[data.status]
+                    console.log(this.scheduling)
+                    this.schedulingList.push(this.scheduling)
+                console.log(this.schedulingList)
+                this.$notify({
+                    title: 'Success',
+                    dangerouslyUseHTMLString: true,
+                    message: `<div>Scheduling: ${name}</div>`,
+                    type: 'success'
+                })
                 }
-            }
-            for (let index=0; index < this.classesList.length; index++) {
-                if (this.scheduling.classes.id == this.classesList[index].id) {
-                    this.scheduling.classes.name = this.classesList[index].name
-                }
-            }
-            for (let index=0; index < this.masterList.length; index++) {
-                if (this.scheduling.professor.id == this.masterList[index].id) {
-                    this.scheduling.professor.name = this.masterList[index].name
-                }
-            }
-            this.schedulingList.push(this.scheduling)
-            }
-        ).catch(error => {
-            reject(error)
+            ).catch(error => {
+                const { data } = error
+                console.log(data)
+                reject(error)
+            })
         })
       this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
-            <div>Scheduling: ${name}</div>
-          `,
-        type: 'success'
-      })
     },
     async confirmLack() {
       this.lack.scheduling.id = this.scheduling.id

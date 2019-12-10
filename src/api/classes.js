@@ -39,11 +39,14 @@ export function deleteClass(id) {
 }
 
 export function addLack(lack) {
-  console.log(lack.master)
+  const data = {
+    professorId: lack.professor.id,
+    date: lack.date
+  }
   return request({
-    url: `/clazz/${lack.master.id}/${lack.clazz.id}`,
+    url: `/user/lack`,
     method: 'post',
-    lack
+    data
   })
 }
 
