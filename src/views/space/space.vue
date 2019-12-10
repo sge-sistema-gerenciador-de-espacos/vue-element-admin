@@ -18,7 +18,7 @@
                     <p v-if="scope.row.board == 0 || scope.row.board == '0' || scope.row.board == 'Não Possui'">Possui Quadro: Não Possui</p>
 
                     <p v-if="scope.row.type == 'ROOM' || scope.row.type == 'Sala'">Quantidade de cadeiras: {{ scope.row.numberChair }}</p>
-                    <p v-if="space.type == 'LAB' || space.type == 'Laboratorio'">Quantidade de cadeiras: {{ scope.row.numberPc }}</p>
+                    <p v-if="space.type == 'LAB' || space.type == 'Laboratorio'">Quantidade de computadores: {{ scope.row.numberPc }}</p>
                     <div slot="reference" class="name-wrapper">
                         {{ scope.row.name }}
                     </div>

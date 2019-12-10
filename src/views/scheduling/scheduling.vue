@@ -249,8 +249,14 @@ const defaultScheduling = {
     name: ''
   },
   space: {
-    id: '',
-    name: ''
+      id: '',
+      name: '',
+      type: '',
+      numberPc: '',
+      numberChair: '',
+      project: '',
+      smartBoard: '',
+      board: ''
   },
   professor: {
     id: '',
