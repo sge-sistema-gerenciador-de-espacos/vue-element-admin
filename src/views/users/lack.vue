@@ -46,9 +46,6 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="Nome" prop="name" v-if="lack.user.id == ''">
-                    <el-input ref="name" v-model="software.name" placeholder="Nome do Software" />
-                </el-form-item>
                 <el-form-item label="Data da Falta">
                     <el-date-picker
                             align="center"
