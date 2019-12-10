@@ -28,3 +28,10 @@ export function deleteScheduling(id) {
     method: 'delete'
   })
 }
+
+export function getSchedulingByType(user_type) {
+  return request({
+    url: `/scheduler/${user_type}`,
+    method: 'get'
+  })
+}
