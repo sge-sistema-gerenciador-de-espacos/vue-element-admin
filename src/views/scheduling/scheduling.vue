@@ -25,16 +25,6 @@
           {{ scope.row.classes.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações" width="300" fixed>
-        <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">
-            {{ $t('scheduling.edit') }}
-          </el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">
-            {{ $t('scheduling.delete') }}
-          </el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Agendamento':'Novo Agendamento'">
@@ -157,79 +147,6 @@
         </el-button>
       </div>
     </el-dialog>
-
-    <!--<el-dialog :visible.sync="dialogAddLack" :title="'Add Lack'">-->
-    <!--<el-form :model="lack" label-width="120px" label-position="left">-->
-    <!--<el-form-item label="Name">-->
-    <!--<el-input v-model="scheduling.name" disabled="true"/>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item label="Status">-->
-    <!--<el-select v-model="scheduling.status" disabled="true">-->
-    <!--<el-option value="1" label="Ativo">Ativo</el-option>-->
-    <!--<el-option value="0" label="Inativo">Inativo</el-option>-->
-    <!--</el-select>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item label="Course Name">-->
-    <!--<el-input v-model="scheduling.course.name" disabled="true"/>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item label="Master Name">-->
-    <!--<el-input v-model="scheduling.master.name" disabled="true"/>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item label="Lack">-->
-    <!--<el-date-picker v-model="lack.date" type="date" format="dd-MM-yyyy" value-format="yyyy-MM-dd">-->
-    <!--</el-date-picker>-->
-    <!--</el-form-item>-->
-    <!--</el-form>-->
-    <!--<div style="text-align:right;">-->
-    <!--<el-button type="danger" @click="dialogAddLack=false">-->
-    <!--{{ $t('scheduling.cancel') }}-->
-    <!--</el-button>-->
-    <!--<el-button type="primary" @click="confirmLack">-->
-    <!--{{ $t('scheduling.confirm') }}-->
-    <!--</el-button>-->
-    <!--</div>-->
-    <!--</el-dialog>-->
-
-    <!--<el-dialog :visible.sync="dialogStudent" :title="'Students'">-->
-    <!--<el-form :model="scheduling" label-width="80px" label-position="left">-->
-    <!--<el-table :data="studentsSchedulingList" style="width: 100%;margin-top:30px;" border>-->
-    <!--<el-table-column align="center" label="Space Name" width="220">-->
-    <!--<template slot-scope="studentsSchedulingList">-->
-    <!--{{ studentsSchedulingListScope.row.name }}-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--<el-table-column align="center" :data="studentsSchedulingList" label="Operations">-->
-    <!--<template slot-scope="studentsSchedulingList">-->
-    <!--<el-button type="danger" size="small" @click="handleDeleteStudents(studentsSchedulingList)">-->
-    <!--{{ $t('space.delete') }}-->
-    <!--</el-button>-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--</el-table>-->
-
-    <!--<el-table :data="studentsList" style="width: 100%;margin-top:30px;" border>-->
-    <!--<el-table-column align="center" label="Space Name" width="220">-->
-    <!--<template slot-scope="studentsListScope">-->
-    <!--{{ studentsListScope.row.name }}-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--<el-table-column align="center" :data="studentsList" label="Operations">-->
-    <!--<template slot-scope="studentsListScope">-->
-    <!--<el-button type="submit" size="small"-->
-    <!--@click="handleAddStudentScheduling(studentsListScope)">-->
-    <!--{{ $t('software.addSoftware') }}-->
-    <!--</el-button>-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--</el-table>-->
-
-    <!--</el-form>-->
-    <!--<div style="text-align:right; margin-top: 10px">-->
-    <!--<el-button type="danger" @click="dialogStudent=false">-->
-    <!--{{ $t('space.dismiss') }}-->
-    <!--</el-button>-->
-    <!--</div>-->
-    <!--</el-dialog>-->
   </div>
 </template>
 
