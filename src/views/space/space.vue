@@ -316,30 +316,19 @@ export default {
     },
     async handleSoftwares(scope) {
       this.space = deepClone(scope.row)
-        console.log('espaço')
-        console.log(this.space)
-        console.log('-----------------')
       const res = await getSoftwareSpace(this.space.id)
       this.softwareSpaceList = res.data
-        console.log('Softwares do espaço')
-        console.log(this.softwareSpaceList)
-        console.log('-----------------')
 
       const response = await getActiveSoftware()
-        console.log('Softwares ativos')
-        console.log(response.data)
-        console.log('-----------------')
-
         for (let indexResponse = 0; indexResponse < response.data.length; indexResponse++) {
-        console.log(response.data[indexResponse].id)
-        for (let indexSoftware = 0; indexSoftware < this.softwareSpaceList.length; indexSoftware++) {
-          console.log(this.softwareList[indexSoftware].id)
-          console.log(this.softwareList[indexSoftware].id == response.data[indexResponse].id)
-          if (this.softwareSpaceList[indexSoftware].id == response.data[indexResponse].id) {
-            response.data.splice(indexResponse)
-          }
+            console.log(response.data[indexResponse])
+            for (let indexSoftware = 0; indexSoftware < this.softwareSpaceList.length; indexSoftware++) {
+                console.log(this.softwareSpaceList[indexSoftware].id == response.data[indexResponse].id)
+                if (this.softwareSpaceList[indexSoftware].id == response.data[indexResponse].id) {
+                    response.data.splice(indexResponse, 1)
+                }
+            }
         }
-      }
       this.softwareList = response.data
       this.dialogSoftware = true
     },
