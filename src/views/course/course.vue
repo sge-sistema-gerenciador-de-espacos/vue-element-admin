@@ -164,7 +164,7 @@ export default {
         callback(new Error('O campo não pode ser vazio.'))
       } else {
         if (this.checkIfCodeExists(value, this.course.id)) {
-          callback(new Error('Já existe uma matéria cadastrada com esse nome.'))
+          callback(new Error('Já existe uma matéria cadastrada com esse código.'))
         } else {
           callback()
         }
