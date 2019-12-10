@@ -1,61 +1,67 @@
 <template>
   <div class="app-container">
-
-    <el-button :loading="downloadLoading" style="margin-bottom:20px" type="primary" icon="document" @click="handleDownload">Export</el-button>
+    <div>
+      <FilenameOption v-model="filename" />
+      <AutoWidthOption v-model="autoWidth" />
+      <BookTypeOption v-model="bookType" />
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">
+        {{ $t('excel.export') }} Excel
+      </el-button>
+    </div>
 
     <el-table
       ref="multipleTable"
       v-loading="listLoading"
       :data="list"
-      element-loading-text="Loading"
+      element-loading-text="Carregando Dados"
       border
       fit
       highlight-current-row
+      @selection-change="handleSelectionChange"
     >
-      <el-table-column align="center" label="Id" width="95">
+      <el-table-column type="selection" align="center" />
+      <el-table-column align="center" label="Id">
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Main Information" align="center">
-        <el-table-column label="Title">
-          <template slot-scope="scope">
-            {{ scope.row.title }}
-          </template>
-        </el-table-column>
-        <el-table-column label="Author" width="110" align="center">
-          <template slot-scope="scope">
-            <el-tag>{{ scope.row.author }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="Readings" width="115" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.pageviews }}
-          </template>
-        </el-table-column>
+      <el-table-column label="Nome do Aluno" align="center">
+        <template slot-scope="scope">
+          <el-tag>{{ scope.row.author }}</el-tag>
+        </template>
       </el-table-column>
-      <el-table-column align="center" label="Date" width="220">
+      <el-table-column align="center" label="Data de Entrada">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.initial_time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Data de Evasão">
+        <template slot-scope="scope">
+          <i class="el-icon-time" />
+          <span>{{ scope.row.display_time }}</span>
         </template>
       </el-table-column>
     </el-table>
-
   </div>
 </template>
 
 <script>
 import { fetchList } from '@/api/article'
-import { parseTime } from '@/utils'
+import FilenameOption from './components/FilenameOption'
+import AutoWidthOption from './components/AutoWidthOption'
+import BookTypeOption from './components/BookTypeOption'
 
 export default {
   name: 'MergeHeader',
+  components: { FilenameOption, AutoWidthOption, BookTypeOption },
   data() {
     return {
       list: null,
       listLoading: true,
-      downloadLoading: false
+      multipleSelection: [],
+      downloadLoading: false,
+      filename: ''
     }
   },
   created() {
@@ -69,32 +75,34 @@ export default {
         this.listLoading = false
       })
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     handleDownload() {
-      this.downloadLoading = true
-        import('@/vendor/Export2Excel').then(excel => {
-          const multiHeader = [['Id', 'Main Information', '', '', 'Date']]
-          const header = ['', 'Title', 'Author', 'Readings', '']
-          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
-          const list = this.list
-          const data = this.formatJson(filterVal, list)
-          const merges = ['A1:A2', 'B1:D1', 'E1:E2']
-          excel.export_json_to_excel({
-            multiHeader,
-            header,
-            merges,
-            data
-          })
-          this.downloadLoading = false
+      if (this.multipleSelection.length) {
+        this.downloadLoading = true
+                    import('@/vendor/Export2Excel').then(excel => {
+                      const tHeader = ['Id', 'Aluno', 'Evasão']
+                      const filterVal = ['id', 'author', 'display_time']
+                      const list = this.multipleSelection
+                      const data = this.formatJson(filterVal, list)
+                      excel.export_json_to_excel({
+                        header: tHeader,
+                        data,
+                        filename: this.filename
+                      })
+                      this.$refs.multipleTable.clearSelection()
+                      this.downloadLoading = false
+                    })
+      } else {
+        this.$message({
+          message: 'Please select at least one item',
+          type: 'warning'
         })
+      }
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 }

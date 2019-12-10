@@ -1,5 +1,4 @@
 <template>
-  <!-- $t is vue-i18n global function to translate lang -->
   <div class="app-container">
     <div>
       <FilenameOption v-model="filename" />
@@ -10,31 +9,37 @@
       </el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="Carregando Dx'ados" border fit highlight-current-row>
-      <el-table-column align="center" label="Id" width="95">
+    <el-table
+      ref="multipleTable"
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Carregando Dados"
+      border
+      fit
+      highlight-current-row
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" align="center" />
+      <el-table-column align="center" label="Id">
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="Nome do Aluno" align="center">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.author }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Readings" width="115" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Date" width="220">
+      <el-table-column align="center" label="Data de Entrada">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.initial_time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Data de Evasão">
+        <template slot-scope="scope">
+          <i class="el-icon-time" />
+          <span>{{ scope.row.display_time }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -43,11 +48,10 @@
 
 <script>
 import { fetchList } from '@/api/article'
-import { parseTime } from '@/utils'
-// options components
 import FilenameOption from './components/FilenameOption'
 import AutoWidthOption from './components/AutoWidthOption'
 import BookTypeOption from './components/BookTypeOption'
+
 export default {
   name: 'ExportExcel',
   components: { FilenameOption, AutoWidthOption, BookTypeOption },
@@ -55,10 +59,9 @@ export default {
     return {
       list: null,
       listLoading: true,
+      multipleSelection: [],
       downloadLoading: false,
-      filename: '',
-      autoWidth: true,
-      bookType: 'xlsx'
+      filename: ''
     }
   },
   created() {
@@ -67,46 +70,40 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      fetchList().then(response => {
+      fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.listLoading = false
       })
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
-        const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
-        const list = this.list
-        const data = this.formatJson(filterVal, list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: this.filename,
-          autoWidth: this.autoWidth,
-          bookType: this.bookType
+      if (this.multipleSelection.length) {
+        this.downloadLoading = true
+                    import('@/vendor/Export2Excel').then(excel => {
+                      const tHeader = ['Id', 'Aluno', 'Evasão']
+                      const filterVal = ['id', 'author', 'display_time']
+                      const list = this.multipleSelection
+                      const data = this.formatJson(filterVal, list)
+                      excel.export_json_to_excel({
+                        header: tHeader,
+                        data,
+                        filename: this.filename
+                      })
+                      this.$refs.multipleTable.clearSelection()
+                      this.downloadLoading = false
+                    })
+      } else {
+        this.$message({
+          message: 'Please select at least one item',
+          type: 'warning'
         })
-        this.downloadLoading = false
-      })
+      }
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 }
 </script>
-
-<style>
-.radio-label {
-  font-size: 14px;
-  color: #606266;
-  line-height: 40px;
-  padding: 0 12px 0 30px;
-}
-</style>
