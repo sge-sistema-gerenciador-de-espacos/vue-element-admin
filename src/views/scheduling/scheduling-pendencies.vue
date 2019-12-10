@@ -203,6 +203,7 @@
                 if (this.checkITSchedulings.includes(this.token)) {
                     this.sendScheduling.type = this.token
                 }
+                this.sendScheduling.user_id = this.id
             },
             handleAddLack(scope) {
                 this.dialogAddLack = true
