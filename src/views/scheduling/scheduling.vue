@@ -157,7 +157,7 @@ import { getCourse } from '@/api/course'
 import { getSpaceEnable } from '@/api/space'
 import { getClassEnable } from '@/api/classes'
 import { getMasterUsers } from '@/api/user'
-import getToken from '@/utils/auth' // get token from cookie
+import { getToken } from '@/utils/auth' // get token from cookie
 
 const defaultScheduling = {
   id: '',
