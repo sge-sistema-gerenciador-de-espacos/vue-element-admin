@@ -262,6 +262,9 @@
                 this.dialogAuthorizer = true
                 this.checkStrictly = true
                 this.scheduling = deepClone(scope.row)
+                if (this.checkSchedulings.includes(this.token)) {
+
+                }
             },
             handleAddLack(scope) {
                 this.dialogAddLack = true

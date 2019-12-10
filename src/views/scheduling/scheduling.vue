@@ -93,7 +93,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Nome do Professor">
-          <el-select v-model="scheduling.scheduler.name">
+          <el-select v-model="scheduling.professor.id">
             <el-option
               v-for="masterToShow in this.masterList"
               :value="masterToShow.id"
